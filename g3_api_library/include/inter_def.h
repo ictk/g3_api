@@ -24,8 +24,23 @@ typedef struct _tagHEADER_WRITE_PACKET{
 
 typedef struct _tagWRITE_PACKET{
 	HEADER_WRITE_PACKET header;
-	unsigned char data[2];;
+	unsigned char data[2];;//CRC 를 위해 2바이트 할당
 }WRITE_PACKET, *LPWRITE_PACKET;
+
+
+typedef struct _tagHEADER_WRITE_IEB100_PACKET{
+	unsigned char  rom_inst;
+	unsigned unsigned long  body_size_big_end;//dummy+res_size+rom_type+data_size
+	unsigned unsigned long  dummy;
+	unsigned char  res_size;
+	unsigned char  rom_type;
+}HEADER_WRITE_IEB100_PACKET, *LPHEADER_WRITE_IEB100_PACKET;
+
+typedef struct _tagWRITE_IEB100_PACKET{
+	HEADER_WRITE_IEB100_PACKET header;
+	unsigned char data[1];;
+}WRITE_IEB100_PACKET, *LPWRITE_IEB100_PACKET;
+
 #pragma pack(pop)  
 
 #define	READ	0x80

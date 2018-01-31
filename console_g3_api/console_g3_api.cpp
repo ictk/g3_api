@@ -26,17 +26,29 @@ using namespace  neocolib;
 
 extern "C" int send_n_recv(const unsigned char*snd, int snd_size, unsigned char*recv, int* recv_size, void*etcparam){
 	CSerialBASE * serreial = (CSerialBASE *)etcparam;
+	
 	int sndsize = serreial->Write(snd, snd_size);
+	printf("SND: %s (%d)\n", NCL::BytetoHexStr(snd, snd_size).c_str(), sndsize);
 	unsigned char buff[1024] = { 0, };
 	unsigned char first_byte = 0;
 	int ressize = 0;
 	VECBYTE vec_recv_byte;
+	int time_count = 0;
 	while (true)
 	{
+		NCL::Sleep(100);
 		ressize = serreial->Read(&first_byte, 1);
 		printf("ressize :%d\n", ressize);
 		if (ressize == 1) break;
-		NCL::Sleep(10);
+		if (time_count > 10){
+			printf("ressize :%d\n", ressize);
+		}
+		if (time_count * 10 > 1000){
+			printf("TIME OUT!!!!!!!!!!!!");
+			return -1;
+		}
+		
+		time_count++;
 	} 
 	vec_recv_byte.push_back(first_byte);
 
@@ -56,6 +68,7 @@ extern "C" int send_n_recv(const unsigned char*snd, int snd_size, unsigned char*
 	}
 	
 	
+	printf("RECV %s \n", NCL::BytetoHexStr(V2A(vec_recv_byte), vec_recv_byte.size()).c_str());
 
 
 
@@ -76,19 +89,28 @@ int _tmain(int argc, _TCHAR* argv[])
 //	g3api_set_etc_param(serreial);
 	
 	serreial->open();
-	VECBYTE vecbyte = NCL::HexStr2Byte("070000000D00000000240307842000005F3900");
+
 
 	unsigned char recvbuff[1024];
 	
 	int recvbuff_size = 1024;
 	g3api_set_user_send_recv_pf(send_n_recv, serreial);
+
 	//g3api_set_etc_param(serreial);
+	VECBYTE vecbyte = NCL::HexStr2Byte("FE0000000000");
 	g3api_raw_snd_recv(&vecbyte[0], vecbyte.size(), recvbuff, &recvbuff_size);
+	
+
+	vecbyte = NCL::HexStr2Byte("FF0000000000");
+	g3api_raw_snd_recv(&vecbyte[0], vecbyte.size(), recvbuff, &recvbuff_size);
+	
+		
+
 
 	g3api_get_chellange(32, recvbuff,&recvbuff_size);
 
 
-	printf("recv %s \n", NCL::BytetoHexStr(recvbuff, recvbuff_size).c_str());
+	//printf("recv %s \n", NCL::BytetoHexStr(recvbuff, recvbuff_size).c_str());
 	//unsigned char buff[1024] = {0,};
 	//int sndsize = serreial->Write(&vecbyte[0], vecbyte.size());
 	//printf("sndsize :%d\n",sndsize);
