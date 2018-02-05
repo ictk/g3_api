@@ -23,15 +23,15 @@ G3_API char* g3api_get_sn();
 G3_API int g3api_setup_core( SETUP_CORE st_setup_fixed);
 G3_API int g3api_set_up_keys( SET_UP_UNIT_ARRAY keys_configure);
 G3_API int g3api_raw_snd_recv(const unsigned char * snd , int snd_size, unsigned char * recv, int* recv_size);
-G3_API int g3api_write_key_value(const int key_index, RW_TYPE rw_type,const unsigned char * key_value, int key_value_size);
-G3_API int g3api_read_key_value(const int key_index, RW_TYPE rw_type, unsigned char * key_value, int key_value_size);
+G3_API int g3api_write_key_value(const int key_index, AREA_TYPE area_type, RW_TYPE rw_type,const unsigned char * key_value, int key_value_size);
+G3_API int g3api_read_key_value(const int key_index, AREA_TYPE area_type, RW_TYPE rw_type, unsigned char * key_value, int* key_value_size);
 G3_API int g3api_get_chellange( int chall_size, unsigned char * challenge, int* res_chall_size);
 G3_API int g3api_verify_passwd(const int key_index,const unsigned char * passwd, int passwd_size);
 G3_API int g3api_change_password(const int key_index,const unsigned char * passwd, int passwd_size);
 G3_API int g3api_init_puf(const int key_index, unsigned int initial);
-G3_API int g3api_sign(const int key_index, SIGN_OPTION ecdsa_option,const unsigned char * msg, int msg_size, void * sign_structure, int structure_size);
-G3_API int g3api_verify(const int key_index, SIGN_OPTION ecdsa_option, bool is_use_cert,const unsigned char * msg, int msg_size,const void * sign_structure, int structure_size);
-G3_API int g3api_verify_dynamic( int key_index, SIGN_OPTION ecdsa_option, bool is_use_cert,const unsigned char * challenge, int chall_size,const unsigned char * sign, int sign_size);
+G3_API int g3api_sign(const int key_index, SIGN_OPTION sign_option,const unsigned char * msg, int msg_size, void * sign_structure, int structure_size);
+G3_API int g3api_verify(const int key_index, VERIFY_OPTION verify_option,const unsigned char * msg, int msg_size,const void * sign_structure, int structure_size);
+G3_API int g3api_dynamic_auth( int key_index, DYNAMIC_AUTH dauth_option, int pos_pub_dynamic,const unsigned char * msg, int msg_size,const void * sign_structure, int structure_size);
 G3_API int g3api_encryption( int key_index, BLOCK_MODE block_mode,const unsigned char * data, int data_size, ST_IV * iv, unsigned char * cipher, int cipher_size);
 G3_API int g3api_decryption( int key_index, BLOCK_MODE block_mode,const ST_IV * iv, unsigned char * cipher,const int cipher_size, unsigned char * data, int data_size);
 G3_API int g3api_encryption_ecies( int key_index,const unsigned char * data, int data_size, ST_SIGN_ECDSA* rs);
@@ -44,6 +44,42 @@ G3_API int g3api_certification( int key_index, CERTIFICATION_WRITE_MODE certific
 G3_API int g3api_issue_certification( int key_index,const unsigned char * cert, int cert_size);
 G3_API int g3api_reset();
 //END API
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

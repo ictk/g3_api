@@ -6,6 +6,7 @@
 
 
 //START STRUCTURE
+//END STRUCTURE
 #pragma pack(push, 1)   
 typedef struct _tagSECTOR{
 	unsigned char first_byte;
@@ -43,6 +44,15 @@ typedef struct _tagWRITE_IEB100_PACKET{
 
 #pragma pack(pop)  
 
+
+
+
+
+
+
+typedef LPVAR_BYTES(*PF_CONVERT)(void *pure_data, int data_size);
+
+
 #define	READ	0x80
 #define	WRITE	0x81
 #define	VERIFY_PWD	0x82
@@ -60,4 +70,30 @@ typedef struct _tagWRITE_IEB100_PACKET{
 #define	ISSUE_CERT	0x8E
 #define	RESET	0x9F
 
-//END STRUCTURE
+#define	RET_SUCCESS	0x00
+
+#define ERR_GENERAL 0x80000000
+#define ERR_INTERCHIP 0xDF000000
+
+
+
+#define ERR_RECV_BUFF_SIZE ERR_GENERAL|0xF0
+#define ERR_KEY_BUFF_SIZE ERR_GENERAL|0xF1
+#define ERR_RECV_CRC_ERROR  ERR_GENERAL|0xF2
+#define ERR_SIGN_MODE_PARSE_ERR  ERR_GENERAL|0xF3
+#define ERR_DIFF_STRUCT_SIZE  ERR_GENERAL|0xF4
+#define ERR_RECV_ALLOC_ERROR  ERR_GENERAL|0xF5
+
+
+
+#define	ERR_INTERCHIP_VERIFY_ERROR	ERR_INTERCHIP|0x01
+#define	ERR_INTERCHIP_PARSE_ERROR	ERR_INTERCHIP|0x03
+#define	ERR_INTERCHIP_EXECUTION_ERROR	ERR_INTERCHIP|0x0F
+#define	ERR_INTERCHIP_AFTER_WAKE_UP	ERR_INTERCHIP|0x11
+#define	ERR_INTERCHIP_COMMUNICATIONS_ERROR	ERR_INTERCHIP|0xFF
+#define	ERR_INTERCHIP_ABNORMAL_INPUT_DETECTION	ERR_INTERCHIP|0x21
+
+
+#define MAKEWORD(l_,h_)   ((unsigned short)(((unsigned char)(l_))|(((unsigned short)((unsigned char)(h_)))<<8)))
+//#define MAKEWORD_BIG(l_,h_)   ((unsigned short)(((unsigned char)(h_))|(((unsigned short)((unsigned char)(l_)))<<8)))
+#define KEY_VALUE_SIZE 32

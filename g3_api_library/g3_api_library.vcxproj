@@ -97,6 +97,7 @@
     </ClCompile>
     <ClCompile Include="g3_api_library.cpp" />
     <ClCompile Include="src\g3_api.cpp" />
+    <ClCompile Include="src\g3_api_depend_function.cpp" />
     <ClCompile Include="src\g3_etc_util.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

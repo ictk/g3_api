@@ -70,6 +70,24 @@ enum SIGN_OPTION
 	SIGN_SYMM=3,	 
 };   	
 
+enum VERIFY_OPTION  
+{
+	VERYFY_ECDSA=0,
+	VERYFY_ECDSA_SHA256=1,
+	VERYFY_HMAC=2,
+	VERYFY_SYMM=3,
+	VERYFY_CERT_PUB_ECDSA=0x10,
+	VERYFY_CERT_PUB_ECDSA_SHA256=0x11,	 
+};   	
+
+enum DYNAMIC_AUTH  
+{
+	DYN_AUTH_ECDSA_SHA256=0x21,
+	DYN_AUTH_HMAC=0x22,
+	DYN_AUTH_SYMM=0x23,
+	DYN_AUTH_CERT_PUB_ECDSA_SHA256=0x31,	 
+};   	
+
 enum VERIFY_TYPE  
 {
 	USE_CERT_PUB_ECDSA=0,
@@ -91,10 +109,10 @@ enum RW_TYPE
 	CTR=2,
 	CCM=3,
 	GCM=4,
-	SESSION_KEY_CBC=5,
-	SESSION_KEY_CTR=6,
-	SESSION_KEY_CCM=7,
-	SESSION_KEY_GCM=8,	 
+	SESSION_KEY_CBC=0x11,
+	SESSION_KEY_CTR=0x12,
+	SESSION_KEY_CCM=0x13,
+	SESSION_KEY_GCM=0x14,	 
 };   	
 
 enum PUB_TYPE  
@@ -128,11 +146,47 @@ enum PUB_TYPE
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 //START STRUCTURE
 
 typedef struct _tagVAR_BYTES{
-	short  size;
-	short allocsize;
+	int size;
+	int allocsize;
 	unsigned char buffer[1];;
 }VAR_BYTES, *LPVAR_BYTES;
 
@@ -197,6 +251,42 @@ typedef struct _tagST_IV{
 	unsigned char iv[16];;
 }ST_IV, *LPST_IV;
 //END STRUCTURE
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
