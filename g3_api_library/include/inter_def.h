@@ -32,8 +32,8 @@ typedef struct _tagWRITE_PACKET{
 
 typedef struct _tagHEADER_WRITE_IEB100_PACKET{
 	unsigned char  rom_inst;
-	unsigned unsigned long  body_size_big_end;//dummy+res_size+rom_type+data_size
-	unsigned unsigned long  dummy;
+	unsigned long  body_size_big_end;//dummy+res_size+rom_type+data_size
+	unsigned long  dummy;
 	unsigned char  res_size;
 	//unsigned char  rom_type;
 }HEADER_WRITE_IEB100_PACKET, *LPHEADER_WRITE_IEB100_PACKET;
