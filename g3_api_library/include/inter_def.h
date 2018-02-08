@@ -17,6 +17,7 @@ typedef struct _tagSECTOR{
 
 
 typedef struct _tagHEADER_WRITE_PACKET{
+	unsigned char  inst_flag;
 	unsigned char  length;
 	unsigned char  ins;
 	unsigned char  p1;
@@ -34,7 +35,7 @@ typedef struct _tagHEADER_WRITE_IEB100_PACKET{
 	unsigned unsigned long  body_size_big_end;//dummy+res_size+rom_type+data_size
 	unsigned unsigned long  dummy;
 	unsigned char  res_size;
-	unsigned char  rom_type;
+	//unsigned char  rom_type;
 }HEADER_WRITE_IEB100_PACKET, *LPHEADER_WRITE_IEB100_PACKET;
 
 typedef struct _tagWRITE_IEB100_PACKET{
@@ -73,7 +74,7 @@ typedef LPVAR_BYTES(*PF_CONVERT)(void *pure_data, int data_size);
 #define	RET_SUCCESS	0x00
 
 #define ERR_GENERAL 0x80000000
-#define ERR_INTERCHIP 0xDF000000
+#define ERR_INTERCHIP 0xF0000000
 
 
 
@@ -83,6 +84,7 @@ typedef LPVAR_BYTES(*PF_CONVERT)(void *pure_data, int data_size);
 #define ERR_SIGN_MODE_PARSE_ERR  ERR_GENERAL|0xF3
 #define ERR_DIFF_STRUCT_SIZE  ERR_GENERAL|0xF4
 #define ERR_RECV_ALLOC_ERROR  ERR_GENERAL|0xF5
+
 
 
 
@@ -97,3 +99,7 @@ typedef LPVAR_BYTES(*PF_CONVERT)(void *pure_data, int data_size);
 #define MAKEWORD(l_,h_)   ((unsigned short)(((unsigned char)(l_))|(((unsigned short)((unsigned char)(h_)))<<8)))
 //#define MAKEWORD_BIG(l_,h_)   ((unsigned short)(((unsigned char)(h_))|(((unsigned short)((unsigned char)(l_)))<<8)))
 #define KEY_VALUE_SIZE 32
+
+#ifndef min
+#define min(a,b)    (((a) < (b)) ? (a) : (b))
+#endif

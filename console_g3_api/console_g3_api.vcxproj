@@ -87,7 +87,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="console_g3_api.cpp" />
+    <ClCompile Include="sample.cpp" />
     <ClCompile Include="stdafx.cpp" />
+    <ClCompile Include="test.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

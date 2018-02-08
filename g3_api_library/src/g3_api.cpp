@@ -3,7 +3,8 @@
 #include <stdlib.h>
 #include <memory.h>
 #include<stdio.h>
-
+#include<string>
+using namespace std;
 
 
 
@@ -19,8 +20,17 @@ int check_sign_struct(SIGN_OPTION sign_option, int structure_size);
 int check_vefify_struct(VERIFY_OPTION verify_option, int structure_size);
 int check_dynamic_auth_struct(DYNAMIC_AUTH verify_etc, int structure_size);
 int return_from_recv(VAR_BYTES *precvbuff);
+bool append_var_bytes(VAR_BYTES**dist, const void*buffer, int size);
+void view_hexstr(const char *title, void *pbuff, int size);
+void test();
+VAR_BYTES* alloc_var_bytes(int size);
 
-PFSENDRECV _psend = NULL;
+VAR_BYTES* create_var_bytes(const void*init, int size);
+int def_send_n_recv(const unsigned char*snd, int snd_size, unsigned char*recv, int* recv_size, void*etcparam);
+
+
+PFSENDRECV _psend = def_send_n_recv;
+PF_CONVERT _pconvert_data = convert_data_ieb100;
 //PFSENDRECV _precv = NULL;
 void * _etcparam = NULL;
 bool is_use_ieb_100 = true;
@@ -32,9 +42,14 @@ bool is_use_ieb_100 = true;
 //
 //}
 
-PF_CONVERT _pconvert_data = convert_data_ieb100;
 
 
+int def_send_n_recv(const unsigned char*snd, int snd_size, unsigned char*recv, int* recv_size, void*etcparam)
+{
+	api_view("def_send_n_recv");
+
+	return 0;
+}
 const char * g3api_get_lib_version(){
 	api_view("g3api_get_lib_version");
 	static char szVersion[32] = LIB_VERSION;
@@ -89,7 +104,7 @@ int g3api_read_key_value(const int key_index, AREA_TYPE area_type, RW_TYPE rw_ty
 
 	VAR_BYTES *precvbuff = NULL;
 
-	if (*key_value_size < ERR_KEY_BUFF_SIZE){
+	if (*key_value_size < KEY_VALUE_SIZE){
 		return ERR_KEY_BUFF_SIZE;
 	}
 
@@ -126,17 +141,23 @@ int g3api_get_chellange(int chall_size, unsigned char * challenge, int* res_chal
 	
 	api_view("g3api_get_chellange");
 	VAR_BYTES *precvbuff = NULL;
-	
+	if (!res_chall_size) return ERR_RECV_ALLOC_ERROR;
 	int nret = do_normal_process(GET_CHAL, chall_size, 0, NULL, 0, &precvbuff);
 	if (nret < 0) {
 		goto END;;
 	}
-	if (precvbuff->size < *res_chall_size){
+	if (!precvbuff){
+
+		goto END;;
+
+	}
+	if ( precvbuff->size > *res_chall_size){
 		nret = ERR_RECV_BUFF_SIZE;
 		goto END;
 	}
 
-	memcpy(challenge, precvbuff->buffer, precvbuff->size);
+	if(challenge) memcpy(challenge, precvbuff->buffer, precvbuff->size);
+	if (res_chall_size) *res_chall_size = precvbuff->size;
 
 END:
 	if (precvbuff) free(precvbuff);
@@ -254,17 +275,16 @@ int g3api_dynamic_auth(int key_index, DYNAMIC_AUTH dauth_option, int pos_pub_dyn
 
 }
 
-int g3api_encryption(int key_index, BLOCK_MODE block_mode, const unsigned char * data, int data_size, ST_IV * iv, unsigned char * cipher, int cipher_size)
+int g3api_encryption(int key_index, BLOCK_MODE block_mode, const unsigned char * data, int data_size, ST_IV * iv, unsigned char * cipher, int *cipher_size)
 {
 
 	api_view("g3api_encryption");
 	VAR_BYTES *precvbuff = NULL;
 	int nret = do_normal_process(ENCRYPT, key_index, block_mode, data, data_size, &precvbuff);
 	if (nret < 0) goto END;
-	if (precvbuff->size < sizeof(ST_IV) + 16){
-		nret = ERR_RECV_BUFF_SIZE;
-		goto END;
-	}
+	if(iv) memcpy(iv, precvbuff->buffer, sizeof(ST_IV));
+	if (cipher) memcpy(cipher, precvbuff->buffer + sizeof(ST_IV), precvbuff->size - sizeof(ST_IV));
+	if (cipher_size) *cipher_size = precvbuff->size - sizeof(ST_IV);
 
 
 
@@ -277,11 +297,184 @@ END:
 
 }
 
-int g3api_decryption(int key_index, BLOCK_MODE block_mode, const ST_IV * iv, unsigned char * cipher, const int cipher_size, unsigned char * data, int data_size)
+int g3api_decryption(int key_index, BLOCK_MODE block_mode, const ST_IV * iv, unsigned char * cipher, const int cipher_size, unsigned char * data, int *data_size)
 {
 	api_view("g3api_decryption");
 	VAR_BYTES *precvbuff = NULL;
-	int nret = do_normal_process(DECRYPT, 0, 0, NULL, 0, &precvbuff);
+
+	VAR_BYTES * buff = create_var_bytes(iv, sizeof(ST_IV));
+	append_var_bytes(&buff, cipher, cipher_size);
+	
+	view_hexstr("g3api_decryption test", buff->buffer, buff->size);
+
+	int nret = do_normal_process(DECRYPT, key_index, block_mode, buff->buffer, buff->size, &precvbuff);
+	
+	if (nret < 0) goto END;
+
+	if (data) memcpy(data, precvbuff->buffer, precvbuff->size);
+	if (data_size) *data_size = precvbuff->size;
+
+
+
+
+END:
+	if (buff) free(buff);
+	if (precvbuff) free(precvbuff);
+
+	return nret;
+}
+
+
+int g3api_ecdh(int key_index, const void * Q_b, int Q_b_size, ST_ECC_PUBLIC* Q_chip, ST_ECC_PUBLIC* ecdh_value)
+{
+
+	api_view("g3api_ecdh");
+	VAR_BYTES *precvbuff = NULL;
+	int nret = do_normal_process(SESSION, key_index, 0x0040, Q_b, Q_b_size, &precvbuff);
+	if (nret < 0) goto END;
+
+	memcpy(Q_chip, precvbuff->buffer, sizeof(ST_ECC_PUBLIC));
+	memcpy(ecdh_value, precvbuff->buffer + sizeof(ST_ECC_PUBLIC), sizeof(ST_ECC_PUBLIC));
+
+
+END:
+	if (precvbuff) free(precvbuff);
+
+	return nret;
+
+
+
+}
+
+int g3api_get_public_key(int key_index, PUB_TYPE pub_type, void* pub_key, int structure_size)
+{
+
+	api_view("g3api_get_public_key");
+	VAR_BYTES *precvbuff = NULL;
+	short upperbyte = 0;
+	switch (structure_size){
+	case sizeof(ST_ECC_PUBLIC) :
+		upperbyte = 1;
+		break;
+	case sizeof(ST_ECC_PUBLIC_COMPRESS) :
+		upperbyte = 0;
+		break;
+									
+
+	default:
+		return ERR_DIFF_STRUCT_SIZE;
+
+	}
+
+
+	
+	int nret = do_normal_process(GET_PUB_KEY, key_index, MAKEWORD(upperbyte, pub_type), NULL, 0, &precvbuff);
+	
+	if (nret < 0) goto END;
+
+	if (pub_key) memcpy(pub_key, precvbuff->buffer, precvbuff->size);
+
+
+
+
+END:
+	if (precvbuff) free(precvbuff);
+
+	return nret;
+
+
+
+}
+
+
+
+int g3api_certification(int key_index, CERTIFICATION_WRITE_MODE certification_write_mode, const unsigned char * cert, int cert_size)
+{
+	
+	api_view("g3api_certification");
+	int nret = 0;
+	int unit_size = 240;
+
+	const unsigned char * psubcert = cert;
+
+	int remain_size = cert_size;
+	int index = 0;
+	while (remain_size>0)
+	{
+		int realsize = min(remain_size, unit_size);
+		if (remain_size <= unit_size)//마지막루프 
+		{
+			index = 0xff;
+		}
+		VAR_BYTES *precvbuff = NULL;
+		nret = do_normal_process_return_ok(CERT, key_index, MAKEWORD(index, certification_write_mode), psubcert, realsize);
+		if (nret < 0) return nret;
+		
+		psubcert += unit_size;
+		remain_size -= unit_size;
+		
+
+
+		index++;
+	} ;
+
+
+	return nret;
+
+
+
+}
+
+int g3api_issue_certification(int key_index, int public_key_pos, ISSUE_CERT_AREA_TYPE issue_cert_area_type, int sector_num_to_store, int key_id, const unsigned char * cert, int cert_size)
+//int g3api_issue_certification(int key_index, const unsigned char * cert, int cert_size)
+{
+
+	api_view("g3api_issue_certification");
+	int nret = 0;
+	int unit_size = 240;
+
+	const unsigned char * psubcert = cert;
+
+	int remain_size = cert_size;
+	int index = 0;
+	while (remain_size>0)
+	{
+		int realsize = min(remain_size, unit_size);
+		
+		VAR_BYTES *precvbuff = NULL;
+		int unit_pub_pos = -1;
+		if (public_key_pos < unit_size && public_key_pos>=0) unit_pub_pos = public_key_pos;
+		nret = do_normal_process_return_ok(ISSUE_CERT, key_index, MAKEWORD(index, unit_pub_pos), psubcert, realsize);
+		if (nret < 0) return nret;
+
+		psubcert += unit_size;
+		remain_size -= unit_size;
+		public_key_pos -= unit_size;
+
+
+
+		index++;
+	};
+	index = 0xff;
+	unsigned char buff[8];
+	buff[0] = issue_cert_area_type;
+	buff[1] = sector_num_to_store;
+	SwapBytes(&key_id, 2);
+	memcpy(&buff[2], &key_id, 2);
+	
+
+	nret = do_normal_process_return_ok(ISSUE_CERT, key_index, 0XFFFF, buff, 4);
+
+
+
+
+	return nret;
+
+
+
+	api_view("g3api_issue_certification");
+	VAR_BYTES *precvbuff = NULL;
+	nret = do_normal_process(ISSUE_CERT, 0, 0, NULL, 0, &precvbuff);
 	if (nret < 0) goto END;
 
 
@@ -289,7 +482,169 @@ END:
 	if (precvbuff) free(precvbuff);
 
 	return nret;
+
+
+
 }
+
+VAR_BYTES * _testbuff = NULL;
+
+int g3api_test(const unsigned char * in, int in_size)
+{
+	api_view("g3api_test");
+	//_testbuff = create_var_bytes(in, in_size);
+	//int ret = _psend(_testbuff->buffer, _testbuff->size, NULL, NULL, NULL);
+
+	VAR_BYTES * pvsnd = create_var_bytes("0123456789", 30);
+	VAR_BYTES * precv = alloc_var_bytes(32);
+	int size = 32;
+
+
+	/*printf("pvsnd->buffer:0x%x\n", pvsnd);
+	printf("pvsnd->buffer:0x%x\n", pvsnd);
+	printf("pvsnd->buffer:0x%x\n", precv);
+	printf("pvsnd->buffer:0x%x\n", _psend);*/
+
+	int ret = _psend(pvsnd->buffer, pvsnd->size, precv->buffer, &precv->size, NULL);
+	printf("%d %d\n", precv->size, ret);
+	view_hexstr("precv", precv->buffer, precv->size);
+	
+	return 0;
+}
+void asfdaafdasf(){
+
+	VAR_BYTES * pvsnd = create_var_bytes("0123456789", 10);
+	VAR_BYTES * precv = alloc_var_bytes(32);
+	int size = 32;
+
+
+
+	int ret = _psend(pvsnd->buffer, pvsnd->size, precv->buffer, &precv->size, NULL);
+	printf("%d %d\n", precv->size, ret);
+	view_hexstr("precv", precv->buffer, precv->size);
+}
+
+int g3api_test7(const unsigned char * in, int in_size)
+{
+	api_view("g3api_test7");
+
+	//VAR_BYTES * pvsnd = create_var_bytes("0123456789", 30);
+	//VAR_BYTES * precv = alloc_var_bytes(32);
+	//int size = 32;
+	//int ret = 0;
+
+	/*printf("pvsnd->buffer:0x%x\n", pvsnd);
+	printf("pvsnd->buffer:0x%x\n", pvsnd);
+	printf("pvsnd->buffer:0x%x\n", precv);
+	printf("pvsnd->buffer:0x%x\n", _psend);*/
+	asfdaafdasf();
+
+
+	return 0;
+}
+
+int g3api_test6(const unsigned char * in, int in_size, PFSENDRECV pfsend)
+{
+	api_view("g3api_test6");
+
+	_testbuff = create_var_bytes(in, in_size);
+
+	VAR_BYTES * pvsnd = create_var_bytes("0123456789", 10);
+	VAR_BYTES * precv = alloc_var_bytes(32);
+	int size = 32;
+
+
+
+	int ret = _psend(pvsnd->buffer, pvsnd->size, precv->buffer, &precv->size, NULL);
+	printf("%d %d\n", precv->size, ret);
+	view_hexstr("precv", precv->buffer, precv->size);
+
+	return 0;
+}
+
+int g3api_test2(unsigned char * out, int* out_size)
+{
+	api_view("g3api_test2");
+	printf("assign size :%d", *out_size);
+	_testbuff = alloc_var_bytes(32);;
+	if (_testbuff->size > *out_size){
+		printf("assinge size is not enough\n");
+		return -1;
+	}
+
+	memcpy(out, _testbuff->buffer, _testbuff->size);
+	memcpy(out + _testbuff->size, _testbuff->buffer, _testbuff->size);
+	*out_size = _testbuff->size * 2;
+
+	
+	
+
+	return 0;
+}
+
+int g3api_test3(ST_ECC_PUBLIC* param)
+{
+	api_view("g3api_test3");
+	printf("0x%x", param);
+	unsigned char * pchar = (unsigned char *)param;
+	for (int i = 0; i < sizeof(ST_ECC_PUBLIC); i++){
+		*pchar = i % 255;
+		pchar++;
+	}
+	return 0;
+}
+
+
+int g3api_test4(PFTEST pfsend)
+{
+	api_view("g3api_test4");
+
+	
+
+
+	pfsend(23, 42);
+
+	
+	return 0;
+}
+int g3api_test5(PFSENDRECV pfsend)
+{
+	api_view("g3api_test5");
+	
+	
+	VAR_BYTES * pvsnd = create_var_bytes("0123456789", 10);
+	VAR_BYTES * precv = alloc_var_bytes(32);
+	int size = 32;
+
+
+
+	int ret = _psend(pvsnd->buffer, pvsnd->size, precv->buffer, &precv->size, NULL);
+	printf("%d %d\n", precv->size, ret);
+	view_hexstr("precv", precv->buffer, precv->size);
+	return 0;
+}
+ int GetSoftwareVersion(
+	char* LCP_Version,
+	char* FCP_Version
+	)
+{
+	int return_status = 0;
+	string LCP_V("test");
+	string FCP_V("test");
+	strcpy(LCP_Version, LCP_V.c_str());
+	strcpy(FCP_Version, FCP_V.c_str());
+
+	return return_status;
+}
+
+
+
+ int g3api_test8(PFSENDRECV pfsend, const unsigned char * in, int in_size)
+ {
+	 api_view("g3api_test8");
+	 asfdaafdasf();
+	 return 0;
+ }
 //START API
 
 int g3api_get_device_version()
@@ -316,25 +671,6 @@ int g3api_set_up_keys( SET_UP_UNIT_ARRAY keys_configure)
 	return 0;
 }	
 	
-int g3api_encryption( int key_index, BLOCK_MODE block_mode,const unsigned char * data, int data_size, ST_IV * iv, unsigned char * cipher, int cipher_size)
-{
-
-	api_view("g3api_encryption");
-	VAR_BYTES *precvbuff = NULL;
-	int nret = do_normal_process(ENCRYPT, 0, 0, NULL, 0, &precvbuff);
-	if (nret < 0) goto END;
-
-
-END:
-	if (precvbuff) free(precvbuff);
-	
-	return nret;
-
-	
-	
-}	
-	
-	
 int g3api_encryption_ecies( int key_index,const unsigned char * data, int data_size, ST_SIGN_ECDSA* rs)
 {
 
@@ -359,24 +695,6 @@ int g3api_decryption_ecies( int key_index,const ST_SIGN_ECDSA* rs, unsigned char
 	api_view("g3api_decryption_ecies");
 	VAR_BYTES *precvbuff = NULL;
 	int nret = do_normal_process(DECRYPT, 0, 0, NULL, 0, &precvbuff);
-	if (nret < 0) goto END;
-
-
-END:
-	if (precvbuff) free(precvbuff);
-	
-	return nret;
-
-	
-	
-}	
-	
-int g3api_ecdh( int key_index,const void * Q_b, int Q_b_size, ST_ECC_PUBLIC* Q_chip, ST_ECC_PUBLIC* ecdh_value)
-{
-
-	api_view("g3api_ecdh");
-	VAR_BYTES *precvbuff = NULL;
-	int nret = do_normal_process(SESSION, 0, 0, NULL, 0, &precvbuff);
 	if (nret < 0) goto END;
 
 
@@ -425,60 +743,6 @@ END:
 	
 }	
 	
-int g3api_get_public_key( int key_index, PUB_TYPE pub_type, void* pub_key, int structure_size)
-{
-
-	api_view("g3api_get_public_key");
-	VAR_BYTES *precvbuff = NULL;
-	int nret = do_normal_process(GET_PUB_KEY, 0, 0, NULL, 0, &precvbuff);
-	if (nret < 0) goto END;
-
-
-END:
-	if (precvbuff) free(precvbuff);
-	
-	return nret;
-
-	
-	
-}	
-	
-int g3api_certification( int key_index, CERTIFICATION_WRITE_MODE certification_write_mode,const unsigned char * cert, int cert_size)
-{
-
-	api_view("g3api_certification");
-	VAR_BYTES *precvbuff = NULL;
-	int nret = do_normal_process(CERT, 0, 0, NULL, 0, &precvbuff);
-	if (nret < 0) goto END;
-
-
-END:
-	if (precvbuff) free(precvbuff);
-	
-	return nret;
-
-	
-	
-}	
-	
-int g3api_issue_certification( int key_index,const unsigned char * cert, int cert_size)
-{
-
-	api_view("g3api_issue_certification");
-	VAR_BYTES *precvbuff = NULL;
-	int nret = do_normal_process(ISSUE_CERT, 0, 0, NULL, 0, &precvbuff);
-	if (nret < 0) goto END;
-
-
-END:
-	if (precvbuff) free(precvbuff);
-	
-	return nret;
-
-	
-	
-}	
-	
 int g3api_reset()
 {
 
@@ -496,5 +760,13 @@ END:
 	
 	
 }	
+
 	//END API
+
+
+
+
+
+
+
 

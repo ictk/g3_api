@@ -10,6 +10,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "console_g3_api", "console_g
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "g3_api_library", "g3_api_library\g3_api_library.vcxproj", "{5F6D0404-B854-4717-ADA2-399201C49F3A}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libBASE", "..\..\..\toolrnd\BASE\libBASE\libBASE.vcxproj", "{5030274D-88B1-41A1-8FCD-C3B3879DF2B2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -30,6 +32,14 @@ Global
 		{5F6D0404-B854-4717-ADA2-399201C49F3A}.Release|Win32.ActiveCfg = Release|Win32
 		{5F6D0404-B854-4717-ADA2-399201C49F3A}.Release|Win32.Build.0 = Release|Win32
 		{5F6D0404-B854-4717-ADA2-399201C49F3A}.Release|x64.ActiveCfg = Release|Win32
+		{5030274D-88B1-41A1-8FCD-C3B3879DF2B2}.Debug|Win32.ActiveCfg = Debug|Win32
+		{5030274D-88B1-41A1-8FCD-C3B3879DF2B2}.Debug|Win32.Build.0 = Debug|Win32
+		{5030274D-88B1-41A1-8FCD-C3B3879DF2B2}.Debug|x64.ActiveCfg = Debug|x64
+		{5030274D-88B1-41A1-8FCD-C3B3879DF2B2}.Debug|x64.Build.0 = Debug|x64
+		{5030274D-88B1-41A1-8FCD-C3B3879DF2B2}.Release|Win32.ActiveCfg = Release|Win32
+		{5030274D-88B1-41A1-8FCD-C3B3879DF2B2}.Release|Win32.Build.0 = Release|Win32
+		{5030274D-88B1-41A1-8FCD-C3B3879DF2B2}.Release|x64.ActiveCfg = Release|x64
+		{5030274D-88B1-41A1-8FCD-C3B3879DF2B2}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

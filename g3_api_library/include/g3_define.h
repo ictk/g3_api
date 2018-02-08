@@ -120,7 +120,54 @@ enum PUB_TYPE
 	KEY_SECTOR=0,
 	TEMP_PUBLIC_KEY=1,	 
 };   	
+
+enum ISSUE_CERT_AREA_TYPE  
+{
+	ISCRT_KEY_AREA=0,
+	ISCRT_DATA_AREA_0=1,
+	ISCRT_DATA_AREA_1=2,	 
+};   	
 //END ENUM
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -296,7 +343,48 @@ typedef struct _tagST_IV{
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 typedef int(*PFSENDRECV) (const unsigned char*,int,unsigned char*,int*,  void*etcparam );
+typedef int(*PFTEST) (int,int);
 
 
 
