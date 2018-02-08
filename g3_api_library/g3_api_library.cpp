@@ -4,7 +4,7 @@
 #include "stdafx.h"
 #include "g3_api_library.h"
 
-#pragma comment(lib,"libBASE.lib")
+//#pragma comment(lib,"libBASE.lib")
 // 내보낸 변수의 예제입니다.
 G3_API_LIBRARY_API int ng3_api_library=0;
 

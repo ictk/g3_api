@@ -1,6 +1,6 @@
 #include<stdio.h>
 #include<stdlib.h>
-#include<memory>
+#include<memory.h>
 
 static const unsigned short CRC16TAB[256] =
 {

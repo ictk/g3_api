@@ -1,16 +1,19 @@
 // console_g3_api.cpp : 콘솔 응용 프로그램에 대한 진입점을 정의합니다.
 //
 
-#include "stdafx.h"
+//#include "stdafx.h"
 //#include "CtrlBASE.h"
+#define NULL 0
+
 #include "CSerialRS232.h"
 #include "neoCoLib.h"
-
+#include "neoDebug.h"
 #include "g3_api.h"
 //#include<windows.h>
 
 
-#pragma comment(lib,"libBASE.lib")
+
+//#pragma comment(lib,"libBASE.lib")
 
 using namespace  neocolib;
 //
@@ -119,13 +122,21 @@ int test_byload(){
 }
 #endif
 
-int _tmain(int argc, _TCHAR* argv[])
+int main(int argc, char* argv[])
 {
 	int ret = 0;
 	//test_load();
 	//return 0;
 	//return test_byload();
 	
+	
+	NEO_START;
+
+	NEO_TITLE(main);
+	if (argc < 2){
+		printf("1st argument must be serial port name");
+		return -1;
+	}
 
 	CSerialBASE * serreial = new CSerialRS232("\\\\.\\COM10");
 //	g3api_set_etc_param(serreial);
