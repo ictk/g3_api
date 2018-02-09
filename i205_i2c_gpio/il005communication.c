@@ -17,7 +17,7 @@
 #include "il005hal_i2c.h"
 #include "i2c_sw.h"
 #include "timer_util.h"
-#include "ictk_lib.h"
+//#include "ictk_lib.h"
 
 uint16_t u16_IL005_Send_Retry_Count = IL005_SEND_RETRY_COUNT;     // Retry Count for sending command.
 uint16_t u16_IL005_Recv_Retry_Count = IL005_RECEIVE_RETRY_COUNT;  // Retry Count for receiving respons.
