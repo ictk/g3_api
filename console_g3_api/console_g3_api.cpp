@@ -1,16 +1,19 @@
 // console_g3_api.cpp : 콘솔 응용 프로그램에 대한 진입점을 정의합니다.
 //
 
-#include "stdafx.h"
+//#include "stdafx.h"
 //#include "CtrlBASE.h"
+#define NULL 0
+
 #include "CSerialRS232.h"
 #include "neoCoLib.h"
-
+#include "neoDebug.h"
 #include "g3_api.h"
 //#include<windows.h>
 
 
-#pragma comment(lib,"libBASE.lib")
+
+//#pragma comment(lib,"libBASE.lib")
 
 using namespace  neocolib;
 //
@@ -119,20 +122,35 @@ int test_byload(){
 }
 #endif
 
-int _tmain(int argc, _TCHAR* argv[])
+int main(int argc, char* argv[])
 {
 	int ret = 0;
 	//test_load();
 	//return 0;
 	//return test_byload();
 	
+	
+	NEO_START;
 
-	CSerialBASE * serreial = new CSerialRS232("\\\\.\\COM10");
+	NEO_TITLE(main);
+	if (argc < 2){
+		printf("\n1st argument must be serial port name\n");
+		return -1;
+	}
+	printf("\nserila port name : (%s) \n",argv[1]);
+	
+
+
+	CSerialBASE * serreial = new CSerialRS232(argv[1]);
 //	g3api_set_etc_param(serreial);
 	ST_SIGN_ECDSA sign;
 	ST_ECC_PUBLIC pubkey;
 	
-	serreial->open();
+	if (!serreial->open()){
+		printf("\nport is not open\n");
+		return -1;
+
+	}
 
 
 	unsigned char recvbuff[1024];
@@ -143,28 +161,33 @@ int _tmain(int argc, _TCHAR* argv[])
 	//g3api_set_etc_param(serreial);
 	VECBYTE vecbyte = NCL::HexStr2Byte("FE0000000000");
 
-	recvbuff_size = 1024;
-
-	ret = g3api_get_chellange(32, recvbuff, &recvbuff_size);
 
 
-	printf("ret:0x%x recv %s %d \n", ret  ,NCL::BytetoHexStr(recvbuff, recvbuff_size).c_str(), recvbuff_size);
 
-
-#if 0
-	g3api_raw_snd_recv(&vecbyte[0], vecbyte.size(), recvbuff, &recvbuff_size);
-	recvbuff_size = 1024;
 
 	vecbyte = NCL::HexStr2Byte("FF0000000000");
+	recvbuff_size = 1024;
 	g3api_raw_snd_recv(&vecbyte[0], vecbyte.size(), recvbuff, &recvbuff_size);
+	printf("ret:0x%x recv %s %d \n", ret, NCL::BytetoHexStr(recvbuff, recvbuff_size).c_str(), recvbuff_size);
+
+	vecbyte = NCL::HexStr2Byte("FE0000000000");
+	recvbuff_size = 1024;
+	g3api_raw_snd_recv(&vecbyte[0], vecbyte.size(), recvbuff, &recvbuff_size);
+	printf("ret:0x%x recv %s %d \n", ret, NCL::BytetoHexStr(recvbuff, recvbuff_size).c_str(), recvbuff_size);
 	
-		
+
+	
 	recvbuff_size = 1024;
 
 	ret = g3api_get_chellange(32, recvbuff, &recvbuff_size);
 
 
 	printf("ret:0x%x recv %s %d \n", ret  ,NCL::BytetoHexStr(recvbuff, recvbuff_size).c_str(), recvbuff_size);
+	
+
+#if 0	
+		
+	
 
 	recvbuff_size = 1024;
 	ret = g3api_read_key_value(1, AREA_TYPE::KEY_AREA, RW_TYPE::PLAIN_TEXT, recvbuff, &recvbuff_size);
