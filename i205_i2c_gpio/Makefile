@@ -65,8 +65,7 @@ OBJDIR_RELEASE = $(OBJDIR)
 
 OBJ_RELEASE = $(OBJDIR_RELEASE)/i2c_sw.o \
 					$(OBJDIR_RELEASE)/il005communication.o \
-					$(OBJDIR_RELEASE)/il005hal_i2c.o \
-					$(OBJDIR_RELEASE)/g3_api.o 
+					$(OBJDIR_RELEASE)/il005hal_i2c.o 
 
 					
 					

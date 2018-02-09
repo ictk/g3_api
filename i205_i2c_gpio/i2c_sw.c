@@ -13,7 +13,7 @@
   */
 
 #include "i2c_sw.h"
-//#include "timer_util.h"
+#include "timer_util.h"
 
 uint16_t i2c_clock_time = I2C_CLOCK_TIME;
 uint16_t i2c_clock_high_time = I2C_CLOCK_HIGH_TIME;
