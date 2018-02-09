@@ -102,7 +102,7 @@ out_shared_release: $(OBJ_RELEASE_ALL)
 
 
 	
-$(OBJDIR_RELEASE)/%.o: src/%.cpp
+$(OBJDIR_RELEASE)/%.o: %.c
 	$(CXX) $(CFLAGS_RELEASE) $(INC_RELEASE)  -c -o $@ $<	
 	
 	
