@@ -7,7 +7,7 @@ LD = g++
 WINDRES = windres
 OUTDIR = ../bin/gnu
 OBJDIR = obj/gnu
-LIB = ../lib/gnu/libneolib_c_base.a ../lib/gnu/libg3_api.a -ldl
+LIB = ../lib/gnu/libneolib_c_base.a ../lib/gnu/libg3_api.a -lwiringPi -ldl
 #LIB = -lIPSF-100d -ldl -L/home/ictk/project/IPSF-100/IPSF-100-SOFTFORUM/lib/gnu/ 
 
 #------------------------------------------------------------------------------#
@@ -22,7 +22,7 @@ INC = -I../include  -I../g3_api_library/include
 CFLAGS = -Wall -fexceptions  -O2
 RESINC = 
 LIBDIR = 
-#LIB = 
+
 
 
 
@@ -40,7 +40,8 @@ DEP_RELEASE =
 OUT_RELEASE = $(OUTDIR)/console_g3_api
 
 OBJ_RELEASE = $(OBJDIR_RELEASE)/sample.o \
-				$(OBJDIR_RELEASE)/console_g3_api.o 
+				$(OBJDIR_RELEASE)/console_g3_api.o \
+				$(OBJDIR_RELEASE)/i2c_sample.o 
 
 					
 	

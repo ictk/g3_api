@@ -51,7 +51,7 @@ typedef struct _tagWRITE_IEB100_PACKET{
 
 
 
-typedef LPVAR_BYTES(*PF_CONVERT)(void *pure_data, int data_size);
+typedef LPVAR_BYTES(*PF_CONVERT)(void *pure_data, int data_size, int max_res_size);
 
 
 #define	READ	0x80

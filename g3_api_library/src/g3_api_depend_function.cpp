@@ -96,7 +96,7 @@ LPWRITE_PACKET make_write_packet(char inst, char p1, short p2, const void * data
 }
 
 
-VAR_BYTES * convert_data(void *pure_data, int data_size){
+VAR_BYTES * convert_data(void *pure_data, int data_size,  int max_res_size){
 	VAR_BYTES * pret = alloc_var_bytes(data_size);
 
 	memcpy(pret->buffer, pure_data, data_size);
@@ -155,13 +155,13 @@ map<int, int> & get_map_size(){
 }
 
 
-VAR_BYTES * convert_data_ieb100(void *pure_data, int data_size)
+VAR_BYTES * convert_data_ieb100(void *pure_data, int data_size, int max_res_size)
 {
 	int packet_ieb100_size = 0;
-	map<int, int> map_size_per_inst = get_map_size();
+	//map<int, int> map_size_per_inst = get_map_size();
 	LPHEADER_WRITE_PACKET lpheader = (LPHEADER_WRITE_PACKET)pure_data;
 
-	int size = map_size_per_inst[lpheader->ins];
+	int size = max_res_size;
 	if (size == 0){
 		size = 0xf0;
 	}
@@ -201,12 +201,15 @@ int do_normal_process(char inst, char p1, short p2, const void * data, int data_
 
 		//memcpy(precvbuff->buffer, &buff[1], recv_size - 3);
 	}
+	map<int, int> map_size_per_inst = get_map_size();
+	int max_res_size = map_size_per_inst[inst];
+
 	LPWRITE_PACKET lp_write_packet = make_write_packet(inst, p1, p2, data, data_size, &packet_size);
-	VAR_BYTES *psend_buff = _pconvert_data(lp_write_packet, packet_size);
+	VAR_BYTES *psend_buff = _pconvert_data(lp_write_packet, packet_size, max_res_size);
 	view_hexstr("pure packet", lp_write_packet, packet_size);
 	free(lp_write_packet);
 	unsigned char buff[255] = { 0, };
-	int recv_size = 255;
+	int recv_size = max_res_size;
 	printf("_psend: 0x%x\n", _psend);
 
 	_psend((unsigned char *)psend_buff->buffer, psend_buff->size, buff, &recv_size, _etcparam);
