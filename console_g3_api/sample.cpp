@@ -50,7 +50,7 @@ void get_functions_ieb100cdc(LPSAMPLE_FUNCTIONS lpsamplefunction)
 
 //INTER_PARAMS _inter_params = { 0, };
 
-void SwapBytes(void* value, int size)
+void swap_bytes(void* value, int size)
 {
 	unsigned char * pvalue = (unsigned char *)value;
 	unsigned char * pnewvalue = (unsigned char *)malloc(size);
@@ -62,7 +62,7 @@ void SwapBytes(void* value, int size)
 	free(pnewvalue);
 
 }
-VAR_BYTES* alloc_var_bytes(int size)
+VAR_BYTES* alloc_var_bytes_i2c(int size)
 {
 	VAR_BYTES*ret = (VAR_BYTES*)malloc(8 + size);
 	ret->allocsize = size;
@@ -84,7 +84,7 @@ LPWRITE_IEB100_PACKET make_write_ieb100_packet(char rom_inst, char res_size, con
 	lp_write_packet->header.body_size_big_end = body_size_big_end;
 	//	lp_write_packet->header.rom_type = rom_type;
 
-	SwapBytes(&lp_write_packet->header.body_size_big_end, 4);
+	swap_bytes(&lp_write_packet->header.body_size_big_end, 4);
 	lp_write_packet->header.res_size = res_size;
 
 	if (data_size > 0) memcpy(lp_write_packet->data, data, data_size);

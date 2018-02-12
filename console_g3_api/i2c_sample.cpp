@@ -9,11 +9,22 @@
 #include <wiringPiI2C.h>
 #include <stdlib.h>
 #include <memory.h>
+#include "g3_api.h"
 #include "sample_def.h"
 
 #define GPIO_WAKE_UP_PIN 4
 
 int _file_i2c = 0;
+int init_sample_i2c(void *param);
+void wake_up_and_convert_mode_i2c();
+void end_sample_i2c();
+
+SAMPLE_FUNCTIONS  _samplefunction_i2c = {
+	init_sample_i2c,
+	wake_up_and_convert_mode_i2c,
+	end_sample_i2c
+
+};
 
 void wake_up(int pin_num,int f_sleep_time,int s_sleep_time){
 
@@ -96,13 +107,6 @@ extern "C" int send_n_recv_4_i2c(const unsigned char*snd, int snd_size, unsigned
 }
 
 
-SAMPLE_FUNCTIONS  _samplefunction_i2c = {
-	init_sample_i2c,
-	wake_up_and_convert_mode_i2c,
-	end_sample_i2c
-
-};
-
 void get_functions_i2c(LPSAMPLE_FUNCTIONS lpsamplefunction)
 {
 	*lpsamplefunction = _samplefunction_i2c;
@@ -116,7 +120,7 @@ int init_sample_i2c(void *param)
 	wiringPiSetupGpio(); // Initializes wiringPi using the Broadcom GPIO pin numbers
 	
 	_file_i2c = wiringPiI2CSetup (100);
-	g3api_set_user_send_recv_pf(send_n_recv, &file_i2c);
+	g3api_set_user_send_recv_pf(send_n_recv_4_i2c, &_file_i2c);
 	
 	
 
