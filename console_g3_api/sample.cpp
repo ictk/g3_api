@@ -5,12 +5,6 @@
 #include "g3_api.h"
 
 
-
-void init(){
-
-}
-
-
 #pragma pack(push, 1)   
 typedef struct _tagHEADER_WRITE_IEB100_PACKET{
 	unsigned char  rom_inst;
@@ -34,6 +28,15 @@ typedef struct _tagINTER_PARAMS{
 }INTER_PARAMS, *LPINTER_PARAMS;
 INTER_PARAMS _inter_params = { 0, };
 
+
+typedef struct _tagSAMPLE_FUNCTIONS{
+
+
+	
+
+}SAMPLE_FUNCTIONS, *LPSAMPLE_FUNCTIONS;
+
+//INTER_PARAMS _inter_params = { 0, };
 
 void SwapBytes(void* value, int size)
 {
