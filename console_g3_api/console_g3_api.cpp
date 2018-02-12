@@ -30,12 +30,20 @@ using namespace  neocolib;
 
 
 void test_load();
-#pragma pack(push, 1)   
+void get_functions_ieb100cdc(LPSAMPLE_FUNCTIONS lpsamplefunction);
+void get_functions_i2c(LPSAMPLE_FUNCTIONS lpsamplefunction);
+
+#ifdef __USE_CDC__
+#define GET_FUCNTION get_functions_ieb100cdc
+#else
+#define GET_FUCNTION get_functions_i2c
+#endif
+
 
 
 //extern "C" int send_n_recv(const unsigned char*snd, int snd_size, unsigned char*recv, int* recv_size, void*etcparam);
 
-void get_functions_ieb100cdc(LPSAMPLE_FUNCTIONS lpsamplefunction);
+
 
 
 void print_result(const char * title,int ret)
@@ -90,7 +98,7 @@ int main(int argc, char* argv[])
 	
 	
 	SAMPLE_FUNCTIONS samplefunction;
-	get_functions_ieb100cdc(&samplefunction);
+	GET_FUCNTION(&samplefunction);
 
 
 	PF_INIT_SAMPLE init_sample = samplefunction.init_sample;
