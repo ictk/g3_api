@@ -30,7 +30,7 @@ int def_send_n_recv(const unsigned char*snd, int snd_size, unsigned char*recv, i
 
 
 PFSENDRECV _psend = def_send_n_recv;
-PF_CONVERT _pconvert_data = convert_data_ieb100;
+//PF_CONVERT _pconvert_data = convert_data_ieb100;
 //PFSENDRECV _precv = NULL;
 void * _etcparam = NULL;
 bool is_use_ieb_100 = true;
@@ -659,18 +659,6 @@ char* g3api_get_sn()
 	return 0;
 }	
 	
-int g3api_setup_core( SETUP_CORE st_setup_fixed)
-{
-	api_view("g3api_setup_core");
-	return 0;
-}	
-	
-int g3api_set_up_keys( SET_UP_UNIT_ARRAY keys_configure)
-{
-	api_view("g3api_set_up_keys");
-	return 0;
-}	
-	
 int g3api_encryption_ecies( int key_index,const unsigned char * data, int data_size, ST_SIGN_ECDSA* rs)
 {
 
@@ -760,8 +748,11 @@ END:
 	
 	
 }	
-
 	//END API
+
+
+
+
 
 
 

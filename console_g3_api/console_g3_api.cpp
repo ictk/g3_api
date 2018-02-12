@@ -26,64 +26,16 @@ using namespace  neocolib;
 //
 //}
 
+
 void test_load();
-
-extern "C" int send_n_recv(const unsigned char*snd, int snd_size, unsigned char*recv, int* recv_size, void*etcparam)
-{
-	CSerialBASE * serreial = (CSerialBASE *)etcparam;
-	printf("send_n_recv\n");
-	if (!serreial) return -1;
-	int sndsize = serreial->Write(snd, snd_size);
-	printf("SND: %s (%d)\n", NCL::BytetoHexStr(snd, snd_size).c_str(), sndsize);
-	unsigned char buff[1024] = { 0, };
-	unsigned char first_byte = 0;
-	int ressize = 0;
-	VECBYTE vec_recv_byte;
-	int time_count = 0;
-	int unit_delay = 100;
-	while (true)
-	{
-		
-		ressize = serreial->Read(&first_byte, 1);
-		if (ressize == 1) break;
-
-		if (time_count * unit_delay > 300){
-			printf("first byte :%d\n", time_count);
-		}
-
-		if (time_count * unit_delay > 1000){
-			printf("TIME OUT!!!!!!!!!!!!");
-			return -1;
-		}
-		NCL::Sleep(unit_delay);
-		
-		time_count++;
-	} 
-	printf("first ressize :%x %d\n", first_byte, ressize);
-	vec_recv_byte.push_back(first_byte);
-
-	while (true){
-		ressize = serreial->Read(buff, sizeof(buff));
-		if (ressize == 0) break;
-		NCL::AppendVector(vec_recv_byte, buff, ressize);
-		NCL::Sleep(10);
-	}
-
-	printf("total ressize :%d\n", vec_recv_byte.size());
-	if (recv && vec_recv_byte.size() <= *recv_size ){
-		memcpy(recv, V2A(vec_recv_byte), vec_recv_byte.size());
-		*recv_size = vec_recv_byte.size();
-
-	}
-	
-	
-	printf("RECV %s \n", NCL::BytetoHexStr(V2A(vec_recv_byte), vec_recv_byte.size()).c_str());
+#pragma pack(push, 1)   
 
 
+extern "C" int send_n_recv(const unsigned char*snd, int snd_size, unsigned char*recv, int* recv_size, void*etcparam);
 
-	return 0;
-}
-
+int init_sample(void *param);
+void wake_up_and_convert_mode();
+void end_sample();
 
 extern "C"  int receiv(unsigned char *buff, int length, void* etc){
 	return 0;
@@ -138,24 +90,29 @@ int main(int argc, char* argv[])
 		return -1;
 	}
 	printf("\nserila port name : (%s) \n",argv[1]);
+
+	if (init_sample(argv[1])){
+		return -1;
+
+	}
+	wake_up_and_convert_mode();
+
 	
+	//return 0;
 
 
-	CSerialBASE * serreial = new CSerialRS232(argv[1]);
 //	g3api_set_etc_param(serreial);
 	ST_SIGN_ECDSA sign;
 	ST_ECC_PUBLIC pubkey;
 	
-	if (!serreial->open()){
-		printf("\nport is not open\n");
-		return -1;
-
-	}
+	VECBYTE vecbyte;
 
 
 	unsigned char recvbuff[1024];
 	
 	int recvbuff_size = 1024;
+#if 0
+	CSerialBASE * serreial = new CSerialRS232(argv[1]);
 	g3api_set_user_send_recv_pf(send_n_recv, serreial);
 
 	//g3api_set_etc_param(serreial);
@@ -175,6 +132,7 @@ int main(int argc, char* argv[])
 	g3api_raw_snd_recv(&vecbyte[0], vecbyte.size(), recvbuff, &recvbuff_size);
 	printf("ret:0x%x recv %s %d \n", ret, NCL::BytetoHexStr(recvbuff, recvbuff_size).c_str(), recvbuff_size);
 	
+#endif
 
 	
 	recvbuff_size = 1024;
@@ -314,7 +272,8 @@ int main(int argc, char* argv[])
 	//int ressize = serreial->Read(buff,1024);
 	//printf("ressize :%d\n", ressize);
 	//
-	serreial->close();
+	end_sample();
+	
 
 	/*string recv = NCL::BytetoHexStr(buff, ressize);
 	printf("%s\n",recv.c_str());

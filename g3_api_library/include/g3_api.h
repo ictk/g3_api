@@ -20,8 +20,6 @@ G3_API const char * g3api_get_lib_version();
 G3_API void g3api_set_user_send_recv_pf( PFSENDRECV psendrecv, void * etcparam);
 G3_API int g3api_get_device_version();
 G3_API char* g3api_get_sn();
-G3_API int g3api_setup_core( SETUP_CORE st_setup_fixed);
-G3_API int g3api_set_up_keys( SET_UP_UNIT_ARRAY keys_configure);
 G3_API int g3api_raw_snd_recv(const unsigned char * snd , int snd_size, unsigned char * recv, int* recv_size);
 G3_API int g3api_write_key_value(const int key_index, AREA_TYPE area_type, RW_TYPE rw_type,const unsigned char * key_value, int key_value_size);
 G3_API int g3api_read_key_value(const int key_index, AREA_TYPE area_type, RW_TYPE rw_type, unsigned char * key_value, int* key_value_size);
@@ -55,99 +53,14 @@ G3_API int g3api_test8( PFSENDRECV pfsend,const unsigned char * in, int in_size)
 
 
 
+
+
+
+
 G3_API int GetSoftwareVersion(
 	char* LCP_Version,
 	char* FCP_Version
 	);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
