@@ -9,6 +9,7 @@
 #include <wiringPiI2C.h>
 #include <stdlib.h>
 #include <memory.h>
+#include "sample_def.h"
 
 #define GPIO_WAKE_UP_PIN 4
 
@@ -95,7 +96,21 @@ extern "C" int send_n_recv_4_i2c(const unsigned char*snd, int snd_size, unsigned
 }
 
 
-int init_sample(void *param)
+SAMPLE_FUNCTIONS  _samplefunction_i2c = {
+	init_sample_i2c,
+	wake_up_and_convert_mode_i2c,
+	end_sample_i2c
+
+};
+
+void get_functions_i2c(LPSAMPLE_FUNCTIONS lpsamplefunction)
+{
+	*lpsamplefunction = _samplefunction_i2c;
+
+}
+
+
+int init_sample_i2c(void *param)
 {
 	wiringPiSetup(); // Initializes wiringPi using wiringPi's simlified number system.
 	wiringPiSetupGpio(); // Initializes wiringPi using the Broadcom GPIO pin numbers
@@ -110,12 +125,12 @@ int init_sample(void *param)
 
 
 }
-void end_sample()
+void end_sample_i2c()
 {
 	
 }
 
-void wake_up_and_convert_mode()
+void wake_up_and_convert_mode_i2c()
 {
 	
 	wake_up(GPIO_WAKE_UP_PIN,1,10);	

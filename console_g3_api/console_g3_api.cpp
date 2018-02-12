@@ -9,6 +9,8 @@
 #include "neoCoLib.h"
 #include "neoDebug.h"
 #include "g3_api.h"
+#include "sample_def.h"
+
 //#include<windows.h>
 
 
@@ -31,15 +33,10 @@ void test_load();
 #pragma pack(push, 1)   
 
 
-extern "C" int send_n_recv(const unsigned char*snd, int snd_size, unsigned char*recv, int* recv_size, void*etcparam);
+//extern "C" int send_n_recv(const unsigned char*snd, int snd_size, unsigned char*recv, int* recv_size, void*etcparam);
 
-int init_sample(void *param);
-void wake_up_and_convert_mode();
-void end_sample();
+void get_functions_ieb100cdc(LPSAMPLE_FUNCTIONS lpsamplefunction);
 
-extern "C"  int receiv(unsigned char *buff, int length, void* etc){
-	return 0;
-}
 
 void print_result(const char * title,int ret)
 {
@@ -90,6 +87,17 @@ int main(int argc, char* argv[])
 		return -1;
 	}
 	printf("\nserila port name : (%s) \n",argv[1]);
+	
+	
+	SAMPLE_FUNCTIONS samplefunction;
+	get_functions_ieb100cdc(&samplefunction);
+
+
+	PF_INIT_SAMPLE init_sample = samplefunction.init_sample;
+	PF_WAKE_UP_AND_CONVERT_MODE wake_up_and_convert_mode = samplefunction.wake_up_and_convert_mode;
+	PF_END_SAMPLE end_sample = samplefunction.end_sample;
+
+
 
 	if (init_sample(argv[1])){
 		return -1;

@@ -3,7 +3,7 @@
 #include "neoCoLib.h"
 #include "neoDebug.h"
 #include "g3_api.h"
-
+#include "sample_def.h"
 
 #pragma pack(push, 1)   
 typedef struct _tagHEADER_WRITE_IEB100_PACKET{
@@ -29,12 +29,24 @@ typedef struct _tagINTER_PARAMS{
 INTER_PARAMS _inter_params = { 0, };
 
 
-typedef struct _tagSAMPLE_FUNCTIONS{
+int init_sample_ieb100cdc(void *param);
+void wake_up_and_convert_mode_ieb100cdc();
+void end_sample_ieb100cdc();
 
 
-	
+SAMPLE_FUNCTIONS  _samplefunction= {
+	init_sample_ieb100cdc,
+	wake_up_and_convert_mode_ieb100cdc,
+	end_sample_ieb100cdc
 
-}SAMPLE_FUNCTIONS, *LPSAMPLE_FUNCTIONS;
+};
+
+void get_functions_ieb100cdc(LPSAMPLE_FUNCTIONS lpsamplefunction)
+{
+	*lpsamplefunction = _samplefunction;
+
+}
+
 
 //INTER_PARAMS _inter_params = { 0, };
 
@@ -159,7 +171,7 @@ extern "C" int send_n_recv(const unsigned char*snd, int snd_size, unsigned char*
 }
 
 
-int init_sample(void *param)
+int init_sample_ieb100cdc(void *param)
 {
 	char *str_param = (char *)param;
 	CSerialBASE * serreial = new CSerialRS232(str_param);
@@ -176,12 +188,12 @@ int init_sample(void *param)
 
 
 }
-void end_sample()
+void end_sample_ieb100cdc()
 {
 	_inter_params.pserreial->close();
 }
 
-void wake_up_and_convert_mode()
+void wake_up_and_convert_mode_ieb100cdc()
 {
 	unsigned char wake_buff[] = { 0xFF, 0x00, 0x00, 0x00, 0x00, 0x00, };
 	unsigned char convert_inst[] = { 0xFE, 0x00, 0x00, 0x00, 0x00, 0x00, };
