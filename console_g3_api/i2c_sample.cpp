@@ -10,10 +10,12 @@
 #include <stdlib.h>
 #include <memory.h>
 
+#define GPIO_WAKE_UP_PIN 4
+
+int _file_i2c = 0;
 
 void wake_up(int pin_num,int f_sleep_time,int s_sleep_time){
-	wiringPiSetup(); // Initializes wiringPi using wiringPi's simlified number system.
-	wiringPiSetupGpio(); // Initializes wiringPi using the Broadcom GPIO pin numbers
+
 	pinMode(pin_num, OUTPUT);
 	printf("%d %d \n",f_sleep_time,s_sleep_time);
 	int st = millis();
@@ -90,4 +92,36 @@ extern "C" int send_n_recv_4_i2c(const unsigned char*snd, int snd_size, unsigned
 	return 0;
 	
 	
+}
+
+
+int init_sample(void *param)
+{
+	wiringPiSetup(); // Initializes wiringPi using wiringPi's simlified number system.
+	wiringPiSetupGpio(); // Initializes wiringPi using the Broadcom GPIO pin numbers
+	
+	_file_i2c = wiringPiI2CSetup (100);
+	g3api_set_user_send_recv_pf(send_n_recv, &file_i2c);
+	
+	
+
+
+	return 0;
+
+
+}
+void end_sample()
+{
+	
+}
+
+void wake_up_and_convert_mode()
+{
+	
+	wake_up(GPIO_WAKE_UP_PIN,1,10);	
+	
+	ictk_convert_to_inst_mode(_file_i2c);
+	
+	
+
 }
