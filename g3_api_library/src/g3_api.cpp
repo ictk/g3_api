@@ -142,8 +142,11 @@ int g3api_get_chellange(int chall_size, unsigned char * challenge, int* res_chal
 	api_view("g3api_get_chellange");
 	VAR_BYTES *precvbuff = NULL;
 	if (!res_chall_size) return ERR_RECV_ALLOC_ERROR;
+	//if (res_chall_size) *res_chall_size =0;
+
 	int nret = do_normal_process(GET_CHAL, chall_size, 0, NULL, 0, &precvbuff);
 	if (nret < 0) {
+		*res_chall_size = 0;
 		goto END;;
 	}
 	if (!precvbuff){

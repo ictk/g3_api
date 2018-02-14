@@ -88,6 +88,7 @@
   <ItemGroup>
     <ClCompile Include="console_g3_api.cpp" />
     <ClCompile Include="sample.cpp" />
+    <ClCompile Include="sample_util.cpp" />
     <ClCompile Include="stdafx.cpp" />
     <ClCompile Include="test.cpp" />
   </ItemGroup>
