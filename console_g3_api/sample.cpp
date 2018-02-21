@@ -5,6 +5,14 @@
 #include "g3_api.h"
 #include "sample_def.h"
 
+
+VAR_BYTES* alloc_var_bytes_i2c(int size);
+void print_result(const char * title, int ret);
+void print_value(const char * title, const  void *buff, int size);
+void swap_bytes(void* value, int size);
+
+
+
 #pragma pack(push, 1)   
 typedef struct _tagHEADER_WRITE_IEB100_PACKET{
 	unsigned char  rom_inst;
@@ -50,26 +58,6 @@ void get_functions_ieb100cdc(LPSAMPLE_FUNCTIONS lpsamplefunction)
 
 //INTER_PARAMS _inter_params = { 0, };
 
-void swap_bytes(void* value, int size)
-{
-	unsigned char * pvalue = (unsigned char *)value;
-	unsigned char * pnewvalue = (unsigned char *)malloc(size);
-
-	for (int i = 0; i < size; i++){
-		*(pnewvalue + size - 1 - i) = *(pvalue + i);
-	}
-	memcpy(value, pnewvalue, size);
-	free(pnewvalue);
-
-}
-VAR_BYTES* alloc_var_bytes_i2c(int size)
-{
-	VAR_BYTES*ret = (VAR_BYTES*)malloc(8 + size);
-	ret->allocsize = size;
-	ret->size = size;
-	memset(ret->buffer, 0, size);
-	return ret;
-}
 
 LPWRITE_IEB100_PACKET make_write_ieb100_packet(char rom_inst, char res_size, const void * data, int data_size, int *packet_size){
 
@@ -199,21 +187,14 @@ void wake_up_and_convert_mode_ieb100cdc()
 	unsigned char convert_inst[] = { 0xFE, 0x00, 0x00, 0x00, 0x00, 0x00, };
 	
 	unsigned char recvbuff[256];
-	//g3api_set_etc_param(serreial);
-	VECBYTE vecbyte = NCL::HexStr2Byte("FE0000000000");
-
-
 	int recvbuff_size;
 
-
-	vecbyte = NCL::HexStr2Byte("FF0000000000");
 	recvbuff_size = 1024;
-	int ret = g3api_raw_snd_recv(&vecbyte[0], vecbyte.size(), recvbuff, &recvbuff_size);
+	int ret = g3api_raw_snd_recv(wake_buff, sizeof(wake_buff), recvbuff, &recvbuff_size);
 	printf("ret:0x%x recv %s %d \n", ret, NCL::BytetoHexStr(recvbuff, recvbuff_size).c_str(), recvbuff_size);
-
-	vecbyte = NCL::HexStr2Byte("FE0000000000");
+	return;
 	recvbuff_size = 1024;
-	g3api_raw_snd_recv(&vecbyte[0], vecbyte.size(), recvbuff, &recvbuff_size);
+	g3api_raw_snd_recv(convert_inst, sizeof(convert_inst), recvbuff, &recvbuff_size);
 	printf("ret:0x%x recv %s %d \n", ret, NCL::BytetoHexStr(recvbuff, recvbuff_size).c_str(), recvbuff_size);
 	_inter_params.mode = 1;
 

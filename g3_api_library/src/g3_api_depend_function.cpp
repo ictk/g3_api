@@ -216,6 +216,7 @@ int do_normal_process(char inst, char p1, short p2, const void * data, int data_
 	printf("_psend: 0x%x\n", _psend);
 
 	_psend((unsigned char *)lp_write_packet, packet_size, buff, &recv_size, _etcparam);
+	view_hexstr("recv data", buff, recv_size);
 
 	recv_size = buff[0];
 

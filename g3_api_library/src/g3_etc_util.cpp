@@ -86,8 +86,6 @@ unsigned long calcCRCByTable(unsigned char* data, int iLength, const unsigned sh
 	unsigned long new_crc = 0;
 	unsigned char lobyte = 0xff & crc;
 	unsigned char hibyte = (0xff & (crc >> 8));
-	printf("%x %x\n", lobyte, hibyte);
-	printf("%x %x\n",bit_reverse_table256[lobyte] , bit_reverse_table256[hibyte]);
 
 	new_crc = (bit_reverse_table256[lobyte] << 8) | (bit_reverse_table256[hibyte]);
 
