@@ -233,6 +233,7 @@ enum ISSUE_CERT_AREA_TYPE
 
 
 
+
 //START STRUCTURE
 
 typedef struct _tagVAR_BYTES{
@@ -302,6 +303,7 @@ typedef struct _tagST_IV{
 	unsigned char iv[16];;
 }ST_IV, *LPST_IV;
 //END STRUCTURE
+
 
 
 

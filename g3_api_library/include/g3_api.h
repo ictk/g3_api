@@ -57,6 +57,7 @@ G3_API int g3api_test8( PFSENDRECV pfsend,const unsigned char * in, int in_size)
 
 
 
+
 G3_API int GetSoftwareVersion(
 	char* LCP_Version,
 	char* FCP_Version

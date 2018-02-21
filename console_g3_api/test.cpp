@@ -1,7 +1,27 @@
 #include<windows.h>
 #include<stdio.h>
+#include <openssl/hmac.h>
+
 typedef int(*PFSENDRECV) (const unsigned char*, int, unsigned char*, int*, void*etcparam);
 extern "C" int send_n_recv(const unsigned char*snd, int snd_size, unsigned char*recv, int* recv_size, void*etcparam);
+void print_value(const char * title, void *buff, int size);
+#define byte unsigned char
+#define word32 unsigned long
+
+#define MAX_PRF_LABSEED 128 /* Maximum label + seed len */
+#define XMEMCPY memcpy
+
+#define BUFFER_E -132
+#define WC_SHA256 2
+#define P_HASH_MAX_SIZE  32
+#define WC_SHA256_DIGEST_SIZE P_HASH_MAX_SIZE
+#define XMALLOC malloc
+#define XFREE free
+#ifndef min
+#define min(a,b)            (((a) < (b)) ? (a) : (b))
+#endif
+
+
 
 void test_load()
 {
@@ -31,3 +51,183 @@ int test_byload(){
 
 	return 0;
 }
+void test_hmac()
+{
+	unsigned char key[] = {0x09, 0xA8, 0xD1, 0xAB, 0xDE, 0x2C, 0xCA, 0xC2, 0x1C, 0x3D, 0x82, 0xB4, 0xD3, 0x84, 0xBA, 0x45, };
+	unsigned char msg[] = { 0x52, 0xAD, 0x1D, 0x1D, 0x34, 0xC3, 0xCD, 0x12, 0x90, 0x60, 0x9F, 0x2A, 0x51, 0xC7, 0x01, 0x8A, 0x27, 0xF9, 0xDC, 0xEC, 0x22, 0xE1, 0x27, 0x48, 0x31, 0xE5, 0x64, 0xF8, 0x8B, 0x95, 0x40, 0xED, };
+	unsigned char calc_crc[] = { 0x66, 0x15, 0x38, 0xFC, 0xCE, 0xEB, 0x60, 0x3E, 0x28, 0x40, 0x86, 0x9A, 0xF5, 0xBF, 0x63, 0x91, 0x62, 0x98, 0x50, 0x64, 0x22, 0x2F, 0xF0, 0x8B, 0x5E, 0x2A, 0xA3, 0x60, 0x6A, 0xD4, 0xF5, 0xD0, };
+	
+	unsigned char outbuff[128];
+	unsigned int outlen = 128;
+	HMAC(EVP_sha256(),
+		key, sizeof(key),
+		msg, sizeof(msg),
+		outbuff, &outlen);
+
+#if 0
+	HMAC_CTX ctx;
+	const EVP_MD  *md = EVP_sha256();
+
+	HMAC_CTX_init(&ctx);
+
+	HMAC_Init(&ctx, key, sizeof(key), md);
+	HMAC_Update(&ctx, msg, sizeof(msg));
+	unsigned char outbuff[128];
+	unsigned int outlen = 128;
+	HMAC_Final(&ctx, outbuff, &outlen);
+
+	HMAC_CTX_cleanup(&ctx);
+	HMAC_cleanup(&ctx);
+
+#endif // 0
+
+}
+int PRF(byte* digest, word32 digLen, const byte* secret, word32 secLen,
+	const byte* label, word32 labLen, const byte* seed, word32 seedLen);
+void test_prf()
+{
+	unsigned char secret[] = { 0xA8, 0x9C, 0x8F, 0xDB, 0x82, 0xAD, 0xB2, 0x3F, 0xC6, 0x95, 0xFD, 0x0E, 0x56, 0xBE, 0x5B, 0xA1, 0x9A, 0x74, 0x1C, 0xF6, 0x32, 0x63, 0x05, 0xC6, 0x8C, 0xBF, 0x42, 0xB8, 0xBE, 0xD0, 0xFE, 0xDB, };
+	unsigned char label[] = { 0x6D, 0x61, 0x73, 0x74, 0x65, 0x72, 0x20, 0x73, 0x65, 0x63, 0x72, 0x65, 0x74, };
+	unsigned char seed[] = { 0x1A, 0xD0, 0x64, 0xDD, 0xF5, 0x74, 0xE9, 0xA3, 0xA0, 0x40, 0x61, 0x06, 0xFB, 0x21, 0x6E, 0xD6, 0xF7, 0x8A, 0xAF, 0x37, 0x3D, 0x0F, 0xCE, 0xC7, 0xD7, 0x40, 0xCC, 0x75, 0x6E, 0x75, 0xFD, 0xF0, 0x1C, 0x58, 0xEB, 0x63, 0x57, 0xFC, 0x47, 0xF5, 0xDE, 0x88, 0x65, 0x3D, 0xCF, 0xB3, 0x6E, 0x1B, 0x88, 0x81, 0xC0, 0x96, 0xC2, 0xBB, 0x23, 0x78, 0xF2, 0x65, 0x3C, 0x07, 0x6E, 0x15, 0xB2, 0x9C, };
+	unsigned char result[] = { 0x04, 0x89, 0x26, 0x81, 0x31, 0xBB, 0xF3, 0xF5, 0x48, 0xA6, 0x98, 0x3E, 0x80, 0xAF, 0xC3, 0x23, 0xAA, 0xB5, 0x22, 0x66, 0xD2, 0x32, 0x9E, 0x39, 0xE3, 0xA8, 0x26, 0xEA, 0xFE, 0xF4, 0x60, 0x74, 0x50, 0x79, 0xB7, 0xC6, 0x3B, 0xD0, 0xBF, 0x2A, 0xB8, 0x07, 0xCF, 0x0E, 0xBD, 0x2F, 0xD3, 0x1D, };
+	unsigned char calc_result[48];
+	PRF(calc_result, 48, 
+		secret, sizeof(secret),
+		label, sizeof(label),
+		seed, sizeof(seed)		);
+	print_value("calc_result", calc_result, 48);
+	if (!memcmp(result, calc_result, 48)){
+		printf("same result\n");
+	}
+
+
+}
+
+#if 1
+
+#define CRYPTO_ERROR_T int
+#define uint32_t unsigned int
+
+CRYPTO_ERROR_T LibCrypto_SHA_256_HMAC
+(
+void * pKey, uint32_t nKeyLen,
+void * pData, uint32_t nDataLen,
+void * pOutHmacBuf, uint32_t nBufLen
+){
+	unsigned int outbuff = nBufLen;
+	unsigned char *retaaa = HMAC(EVP_sha256(), 
+		pKey, nKeyLen, 
+		(unsigned char*)pData, nDataLen,
+		(unsigned char*)pOutHmacBuf, &outbuff);
+	if (outbuff != nBufLen) return -1;
+	
+	return 0;
+}
+/* compute p_hash for MD5, SHA-1, SHA-256, or SHA-384 for TLSv1 PRF */
+int p_hash(byte* result, word32 resLen, const byte* secret,
+	word32 secLen, const byte* seed, word32 seedLen)
+{
+	word32 len = P_HASH_MAX_SIZE;
+	word32 times;
+	word32 lastLen;
+	word32 lastTime;
+	word32 i;
+	word32 idx = 0;
+	int    ret = 0;
+	byte* previous = (byte*)XMALLOC(P_HASH_MAX_SIZE);  /* max size */
+	byte* tmpprevious = (byte*)XMALLOC(P_HASH_MAX_SIZE);  /* max size */
+	byte* previous_seed = (byte*)XMALLOC(P_HASH_MAX_SIZE + MAX_PRF_LABSEED);  /* max size */
+	byte* current = (byte*) XMALLOC(P_HASH_MAX_SIZE);   /* max size */
+
+	unsigned int tmpprevious_size = P_HASH_MAX_SIZE;
+	unsigned int previous_size = P_HASH_MAX_SIZE;
+	unsigned int current_size = P_HASH_MAX_SIZE;
+
+	len = WC_SHA256_DIGEST_SIZE;
+
+	times = resLen / len;
+	lastLen = resLen % len;
+
+	if (lastLen)
+		times += 1;
+
+	lastTime = times - 1;
+
+		//unsigned int output_size = P_HASH_MAX_SIZE;
+		//unsigned char *retaaa = HMAC(EVP_sha256(), secret, secLen, seed, seedLen, previous, &previous_size);
+	ret = LibCrypto_SHA_256_HMAC((void*)secret, secLen, (void*)seed, seedLen, previous, P_HASH_MAX_SIZE);
+		
+		if (ret != 0) goto END;
+			//print_hexdumpbin("A1", previous, P_HASH_MAX_SIZE);
+	for (i = 0; i < times; i++) {
+
+		XMEMCPY(previous_seed, previous, previous_size);
+		XMEMCPY(previous_seed + previous_size , seed, seedLen);
+				
+		int intput_length = seedLen + previous_size;
+		current_size = P_HASH_MAX_SIZE;
+		print_value("previous_seed", previous_seed, intput_length);
+		//HMAC(EVP_sha256(), secret, secLen, previous_seed, intput_length, current, &current_size);
+		ret = LibCrypto_SHA_256_HMAC((void*)secret, secLen, (void*)previous_seed, intput_length, current, P_HASH_MAX_SIZE);
+		print_value("current", current, current_size);
+		if (ret != 0) goto END;
+
+		if (ret != 0)
+			break;
+		//print_hexdumpbin("current", current, P_HASH_MAX_SIZE);
+		if ((i == lastTime) && lastLen)
+			XMEMCPY(&result[idx], current,
+			min(lastLen, P_HASH_MAX_SIZE));
+		else {
+			XMEMCPY(&result[idx], current, len);
+			idx += len;
+			//output_size = P_HASH_MAX_SIZE;
+
+			XMEMCPY(tmpprevious, previous, previous_size);
+			tmpprevious_size = previous_size;
+			previous_size = P_HASH_MAX_SIZE;
+			//HMAC(EVP_sha256(), secret, secLen, tmpprevious, tmpprevious_size, previous, &previous_size);
+			ret = LibCrypto_SHA_256_HMAC((void*)secret, secLen,(void*)tmpprevious, tmpprevious_size, previous, P_HASH_MAX_SIZE);
+			if (ret != 0) goto END;
+
+		}
+	}
+
+END:
+	if (previous) XFREE(previous);
+	if (tmpprevious) XFREE(tmpprevious);
+	if (previous_seed) XFREE(previous_seed);
+	if (current) XFREE(current);
+	return ret;
+}
+
+/* Wrapper to call straight thru to p_hash in TSL 1.2 cases to remove stack
+use */
+int PRF(byte* digest, word32 digLen, const byte* secret, word32 secLen,
+	const byte* label, word32 labLen, const byte* seed, word32 seedLen	)
+{
+	int ret = 0;
+
+	
+	
+	byte labelSeed[MAX_PRF_LABSEED]; /* labLen + seedLen is real size */
+
+	if (labLen + seedLen > MAX_PRF_LABSEED)
+		return BUFFER_E;
+
+
+	XMEMCPY(labelSeed, label, labLen);
+	XMEMCPY(labelSeed + labLen, seed, seedLen);
+
+	/* If a cipher suite wants an algorithm better than sha256, it
+	* should use better. */
+		
+	ret = p_hash(digest, digLen, secret, secLen, labelSeed,
+		labLen + seedLen);
+
+
+
+
+	return ret;
+}
+#endif

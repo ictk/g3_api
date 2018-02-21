@@ -28,7 +28,7 @@ using namespace  neocolib;
 //
 //}
 
-
+void test_hmac();
 void test_load();
 void get_functions_ieb100cdc(LPSAMPLE_FUNCTIONS lpsamplefunction);
 void get_functions_i2c(LPSAMPLE_FUNCTIONS lpsamplefunction);
@@ -50,7 +50,8 @@ void print_result(const char * title,int ret)
 {
 	printf("%s ret:0x%x \n", title, ret);
 }
-void print_value(const char * title, void *buff,int size){
+void print_value(const char * title, void *buff,int size)
+{
 	printf("%s %s %d \n", title, NCL::BytetoHexStr(buff, size).c_str(), size);
 }
 #if 0
@@ -78,12 +79,13 @@ int test_byload(){
 	return 0;
 }
 #endif
-
+void test_prf();
 int main(int argc, char* argv[])
 {
 	int ret = 0;
+	test_prf();
 	//test_load();
-	//return 0;
+	return 0;
 	//return test_byload();
 	
 	
