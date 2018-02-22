@@ -84,8 +84,10 @@ int main(int argc, char* argv[])
 {
 	int ret = 0;
 	//test_load();
+#ifdef WIN32
 	test_prf();
 	return 0;
+#endif
 	//return test_byload();
 	
 	
