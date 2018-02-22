@@ -115,7 +115,7 @@ int main(int argc, char* argv[])
 	wake_up_and_convert_mode();
 
 	
-	return 0;
+	//return 0;
 
 
 //	g3api_set_etc_param(serreial);
@@ -129,7 +129,7 @@ int main(int argc, char* argv[])
 	
 	int recvbuff_size = 1024;
 
-	for (int i = 0; i < 1; i++){
+	for (int i = 0; i < 100; i++){
 		recvbuff_size = 1024;
 		memset(recvbuff,0x00,1024);
 

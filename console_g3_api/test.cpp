@@ -5,8 +5,8 @@
 typedef int(*PFSENDRECV) (const unsigned char*, int, unsigned char*, int*, void*etcparam);
 extern "C" int send_n_recv(const unsigned char*snd, int snd_size, unsigned char*recv, int* recv_size, void*etcparam);
 void print_value(const char * title, void *buff, int size);
-#define byte unsigned char
-#define word32 unsigned long
+#define uint8_t unsigned char
+#define uint32_t unsigned long
 
 #define MAX_PRF_LABSEED 128 /* Maximum label + seed len */
 #define XMEMCPY memcpy
@@ -82,8 +82,8 @@ void test_hmac()
 #endif // 0
 
 }
-int PRF(byte* digest, word32 digLen, const byte* secret, word32 secLen,
-	const byte* label, word32 labLen, const byte* seed, word32 seedLen);
+int PRF(uint8_t* digest, uint32_t digLen, const uint8_t* secret, uint32_t secLen,
+	const uint8_t* label, uint32_t labLen, const uint8_t* seed, uint32_t seedLen);
 void test_prf()
 {
 	unsigned char secret[] = { 0xA8, 0x9C, 0x8F, 0xDB, 0x82, 0xAD, 0xB2, 0x3F, 0xC6, 0x95, 0xFD, 0x0E, 0x56, 0xBE, 0x5B, 0xA1, 0x9A, 0x74, 0x1C, 0xF6, 0x32, 0x63, 0x05, 0xC6, 0x8C, 0xBF, 0x42, 0xB8, 0xBE, 0xD0, 0xFE, 0xDB, };
@@ -123,21 +123,22 @@ void * pOutHmacBuf, uint32_t nBufLen
 	
 	return 0;
 }
+
 /* compute p_hash for MD5, SHA-1, SHA-256, or SHA-384 for TLSv1 PRF */
-int p_hash(byte* result, word32 resLen, const byte* secret,
-	word32 secLen, const byte* seed, word32 seedLen)
+int p_hash(uint8_t* result, uint32_t resLen, const uint8_t* secret,
+	uint32_t secLen, const uint8_t* seed, uint32_t seedLen)
 {
-	word32 len = P_HASH_MAX_SIZE;
-	word32 times;
-	word32 lastLen;
-	word32 lastTime;
-	word32 i;
-	word32 idx = 0;
+	uint32_t len = P_HASH_MAX_SIZE;
+	uint32_t times;
+	uint32_t lastLen;
+	uint32_t lastTime;
+	uint32_t i;
+	uint32_t idx = 0;
 	int    ret = 0;
-	byte* previous = (byte*)XMALLOC(P_HASH_MAX_SIZE);  /* max size */
-	byte* tmpprevious = (byte*)XMALLOC(P_HASH_MAX_SIZE);  /* max size */
-	byte* previous_seed = (byte*)XMALLOC(P_HASH_MAX_SIZE + MAX_PRF_LABSEED);  /* max size */
-	byte* current = (byte*) XMALLOC(P_HASH_MAX_SIZE);   /* max size */
+	uint8_t* previous = (uint8_t*)XMALLOC(P_HASH_MAX_SIZE);  /* max size */
+	uint8_t* tmpprevious = (uint8_t*)XMALLOC(P_HASH_MAX_SIZE);  /* max size */
+	uint8_t* previous_seed = (uint8_t*)XMALLOC(P_HASH_MAX_SIZE + MAX_PRF_LABSEED);  /* max size */
+	uint8_t* current = (uint8_t*) XMALLOC(P_HASH_MAX_SIZE);   /* max size */
 
 	unsigned int tmpprevious_size = P_HASH_MAX_SIZE;
 	unsigned int previous_size = P_HASH_MAX_SIZE;
@@ -203,14 +204,14 @@ END:
 
 /* Wrapper to call straight thru to p_hash in TSL 1.2 cases to remove stack
 use */
-int PRF(byte* digest, word32 digLen, const byte* secret, word32 secLen,
-	const byte* label, word32 labLen, const byte* seed, word32 seedLen	)
+int PRF(uint8_t* digest, uint32_t digLen, const uint8_t* secret, uint32_t secLen,
+	const uint8_t* label, uint32_t labLen, const uint8_t* seed, uint32_t seedLen	)
 {
 	int ret = 0;
 
 	
 	
-	byte labelSeed[MAX_PRF_LABSEED]; /* labLen + seedLen is real size */
+	uint8_t labelSeed[MAX_PRF_LABSEED]; /* labLen + seedLen is real size */
 
 	if (labLen + seedLen > MAX_PRF_LABSEED)
 		return BUFFER_E;
