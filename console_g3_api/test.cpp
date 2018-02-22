@@ -4,7 +4,7 @@
 
 typedef int(*PFSENDRECV) (const unsigned char*, int, unsigned char*, int*, void*etcparam);
 extern "C" int send_n_recv(const unsigned char*snd, int snd_size, unsigned char*recv, int* recv_size, void*etcparam);
-void print_value(const char * title, void *buff, int size);
+void print_value(const char * title, const void *buff, int size);
 #define byte unsigned char
 #define word32 unsigned long
 

@@ -10,6 +10,7 @@ void print_result(const char * title,int ret)
 {
 	printf("\n%s ret:0x%x \n", title, ret);
 }
+
 void print_value(const char * title, const void *buff,int size)
 {
 	printf("\n%s %s %d \n", title, NCL::BytetoHexStr(buff, size).c_str(), size);
