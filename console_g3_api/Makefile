@@ -39,8 +39,7 @@ OBJDIR_RELEASE = $(OBJDIR)
 DEP_RELEASE = 
 OUT_RELEASE = $(OUTDIR)/console_g3_api
 
-OBJ_RELEASE = $(OBJDIR_RELEASE)/sample.o \
-				$(OBJDIR_RELEASE)/console_g3_api.o \
+OBJ_RELEASE = 	$(OBJDIR_RELEASE)/console_g3_api.o \
 				$(OBJDIR_RELEASE)/util.o \
 				$(OBJDIR_RELEASE)/scenario_sample.o \
 				$(OBJDIR_RELEASE)/io_sample_i2c.o 
