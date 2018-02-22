@@ -79,12 +79,13 @@ int test_byload(){
 	return 0;
 }
 #endif
-
+void test_prf();
 int main(int argc, char* argv[])
 {
 	int ret = 0;
 	//test_load();
-	//return 0;
+	test_prf();
+	return 0;
 	//return test_byload();
 	
 	

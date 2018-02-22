@@ -35,10 +35,13 @@
     <ClCompile Include="test.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="sample.cpp">
+    <ClCompile Include="sample_util.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="sample_util.cpp">
+    <ClCompile Include="test_api.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="io_sample_cdc.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>
