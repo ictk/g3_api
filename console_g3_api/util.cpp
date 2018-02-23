@@ -15,6 +15,17 @@ void print_value(const char * title, const void *buff,int size)
 {
 	printf("\n%s %s %d \n", title, NCL::BytetoHexStr(buff, size).c_str(), size);
 }
+void print_result_value(const char * title, int ret,const void *buff, int size)
+{
+	printf("\n%s ret:0x%x\n%s %d \n", title, ret,NCL::BytetoHexStr(buff, size).c_str(), size);
+}
+
+void set_buff_from_hexstr(void *pbuff, const char *hexstr)
+{
+	VECBYTE vecbyte = NCL::HexStr2Byte(hexstr);
+	memcpy(pbuff, V2A(vecbyte), vecbyte.size());
+}
+
 
 void swap_bytes(void* value, int size)
 {

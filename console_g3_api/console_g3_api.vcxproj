@@ -88,10 +88,10 @@
   <ItemGroup>
     <ClCompile Include="console_g3_api.cpp" />
     <ClCompile Include="io_sample_cdc.cpp" />
-    <ClCompile Include="sample_util.cpp" />
+    <ClCompile Include="util.cpp" />
     <ClCompile Include="stdafx.cpp" />
     <ClCompile Include="test.cpp" />
-    <ClCompile Include="test_api.cpp" />
+    <ClCompile Include="scenario_sample.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

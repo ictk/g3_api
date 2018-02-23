@@ -193,11 +193,11 @@ int return_from_recv(VAR_BYTES *precvbuff)
 
 }
 
-int do_normal_process(char inst, char p1, short p2, const void * data, int data_size, VAR_BYTES ** recv_buff)
+G3_API_RESULT do_normal_process(char inst, char p1, short p2, const void * data, int data_size, VAR_BYTES ** recv_buff)
 {
 	int packet_size = 0;
 	int packet_ieb100_size = 0;
-	int nRet = 0;
+	G3_API_RESULT nRet = 0;
 	if (recv_buff) {
 		*recv_buff = NULL;
 
@@ -271,9 +271,9 @@ END:
 
 }
 
-int do_normal_process_return_ok(char inst, char p1, short p2, const void * data, int data_size)
+G3_API_RESULT do_normal_process_return_ok(char inst, char p1, short p2, const void * data, int data_size)
 {	
-	int recv_ret = 0;
+	G3_API_RESULT recv_ret = 0;
 	int recv_ret_size = 4;
 	VAR_BYTES *precvbuff = NULL;
 	return do_normal_process(inst, p1, p2, data, data_size, NULL);
@@ -300,7 +300,7 @@ END:
 #endif
 
 }
-int check_sign_struct(SIGN_OPTION sign_option, int structure_size)
+int check_sign_struct(EN_SIGN_OPTION sign_option, int structure_size)
 {
 	switch (sign_option)
 	{
@@ -328,7 +328,7 @@ int check_sign_struct(SIGN_OPTION sign_option, int structure_size)
 	return 0;
 }
 
-int check_vefify_struct(VERIFY_OPTION verify_option, int structure_size)
+int check_vefify_struct(EN_VERIFY_OPTION verify_option, int structure_size)
 {
 	switch (verify_option)
 	{
@@ -361,7 +361,7 @@ int check_vefify_struct(VERIFY_OPTION verify_option, int structure_size)
 }
 
 
-int check_dynamic_auth_struct(DYNAMIC_AUTH verify_etc, int structure_size)
+int check_dynamic_auth_struct(EN_DYNAMIC_AUTH verify_etc, int structure_size)
 {
 	switch (verify_etc)
 	{

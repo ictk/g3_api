@@ -12,13 +12,13 @@ using namespace std;
 //#pragma comment(lib,"libBASE.lib")
 VAR_BYTES * convert_data_ieb100(void *pure_data, int data_size, int max_res_size);
 //int do_normal_process(char inst, char p1, short p2, const void * data, int data_size, void * recv_data, int *real_recv_size);
-int do_normal_process(char inst, char p1, short p2, const void * data, int data_size, VAR_BYTES ** recv_buff);
+G3_API_RESULT do_normal_process(char inst, char p1, short p2, const void * data, int data_size, VAR_BYTES ** recv_buff);
 void SwapBytes(void* value, int size);
 void api_view(const char *title);
-int do_normal_process_return_ok(char inst, char p1, short p2, const void * data, int data_size);
-int check_sign_struct(SIGN_OPTION sign_option, int structure_size);
-int check_vefify_struct(VERIFY_OPTION verify_option, int structure_size);
-int check_dynamic_auth_struct(DYNAMIC_AUTH verify_etc, int structure_size);
+G3_API_RESULT do_normal_process_return_ok(char inst, char p1, short p2, const void * data, int data_size);
+int check_sign_struct(EN_SIGN_OPTION sign_option, int structure_size);
+int check_vefify_struct(EN_VERIFY_OPTION verify_option, int structure_size);
+int check_dynamic_auth_struct(EN_DYNAMIC_AUTH verify_etc, int structure_size);
 int return_from_recv(VAR_BYTES *precvbuff);
 bool append_var_bytes(VAR_BYTES**dist, const void*buffer, int size);
 void view_hexstr(const char *title, void *pbuff, int size);
@@ -77,7 +77,7 @@ int send_receiv_packet(LPWRITE_PACKET write_packet,int delay){
 
 
 
-int g3api_raw_snd_recv(const unsigned char * snd, int snd_size, unsigned char * recv, int* recv_size){
+G3_API_RESULT g3api_raw_snd_recv(const unsigned char * snd, int snd_size, unsigned char * recv, int* recv_size){
 	int ret = _psend(snd, snd_size, recv, recv_size, _etcparam);
 	return ret;
 }
@@ -98,15 +98,17 @@ void g3api_free_var_bytes(const VAR_BYTES* var_bytes){
 	free((void*)var_bytes);
 }
 
-int g3api_read_key_value(const int key_index, AREA_TYPE area_type, RW_TYPE rw_type, unsigned char * key_value, int* key_value_size){
+G3_API_RESULT g3api_read_key_value(const int key_index, EN_AREA_TYPE area_type, EN_RW_INST_OPTION rw_type, ST_KEY_VALUE* key_value, ST_IV* iv, ST_MAC* mac){
+
+
 	api_view("g3api_read_key_value");
 
 
 	VAR_BYTES *precvbuff = NULL;
 
-	if (*key_value_size < KEY_VALUE_SIZE){
-		return ERR_KEY_BUFF_SIZE;
-	}
+	//if (*key_value_size < KEY_VALUE_SIZE){
+	//	return ERR_KEY_BUFF_SIZE;
+	//}
 
 	int ret = do_normal_process(READ, key_index, MAKEWORD(area_type, rw_type), NULL, 0, &precvbuff);
 	if (ret < 0) return ret;
@@ -119,20 +121,23 @@ int g3api_read_key_value(const int key_index, AREA_TYPE area_type, RW_TYPE rw_ty
 		goto END;
 	}
 	memcpy(key_value, precvbuff->buffer, precvbuff->size);
-	*key_value_size = precvbuff->size;
+	//*key_value_size = precvbuff->size;
 
 END:
 	if (precvbuff) free(precvbuff);
 	return ret;
 }
-int g3api_write_key_value(const int key_index, AREA_TYPE area_type, RW_TYPE rw_type, const unsigned char * key_value, int key_value_size){
+
+G3_API_RESULT g3api_write_key_value(const int key_index, EN_AREA_TYPE area_type, EN_RW_INST_OPTION rw_type, const ST_KEY_VALUE* key_value, const ST_IV* iv, const ST_MAC* mac)
+//int g3api_write_key_value(const int key_index, AREA_TYPE area_type, EN_RW_INST_OPTION rw_type, const unsigned char * key_value, int key_value_size)
+{
 	api_view("g3api_write_key_value");
-	if (KEY_VALUE_SIZE > key_value_size){
-		return ERR_KEY_BUFF_SIZE;
-	}
+	//if (KEY_VALUE_SIZE > key_value_size){
+	//	return ERR_KEY_BUFF_SIZE;
+	//}
 
 
-	return do_normal_process_return_ok(WRITE, key_index, MAKEWORD(area_type, rw_type), key_value, key_value_size);
+	return do_normal_process_return_ok(WRITE, key_index, MAKEWORD(area_type, rw_type), key_value, sizeof(ST_KEY_VALUE));
 
 }
 
@@ -195,17 +200,18 @@ int g3api_init_puf(const int key_index, unsigned int initial){
 	int nret = do_normal_process_return_ok(INIT_PRIV_KEY, key_index, 0, &initial, 4);
 	return nret;
 }
-
-int g3api_sign(const int key_index, SIGN_OPTION ecdsa_option, const unsigned char * msg, int msg_size, void * sign_structure, int structure_size){
+G3_API_RESULT g3api_sign(const int key_index, EN_SIGN_OPTION sign_option, const unsigned char * msg, int msg_size, void * sign_structure, int structure_size)
+//int g3api_sign(const int key_index, SIGN_OPTION ecdsa_option, const unsigned char * msg, int msg_size, void * sign_structure, int structure_size)
+{
 	api_view("g3api_sign");
 
-	int nret = check_sign_struct(ecdsa_option, structure_size);
+	int nret = check_sign_struct(sign_option, structure_size);
 	if (nret<0) return nret;
 
 	
 	//int recv_size = structure_size;
 	VAR_BYTES *precvbuff = NULL;
-	nret = do_normal_process(SIGN, key_index, ecdsa_option, msg, msg_size, &precvbuff);
+	nret = do_normal_process(SIGN, key_index, sign_option, msg, msg_size, &precvbuff);
 
 	if (nret < 0) {
 		goto END;;
@@ -236,7 +242,8 @@ END:
 
 	return nret;
 }
-int g3api_verify(const int key_index, VERIFY_OPTION verify_option, const unsigned char * msg, int msg_size, const void * sign_structure, int structure_size)
+G3_API_RESULT g3api_verify(const int key_index, EN_VERIFY_OPTION verify_option, const unsigned char * msg, int msg_size, const void * sign_structure, int structure_size)
+//int g3api_verify(const int key_index, VERIFY_OPTION verify_option, const unsigned char * msg, int msg_size, const void * sign_structure, int structure_size)
 {
 	api_view("g3api_verify");
 	int nret = check_vefify_struct(verify_option, structure_size);
@@ -257,8 +264,8 @@ int g3api_verify(const int key_index, VERIFY_OPTION verify_option, const unsigne
 	return nret;
 }
 
-
-int g3api_dynamic_auth(int key_index, DYNAMIC_AUTH dauth_option, int pos_pub_dynamic, const unsigned char * msg, int msg_size, const void * sign_structure, int structure_size)
+G3_API_RESULT g3api_dynamic_auth(int key_index, EN_DYNAMIC_AUTH dauth_option, int pos_pub_dynamic, const unsigned char * msg, int msg_size, const void * sign_structure, int structure_size)
+//int g3api_dynamic_auth(int key_index, DYNAMIC_AUTH dauth_option, int pos_pub_dynamic, const unsigned char * msg, int msg_size, const void * sign_structure, int structure_size)
 {
 	api_view("g3api_verify_dynamic");
 	int nret = check_dynamic_auth_struct(dauth_option, structure_size);
@@ -277,8 +284,8 @@ int g3api_dynamic_auth(int key_index, DYNAMIC_AUTH dauth_option, int pos_pub_dyn
 
 
 }
-
-int g3api_encryption(int key_index, BLOCK_MODE block_mode, const unsigned char * data, int data_size, ST_IV * iv, unsigned char * cipher, int *cipher_size)
+G3_API_RESULT g3api_encryption(int key_index, EN_BLOCK_MODE block_mode, const unsigned char * data, int data_size, ST_IV * iv, unsigned char * cipher, int* cipher_size)
+//int g3api_encryption(int key_index, BLOCK_MODE block_mode, const unsigned char * data, int data_size, ST_IV * iv, unsigned char * cipher, int *cipher_size)
 {
 
 	api_view("g3api_encryption");
@@ -299,8 +306,8 @@ END:
 
 
 }
-
-int g3api_decryption(int key_index, BLOCK_MODE block_mode, const ST_IV * iv, unsigned char * cipher, const int cipher_size, unsigned char * data, int *data_size)
+G3_API_RESULT g3api_decryption(int key_index, EN_BLOCK_MODE block_mode, const ST_IV * iv, unsigned char * cipher, const int cipher_size, unsigned char * data, int* data_size)
+//G3_API_RESULT g3api_decryption(int key_index, BLOCK_MODE block_mode, const ST_IV * iv, unsigned char * cipher, const int cipher_size, unsigned char * data, int *data_size)
 {
 	api_view("g3api_decryption");
 	VAR_BYTES *precvbuff = NULL;
@@ -328,7 +335,7 @@ END:
 }
 
 
-int g3api_ecdh(int key_index, const void * Q_b, int Q_b_size, ST_ECC_PUBLIC* Q_chip, ST_ECC_PUBLIC* ecdh_value)
+G3_API_RESULT g3api_ecdh(int key_index, const void * Q_b, int Q_b_size, ST_ECC_PUBLIC* Q_chip, ST_ECC_PUBLIC* ecdh_value)
 {
 
 	api_view("g3api_ecdh");
@@ -349,7 +356,8 @@ END:
 
 }
 
-int g3api_get_public_key(int key_index, PUB_TYPE pub_type, void* pub_key, int structure_size)
+G3_API_RESULT g3api_get_public_key(int key_index, EN_PUB_TYPE pub_type, void* pub_key, int structure_size)
+
 {
 
 	api_view("g3api_get_public_key");
@@ -390,8 +398,8 @@ END:
 }
 
 
-
-int g3api_certification(int key_index, CERTIFICATION_WRITE_MODE certification_write_mode, const unsigned char * cert, int cert_size)
+G3_API_RESULT g3api_certification(int key_index, EN_CERTIFICATION_WRITE_MODE certification_write_mode, const unsigned char * cert, int cert_size)
+//G3_API_RESULT g3api_certification(int key_index, CERTIFICATION_WRITE_MODE certification_write_mode, const unsigned char * cert, int cert_size)
 {
 	
 	api_view("g3api_certification");
@@ -428,7 +436,8 @@ int g3api_certification(int key_index, CERTIFICATION_WRITE_MODE certification_wr
 
 }
 
-int g3api_issue_certification(int key_index, int public_key_pos, ISSUE_CERT_AREA_TYPE issue_cert_area_type, int sector_num_to_store, int key_id, const unsigned char * cert, int cert_size)
+G3_API_RESULT g3api_issue_certification(int key_index, int public_key_pos, EN_ISSUE_CERT_AREA_TYPE issue_cert_area_type, int sector_num_to_store, int key_id, const unsigned char * cert, int cert_size)
+
 //int g3api_issue_certification(int key_index, const unsigned char * cert, int cert_size)
 {
 
@@ -492,7 +501,7 @@ END:
 
 VAR_BYTES * _testbuff = NULL;
 
-int g3api_test(const unsigned char * in, int in_size)
+G3_API_RESULT g3api_test(const unsigned char * in, int in_size)
 {
 	api_view("g3api_test");
 	//_testbuff = create_var_bytes(in, in_size);
@@ -527,7 +536,7 @@ void asfdaafdasf(){
 	view_hexstr("precv", precv->buffer, precv->size);
 }
 
-int g3api_test7(const unsigned char * in, int in_size)
+G3_API_RESULT g3api_test7(const unsigned char * in, int in_size)
 {
 	api_view("g3api_test7");
 
@@ -546,7 +555,7 @@ int g3api_test7(const unsigned char * in, int in_size)
 	return 0;
 }
 
-int g3api_test6(const unsigned char * in, int in_size, PFSENDRECV pfsend)
+G3_API_RESULT g3api_test6(const unsigned char * in, int in_size, PFSENDRECV pfsend)
 {
 	api_view("g3api_test6");
 
@@ -565,7 +574,7 @@ int g3api_test6(const unsigned char * in, int in_size, PFSENDRECV pfsend)
 	return 0;
 }
 
-int g3api_test2(unsigned char * out, int* out_size)
+G3_API_RESULT g3api_test2(unsigned char * out, int* out_size)
 {
 	api_view("g3api_test2");
 	printf("assign size :%d", *out_size);
@@ -585,7 +594,7 @@ int g3api_test2(unsigned char * out, int* out_size)
 	return 0;
 }
 
-int g3api_test3(ST_ECC_PUBLIC* param)
+G3_API_RESULT g3api_test3(ST_ECC_PUBLIC* param)
 {
 	api_view("g3api_test3");
 	printf("0x%x", param);
@@ -598,7 +607,7 @@ int g3api_test3(ST_ECC_PUBLIC* param)
 }
 
 
-int g3api_test4(PFTEST pfsend)
+G3_API_RESULT g3api_test4(PFTEST pfsend)
 {
 	api_view("g3api_test4");
 
@@ -610,7 +619,7 @@ int g3api_test4(PFTEST pfsend)
 	
 	return 0;
 }
-int g3api_test5(PFSENDRECV pfsend)
+G3_API_RESULT g3api_test5(PFSENDRECV pfsend)
 {
 	api_view("g3api_test5");
 	
@@ -626,7 +635,7 @@ int g3api_test5(PFSENDRECV pfsend)
 	view_hexstr("precv", precv->buffer, precv->size);
 	return 0;
 }
- int GetSoftwareVersion(
+G3_API_RESULT GetSoftwareVersion(
 	char* LCP_Version,
 	char* FCP_Version
 	)
@@ -642,7 +651,7 @@ int g3api_test5(PFSENDRECV pfsend)
 
 
 
- int g3api_test8(PFSENDRECV pfsend, const unsigned char * in, int in_size)
+G3_API_RESULT g3api_test8(PFSENDRECV pfsend, const unsigned char * in, int in_size)
  {
 	 api_view("g3api_test8");
 	 asfdaafdasf();
@@ -650,7 +659,7 @@ int g3api_test5(PFSENDRECV pfsend)
  }
 //START API
 
-int g3api_get_device_version()
+G3_API_RESULT g3api_get_device_version()
 {
 	api_view("g3api_get_device_version");
 	return 0;
@@ -662,7 +671,19 @@ char* g3api_get_sn()
 	return 0;
 }	
 	
-int g3api_encryption_ecies( int key_index,const unsigned char * data, int data_size, ST_SIGN_ECDSA* rs)
+G3_API_RESULT g3api_setup_core( ST_SETUP_CORE* st_setup_fixed)
+{
+	api_view("g3api_setup_core");
+	return 0;
+}	
+	
+G3_API_RESULT g3api_set_up_keys( ST_SET_UP_VALUE* array_set_up_value, int array_size)
+{
+	api_view("g3api_set_up_keys");
+	return 0;
+}	
+	
+G3_API_RESULT g3api_encryption_ecies( int key_index,const unsigned char * data, int data_size, ST_ECIES* rs)
 {
 
 	api_view("g3api_encryption_ecies");
@@ -680,7 +701,7 @@ END:
 	
 }	
 	
-int g3api_decryption_ecies( int key_index,const ST_SIGN_ECDSA* rs, unsigned char * data, int data_size)
+G3_API_RESULT g3api_decryption_ecies( int key_index,const ST_ECIES* rs, unsigned char * data, int data_size)
 {
 
 	api_view("g3api_decryption_ecies");
@@ -698,7 +719,7 @@ END:
 	
 }	
 	
-int g3api_session( int key_index)
+G3_API_RESULT g3api_session( int key_index)
 {
 
 	api_view("g3api_session");
@@ -716,7 +737,7 @@ END:
 	
 }	
 	
-int g3api_diversify( int key_index, DIVERSIFY_MODE diversify_mode, ST_DIVERSIFY_PARAM* param)
+G3_API_RESULT g3api_diversify( int key_index, EN_DIVERSIFY_MODE diversify_mode, ST_DIVERSIFY_PARAM* param)
 {
 
 	api_view("g3api_diversify");
@@ -734,7 +755,7 @@ END:
 	
 }	
 	
-int g3api_reset()
+G3_API_RESULT g3api_reset()
 {
 
 	api_view("g3api_reset");
@@ -752,6 +773,18 @@ END:
 	
 }	
 	//END API
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

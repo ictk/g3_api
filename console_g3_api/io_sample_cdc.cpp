@@ -192,10 +192,11 @@ void wake_up_and_convert_mode_ieb100cdc()
 	recvbuff_size = 1024;
 	int ret = g3api_raw_snd_recv(wake_buff, sizeof(wake_buff), recvbuff, &recvbuff_size);
 	printf("ret:0x%x recv %s %d \n", ret, NCL::BytetoHexStr(recvbuff, recvbuff_size).c_str(), recvbuff_size);
-	return;
+	
 	recvbuff_size = 1024;
 	g3api_raw_snd_recv(convert_inst, sizeof(convert_inst), recvbuff, &recvbuff_size);
 	printf("ret:0x%x recv %s %d \n", ret, NCL::BytetoHexStr(recvbuff, recvbuff_size).c_str(), recvbuff_size);
+
 	_inter_params.mode = 1;
 
 }

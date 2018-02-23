@@ -39,7 +39,8 @@ void test_load();
 void get_functions_ieb100cdc(LPSAMPLE_FUNCTIONS lpsamplefunction);
 void get_functions_i2c(LPSAMPLE_FUNCTIONS lpsamplefunction);
 
-
+void general_read_write();
+void general_sign_verify();
 
 
 #ifdef __USE_CDC__
@@ -85,8 +86,8 @@ int main(int argc, char* argv[])
 	int ret = 0;
 	//test_load();
 #ifdef WIN32
-	test_prf();
-	return 0;
+	//test_prf();
+	//return 0;
 #endif
 	//return test_byload();
 	
@@ -131,20 +132,12 @@ int main(int argc, char* argv[])
 	unsigned char recvbuff[1024];
 	
 	int recvbuff_size = 1024;
+	ret = g3api_get_chellange(32, recvbuff, &recvbuff_size);
 
-	for (int i = 0; i < 100; i++){
-		recvbuff_size = 1024;
-		memset(recvbuff,0x00,1024);
+	general_read_write();
+	general_sign_verify();
 
-		ret = g3api_get_chellange(32, recvbuff, &recvbuff_size);
-
-
-		printf("ret:0x%x recv %s %d \n", ret, NCL::BytetoHexStr(recvbuff, recvbuff_size).c_str(), recvbuff_size);
-
-
-
-	}
-
+	
 #if 0	
 		
 	
