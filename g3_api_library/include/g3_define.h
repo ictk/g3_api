@@ -6,6 +6,34 @@
 //typedef int(*PFSENDRECV) (unsigned char *, int, void*);
 //typedef const int(*PFSENDRECV) (unsigned char*, int, void*, SND_RECV_MODE mode);
 
+
+#define	RET_SUCCESS	0x00
+
+#define ERR_GENERAL 0x80000000
+#define ERR_INTERCHIP 0xF0000000
+
+
+
+#define ERR_RECV_BUFF_SIZE ERR_GENERAL|0xF0
+#define ERR_KEY_BUFF_SIZE ERR_GENERAL|0xF1
+#define ERR_RECV_CRC_ERROR  ERR_GENERAL|0xF2
+#define ERR_SIGN_MODE_PARSE_ERR  ERR_GENERAL|0xF3
+#define ERR_DIFF_STRUCT_SIZE  ERR_GENERAL|0xF4
+#define ERR_RECV_ALLOC_ERROR  ERR_GENERAL|0xF5
+
+
+
+
+#define	ERR_INTERCHIP_VERIFY_ERROR	ERR_INTERCHIP|0x01
+#define	ERR_INTERCHIP_PARSE_ERROR	ERR_INTERCHIP|0x03
+#define	ERR_INTERCHIP_EXECUTION_ERROR	ERR_INTERCHIP|0x0F
+#define	ERR_INTERCHIP_AFTER_WAKE_UP	ERR_INTERCHIP|0x11
+#define	ERR_INTERCHIP_COMMUNICATIONS_ERROR	ERR_INTERCHIP|0xFF
+#define	ERR_INTERCHIP_ABNORMAL_INPUT_DETECTION	ERR_INTERCHIP|0x21
+
+
+
+
 //START ENUM
 
 enum EN_SND_RECV_MODE  
@@ -142,116 +170,23 @@ enum EN_ISSUE_CERT_AREA_TYPE
 	ISCRT_DATA_AREA_0=1,
 	ISCRT_DATA_AREA_1=2,	 
 };   	
+
+enum EN_CONTENT_TYPE  
+{
+	CHANGE_CIPHER_SPEC=20,
+	ALERT=21,
+	HANDSHAKE=22,
+	APPLICATION_DATA=23,	 
+};   	
+
+enum EN_TLS_VERSION  
+{
+	SSL_3_0=0x0300,
+	TLS_1_0=0x0301,
+	TLS_1_1=0x0302,
+	TLS_1_2=0x0303,	 
+};   	
 //END ENUM
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -306,13 +241,24 @@ typedef struct _tagST_IV{
 	unsigned char iv[16];;
 }ST_IV, *LPST_IV;
 
-typedef struct _tagST_MAC{
+typedef struct _tagST_RW_DATA{
+	unsigned char data[32];;
+}ST_RW_DATA, *LPST_RW_DATA;
+
+typedef struct _tagST_RW_DATA_WITH_IV{
+	unsigned char data[32];
+	unsigned char iv[16];;
+}ST_RW_DATA_WITH_IV, *LPST_RW_DATA_WITH_IV;
+
+typedef struct _tagST_RW_DATA_WITH_IV_MAC{
+	unsigned char data[32];
+	unsigned char iv[16];
 	unsigned char mac[16];;
-}ST_MAC, *LPST_MAC;
+}ST_RW_DATA_WITH_IV_MAC, *LPST_RW_DATA_WITH_IV_MAC;
 
 typedef struct _tagST_ECIES{
-	unsigned char r[32];
-	unsigned char s[16];;
+	unsigned char r[64];
+	unsigned char s[32];;
 }ST_ECIES, *LPST_ECIES;
 
 typedef struct _tagST_AC_CONDITION{
@@ -340,41 +286,35 @@ typedef struct _tagST_SET_UP_VALUE{
 	EN_RESULT result_setup_area;
 	EN_RESULT result_write_value;;
 }ST_SET_UP_VALUE, *LPST_SET_UP_VALUE;
+
+typedef struct _tagST_ECDH_PRE_MASTER_SECRET{
+	unsigned char pre_master_secret[32];;
+}ST_ECDH_PRE_MASTER_SECRET, *LPST_ECDH_PRE_MASTER_SECRET;
+
+typedef struct _tagST_ECDH_KEY_BLOCK{
+	unsigned char client_mac_key[32];
+	unsigned char server_mac_key[32];
+	unsigned char client_symm_key[16];
+	unsigned char server_symm_key[16];
+	unsigned char client_symm_iv[16];
+	unsigned char server_symm_iv[16];;
+}ST_ECDH_KEY_BLOCK, *LPST_ECDH_KEY_BLOCK;
+
+typedef struct _tagST_ECDH_IV{
+	unsigned char client_symm_iv[16];
+	unsigned char server_symm_iv[16];;
+}ST_ECDH_IV, *LPST_ECDH_IV;
 //END STRUCTURE
-
-
-
-
-
-
-
-
-
-
-
-
 
 typedef int(*PFTEST) (int, int);
 
 //START TYPE_DEF
 typedef int(*PFSENDRECV) (const unsigned char*,int,unsigned char*,int*,  void*etcparam );
 typedef int G3_API_RESULT;
+#define IN
+#define OUT
+#define INOUT
 //END TYPE_DEF
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 #endif//__G3_DEFINE_HEADER__
 

@@ -81,6 +81,7 @@ int test_byload(){
 }
 #endif
 void test_prf();
+void test_scenario_sample();
 int main(int argc, char* argv[])
 {
 	int ret = 0;
@@ -134,10 +135,10 @@ int main(int argc, char* argv[])
 	int recvbuff_size = 1024;
 	ret = g3api_get_chellange(32, recvbuff, &recvbuff_size);
 
-	general_read_write();
-	general_sign_verify();
+	//general_read_write();
+	//general_sign_verify();
 
-	
+	test_scenario_sample();
 #if 0	
 		
 	

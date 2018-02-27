@@ -144,14 +144,17 @@ extern "C" int send_n_recv(const unsigned char*snd, int snd_size, unsigned char*
 	}
 
 	printf("total ressize :%d\n", vec_recv_byte.size());
-	if (recv && vec_recv_byte.size() <= *recv_size){
+	int real_recv_size = min((char)first_byte, 255);
+
+	if (recv && real_recv_size <= *recv_size){
 		memcpy(recv, V2A(vec_recv_byte), vec_recv_byte.size());
-		*recv_size = vec_recv_byte.size();
+		*recv_size = real_recv_size;
 
 	}
+	
 
 
-	printf("RECV %s \n", NCL::BytetoHexStr(V2A(vec_recv_byte), vec_recv_byte.size()).c_str());
+	printf("RECV %s (%d) \n", NCL::BytetoHexStr(V2A(vec_recv_byte), real_recv_size).c_str(), real_recv_size);
 
 
 

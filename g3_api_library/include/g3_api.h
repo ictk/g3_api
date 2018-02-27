@@ -16,67 +16,662 @@
 #define LIB_VERSION "1.0.0"
 
 //START API
-G3_API const char * g3api_get_lib_version();
-G3_API void g3api_set_user_send_recv_pf( PFSENDRECV psendrecv, void * etcparam);
-G3_API G3_API_RESULT g3api_get_device_version();
-G3_API char* g3api_get_sn();
-G3_API G3_API_RESULT g3api_raw_snd_recv(const unsigned char * snd , int snd_size, unsigned char * recv, int* recv_size);
-G3_API G3_API_RESULT g3api_setup_core( ST_SETUP_CORE* st_setup_fixed);
-G3_API G3_API_RESULT g3api_set_up_keys( ST_SET_UP_VALUE* array_set_up_value, int array_size);
-G3_API G3_API_RESULT g3api_write_key_value(const int key_index, EN_AREA_TYPE area_type, EN_RW_INST_OPTION rw_type,const ST_KEY_VALUE* key_value,const ST_IV* iv,const ST_MAC* mac);
-G3_API G3_API_RESULT g3api_read_key_value(const int key_index, EN_AREA_TYPE area_type, EN_RW_INST_OPTION rw_type, ST_KEY_VALUE* key_value, ST_IV* iv, ST_MAC* mac);
-G3_API G3_API_RESULT g3api_get_chellange( int chall_size, unsigned char * challenge, int* res_chall_size);
-G3_API G3_API_RESULT g3api_verify_passwd(const int key_index,const unsigned char * passwd, int passwd_size);
-G3_API G3_API_RESULT g3api_change_password(const int key_index,const unsigned char * passwd, int passwd_size);
-G3_API G3_API_RESULT g3api_init_puf(const int key_index, unsigned int initial);
-G3_API G3_API_RESULT g3api_sign(const int key_index, EN_SIGN_OPTION sign_option,const unsigned char * msg, int msg_size, void * sign_structure, int structure_size);
-G3_API G3_API_RESULT g3api_verify(const int key_index, EN_VERIFY_OPTION verify_option,const unsigned char * msg, int msg_size,const void * sign_structure, int structure_size);
-G3_API G3_API_RESULT g3api_dynamic_auth( int key_index, EN_DYNAMIC_AUTH dauth_option, int pos_pub_dynamic,const unsigned char * msg, int msg_size,const void * sign_structure, int structure_size);
-G3_API G3_API_RESULT g3api_encryption( int key_index, EN_BLOCK_MODE block_mode,const unsigned char * data, int data_size, ST_IV * iv, unsigned char * cipher, int* cipher_size);
-G3_API G3_API_RESULT g3api_decryption( int key_index, EN_BLOCK_MODE block_mode,const ST_IV * iv, unsigned char * cipher,const int cipher_size, unsigned char * data, int* data_size);
-G3_API G3_API_RESULT g3api_encryption_ecies( int key_index,const unsigned char * data, int data_size, ST_ECIES* rs);
-G3_API G3_API_RESULT g3api_decryption_ecies( int key_index,const ST_ECIES* rs, unsigned char * data, int data_size);
-G3_API G3_API_RESULT g3api_session( int key_index);
-G3_API G3_API_RESULT g3api_diversify( int key_index, EN_DIVERSIFY_MODE diversify_mode, ST_DIVERSIFY_PARAM* param);
-G3_API G3_API_RESULT g3api_get_public_key( int key_index, EN_PUB_TYPE pub_type, void* pub_key, int structure_size);
-G3_API G3_API_RESULT g3api_certification( int key_index, EN_CERTIFICATION_WRITE_MODE certification_write_mode,const unsigned char * cert, int cert_size);
-G3_API G3_API_RESULT g3api_issue_certification( int key_index, int public_key_pos, EN_ISSUE_CERT_AREA_TYPE issue_cert_area_type, int sector_num_to_store, int key_id,const unsigned char * cert, int cert_size);
-G3_API G3_API_RESULT g3api_ecdh( int key_index,const void * Q_b, int Q_b_size, ST_ECC_PUBLIC* Q_chip, ST_ECC_PUBLIC* ecdh_value);
-G3_API G3_API_RESULT g3api_reset();
-G3_API G3_API_RESULT g3api_test(const unsigned char * in, int in_size);
-G3_API G3_API_RESULT g3api_test2( unsigned char * out, int* out_size);
-G3_API G3_API_RESULT g3api_test3( ST_ECC_PUBLIC* param);
-G3_API G3_API_RESULT g3api_test4( PFTEST pfsend);
-G3_API G3_API_RESULT g3api_test5( PFSENDRECV pfsend);
-G3_API G3_API_RESULT g3api_test6(const unsigned char * in, int in_size, PFSENDRECV pfsend);
-G3_API G3_API_RESULT g3api_test7(const unsigned char * in, int in_size);
-G3_API G3_API_RESULT g3api_test8( PFSENDRECV pfsend,const unsigned char * in, int in_size);
-//END API
 
+//###################################################	
+/**
+*   @name g3api_get_lib_version
+*   @brief  
+*
 
+*   @return const char *
+*/
+//###################################################
+G3_API const char * g3api_get_lib_version
+(
+);
 
+	
+//###################################################	
+/**
+*   @name g3api_set_user_send_recv_pf
+*   @brief  
+*
+*   @param psendrecv 
+*   @param etcparam 
 
+*   @return void
+*/
+//###################################################
+G3_API void g3api_set_user_send_recv_pf
+(
+		IN PFSENDRECV psendrecv,
+		IN void* etcparam
+);
 
+	
+//###################################################	
+/**
+*   @name g3api_get_device_version
+*   @brief  
+*
 
+*   @return G3_API_RESULT
+*/
+//###################################################
+G3_API G3_API_RESULT g3api_get_device_version
+(
+);
 
+	
+//###################################################	
+/**
+*   @name g3api_get_sn
+*   @brief  
+*
 
+*   @return char*
+*/
+//###################################################
+G3_API char* g3api_get_sn
+(
+);
 
+	
+//###################################################	
+/**
+*   @name g3api_raw_snd_recv
+*   @brief  
+*
+*   @param snd  
+*   @param snd_size 
+*   @param recv 
+*   @param recv_size 
 
+*   @return G3_API_RESULT
+*/
+//###################################################
+G3_API G3_API_RESULT g3api_raw_snd_recv
+(
+		IN const unsigned char* snd ,
+		IN int snd_size,
+		OUT unsigned char* recv,
+		OUT int* recv_size
+);
 
+	
+//###################################################	
+/**
+*   @name g3api_setup_core
+*   @brief  
+*
+*   @param st_setup_fixed 
 
+*   @return G3_API_RESULT
+*/
+//###################################################
+G3_API G3_API_RESULT g3api_setup_core
+(
+		INOUT ST_SETUP_CORE* st_setup_fixed
+);
 
+	
+//###################################################	
+/**
+*   @name g3api_set_up_keys
+*   @brief  
+*
+*   @param array_set_up_value 
+*   @param array_size 
 
+*   @return G3_API_RESULT
+*/
+//###################################################
+G3_API G3_API_RESULT g3api_set_up_keys
+(
+		INOUT ST_SET_UP_VALUE* array_set_up_value,
+		IN int array_size
+);
 
+	
+//###################################################	
+/**
+*   @name g3api_read_key_value
+*   @brief  
+*
+*   @param key_index key sector index
+*   @param area_type 
+*   @param rw_type 
+*   @param data_structure read value from setup,key_sector,user data
+enable 4 follow structure ST_RW_DATA,ST_RW_DATA_WITH_IV,ST_RW_DATA_WITH_IV_MAC
+*   @param structure_size 
 
+*   @return G3_API_RESULT
+*/
+//###################################################
+G3_API G3_API_RESULT g3api_read_key_value
+(
+		IN int key_index,
+		IN EN_AREA_TYPE area_type,
+		IN EN_RW_INST_OPTION rw_type,
+		IN void* data_structure,
+		IN int structure_size
+);
 
+	
+//###################################################	
+/**
+*   @name g3api_write_key_value
+*   @brief  
+*
+*   @param key_index key sector index
+*   @param area_type 
+*   @param rw_type 
+*   @param data_structure write value to setup,key_sector,user data
+enable 4 follow structure ST_RW_DATA,ST_RW_DATA_WITH_IV,ST_RW_DATA_WITH_IV_MAC
+*   @param structure_size 
 
+*   @return G3_API_RESULT
+*/
+//###################################################
+G3_API G3_API_RESULT g3api_write_key_value
+(
+		IN int key_index,
+		IN EN_AREA_TYPE area_type,
+		IN EN_RW_INST_OPTION rw_type,
+		IN const void* data_structure,
+		IN int structure_size
+);
 
+	
+//###################################################	
+/**
+*   @name g3api_get_chellange
+*   @brief  
+*
+*   @param chall_size 
+*   @param challenge 
+*   @param res_chall_size 
 
+*   @return G3_API_RESULT
+*/
+//###################################################
+G3_API G3_API_RESULT g3api_get_chellange
+(
+		IN int chall_size,
+		OUT unsigned char* challenge,
+		INOUT int* res_chall_size
+);
+
+	
+//###################################################	
+/**
+*   @name g3api_verify_passwd
+*   @brief  
+*
+*   @param key_index key sector index
+*   @param passwd 
+*   @param passwd_size 
+
+*   @return G3_API_RESULT
+*/
+//###################################################
+G3_API G3_API_RESULT g3api_verify_passwd
+(
+		IN int key_index,
+		IN const unsigned char* passwd,
+		IN int passwd_size
+);
+
+	
+//###################################################	
+/**
+*   @name g3api_change_password
+*   @brief  
+*
+*   @param key_index key sector index
+*   @param passwd 
+*   @param passwd_size 
+
+*   @return G3_API_RESULT
+*/
+//###################################################
+G3_API G3_API_RESULT g3api_change_password
+(
+		IN int key_index,
+		IN const unsigned char* passwd,
+		IN int passwd_size
+);
+
+	
+//###################################################	
+/**
+*   @name g3api_init_puf
+*   @brief  
+*
+*   @param key_index key sector index
+*   @param initial 
+
+*   @return G3_API_RESULT
+*/
+//###################################################
+G3_API G3_API_RESULT g3api_init_puf
+(
+		IN int key_index,
+		IN unsigned int initial
+);
+
+	
+//###################################################	
+/**
+*   @name g3api_sign
+*   @brief  
+*
+*   @param key_index key sector index
+*   @param sign_option 
+*   @param msg 
+*   @param msg_size 
+*   @param sign_structure enable 4 follow structure ST_SIGN_ECDSA,ST_SIGN_SYMM,ST_SIGN_HMAC
+*   @param structure_size 
+
+*   @return G3_API_RESULT
+*/
+//###################################################
+G3_API G3_API_RESULT g3api_sign
+(
+		IN int key_index,
+		IN EN_SIGN_OPTION sign_option,
+		IN const unsigned char* msg,
+		IN int msg_size,
+		OUT void * sign_structure,
+		IN int structure_size
+);
+
+	
+//###################################################	
+/**
+*   @name g3api_verify
+*   @brief  
+*
+*   @param key_index key sector index
+*   @param verify_option 
+*   @param msg 
+*   @param msg_size 
+*   @param sign_structure enable 4 follow structure ST_SIGN_ECDSA,ST_SIGN_SYMM,ST_SIGN_HMAC
+*   @param structure_size 
+
+*   @return G3_API_RESULT
+*/
+//###################################################
+G3_API G3_API_RESULT g3api_verify
+(
+		IN int key_index,
+		IN EN_VERIFY_OPTION verify_option,
+		IN const unsigned char* msg,
+		IN int msg_size,
+		IN const void* sign_structure,
+		IN int structure_size
+);
+
+	
+//###################################################	
+/**
+*   @name g3api_dynamic_auth
+*   @brief  
+*
+*   @param key_index key sector index
+*   @param dauth_option 
+*   @param pos_pub_dynamic 
+*   @param msg 
+*   @param msg_size 
+*   @param sign_structure enable 4 follow structure ST_SIGN_ECDSA,ST_SIGN_SYMM,ST_SIGN_HMAC
+*   @param structure_size 
+
+*   @return G3_API_RESULT
+*/
+//###################################################
+G3_API G3_API_RESULT g3api_dynamic_auth
+(
+		IN int key_index,
+		IN EN_DYNAMIC_AUTH dauth_option,
+		IN int pos_pub_dynamic,
+		IN const unsigned char* msg,
+		IN int msg_size,
+		IN const void* sign_structure,
+		IN int structure_size
+);
+
+	
+//###################################################	
+/**
+*   @name g3api_encryption
+*   @brief  
+*
+*   @param key_index key sector index
+*   @param block_mode 
+*   @param iv 
+*   @param data 
+*   @param data_size 
+*   @param cipher 
+*   @param cipher_size 
+
+*   @return G3_API_RESULT
+*/
+//###################################################
+G3_API G3_API_RESULT g3api_encryption
+(
+		IN int key_index,
+		IN EN_BLOCK_MODE block_mode,
+		IN const ST_IV * iv,
+		IN const unsigned char* data,
+		IN int data_size,
+		OUT unsigned char* cipher,
+		INOUT int* cipher_size
+);
+
+	
+//###################################################	
+/**
+*   @name g3api_decryption
+*   @brief  
+*
+*   @param key_index key sector index
+*   @param block_mode 
+*   @param iv 
+*   @param cipher 
+*   @param cipher_size 
+*   @param data 
+*   @param data_size 
+
+*   @return G3_API_RESULT
+*/
+//###################################################
+G3_API G3_API_RESULT g3api_decryption
+(
+		IN int key_index,
+		IN EN_BLOCK_MODE block_mode,
+		IN const ST_IV* iv,
+		IN const unsigned char* cipher,
+		IN int cipher_size,
+		OUT unsigned char* data,
+		INOUT int* data_size
+);
+
+	
+//###################################################	
+/**
+*   @name g3api_encryption_ecies
+*   @brief  
+*
+*   @param key_index key sector index
+*   @param rs 
+
+*   @return G3_API_RESULT
+*/
+//###################################################
+G3_API G3_API_RESULT g3api_encryption_ecies
+(
+		IN int key_index,
+		OUT ST_ECIES* rs
+);
+
+	
+//###################################################	
+/**
+*   @name g3api_decryption_ecies
+*   @brief  
+*
+*   @param key_index key sector index
+*   @param rs 
+
+*   @return G3_API_RESULT
+*/
+//###################################################
+G3_API G3_API_RESULT g3api_decryption_ecies
+(
+		IN int key_index,
+		INOUT ST_ECIES* rs
+);
+
+	
+//###################################################	
+/**
+*   @name g3api_session
+*   @brief  
+*
+*   @param key_index key sector index
+
+*   @return G3_API_RESULT
+*/
+//###################################################
+G3_API G3_API_RESULT g3api_session
+(
+		IN int key_index
+);
+
+	
+//###################################################	
+/**
+*   @name g3api_diversify
+*   @brief  
+*
+*   @param key_index key sector index
+*   @param diversify_mode 
+*   @param param 
+
+*   @return G3_API_RESULT
+*/
+//###################################################
+G3_API G3_API_RESULT g3api_diversify
+(
+		IN int key_index,
+		IN EN_DIVERSIFY_MODE diversify_mode,
+		OUT ST_DIVERSIFY_PARAM* param
+);
+
+	
+//###################################################	
+/**
+*   @name g3api_get_public_key
+*   @brief  
+*
+*   @param key_index key sector index
+*   @param pub_type 
+*   @param pub_key enable 4 follow structure ST_ECC_PUBLIC,ST_ECC_PUBLIC_COMPRESS
+*   @param structure_size 
+
+*   @return G3_API_RESULT
+*/
+//###################################################
+G3_API G3_API_RESULT g3api_get_public_key
+(
+		IN int key_index,
+		IN EN_PUB_TYPE pub_type,
+		OUT void* pub_key,
+		IN int structure_size
+);
+
+	
+//###################################################	
+/**
+*   @name g3api_certification
+*   @brief  
+*
+*   @param key_index key sector index
+*   @param certification_write_mode 
+*   @param cert 
+*   @param cert_size 
+
+*   @return G3_API_RESULT
+*/
+//###################################################
+G3_API G3_API_RESULT g3api_certification
+(
+		IN int key_index,
+		IN EN_CERTIFICATION_WRITE_MODE certification_write_mode,
+		IN const unsigned char* cert,
+		IN int cert_size
+);
+
+	
+//###################################################	
+/**
+*   @name g3api_issue_certification
+*   @brief  
+*
+*   @param key_index key sector index
+*   @param public_key_pos 
+*   @param issue_cert_area_type 
+*   @param sector_num_to_store 
+*   @param key_id 
+*   @param cert 
+*   @param cert_size 
+
+*   @return G3_API_RESULT
+*/
+//###################################################
+G3_API G3_API_RESULT g3api_issue_certification
+(
+		IN int key_index,
+		IN int public_key_pos,
+		IN EN_ISSUE_CERT_AREA_TYPE issue_cert_area_type,
+		IN int sector_num_to_store,
+		IN int key_id,
+		IN const unsigned char* cert,
+		IN int cert_size
+);
+
+	
+//###################################################	
+/**
+*   @name g3api_ecdh
+*   @brief  
+*
+*   @param key_index key sector index
+*   @param Q_b enable 4 follow structure ST_ECC_PUBLIC,ST_ECC_PUBLIC_COMPRESS
+*   @param Q_b__struct_size 
+*   @param Q_chip 
+*   @param ecdh_value enable 4 follow structure 
+ST_ECDH_PRE_MASTER_SECRET|ST_ECDH_KEY_BLOCK|ST_ECDH_IV
+*   @param ecdh_value_struct_size 
+
+*   @return G3_API_RESULT
+*/
+//###################################################
+G3_API G3_API_RESULT g3api_ecdh
+(
+		IN int key_index,
+		IN const void* Q_b,
+		IN int Q_b__struct_size,
+		OUT ST_ECC_PUBLIC* Q_chip,
+		OUT void* ecdh_value,
+		IN int ecdh_value_struct_size
+);
+
+	
+//###################################################	
+/**
+*   @name g3api_tls_mac_encrypt
+*   @brief  
+*
+*   @param seq_num 
+*   @param content_type 
+*   @param tls_version 
+*   @param client_iv 
+*   @param msg 
+*   @param msg_size 
+*   @param crypto 
+*   @param crypto_size 
+
+*   @return G3_API_RESULT
+*/
+//###################################################
+G3_API G3_API_RESULT g3api_tls_mac_encrypt
+(
+		IN int seq_num,
+		IN EN_CONTENT_TYPE content_type,
+		IN EN_TLS_VERSION tls_version,
+		IN ST_IV* client_iv,
+		IN const unsigned char* msg,
+		IN int msg_size,
+		OUT unsigned char* crypto,
+		INOUT int * crypto_size
+);
+
+	
+//###################################################	
+/**
+*   @name g3api_tls_decrypt_verify
+*   @brief  
+*
+*   @param seq_num 
+*   @param content_type 
+*   @param tls_version 
+*   @param client_iv 
+*   @param crypto 
+*   @param crypto_size 
+*   @param msg 
+*   @param msg_size 
+
+*   @return G3_API_RESULT
+*/
+//###################################################
+G3_API G3_API_RESULT g3api_tls_decrypt_verify
+(
+		IN int seq_num,
+		IN EN_CONTENT_TYPE content_type,
+		IN EN_TLS_VERSION tls_version,
+		IN ST_IV* client_iv,
+		IN const unsigned char* crypto,
+		IN int * crypto_size,
+		OUT unsigned char* msg,
+		INOUT int msg_size
+);
+
+	
+//###################################################	
+/**
+*   @name g3api_reset
+*   @brief  
+*
+
+*   @return G3_API_RESULT
+*/
+//###################################################
+G3_API G3_API_RESULT g3api_reset
+(
+);
+
+	
+//###################################################	
+/**
+*   @name g3api_test
+*   @brief  
+*
+*   @param in 
+*   @param in_size 
+
+*   @return G3_API_RESULT
+*/
+//###################################################
+G3_API G3_API_RESULT g3api_test
+(
+		IN const unsigned char* in,
+		IN int in_size
+);
+
+	//END API
+
+/**
+*   @brief  Swaps the values of two integer parameters.
+*
+*   @param  a is an initialized integer variable
+*   @param  b is an initialized integer variable
+*   @return void
+*/
 G3_API int GetSoftwareVersion(
 	char* LCP_Version,
 	char* FCP_Version
 	);
-
 
 
 
