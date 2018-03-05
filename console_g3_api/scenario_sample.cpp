@@ -81,108 +81,58 @@ void test_scenario_sample()
 	
 	
 	
+	
 	ret = g3api_verify_passwd(3 , passwd , sizeof(passwd));
 	print_result("g3api_verify_passwd", ret);
 	
 	
 	
 	
-	
-	
-	ret = g3api_change_password(3 , passwd , sizeof(passwd));
-	print_result("g3api_change_password", ret);
-	
-	
-	
 	ST_SIGN_ECDSA st_sign_ecdsa ={0,};;
 	
 	
-	ret = g3api_sign(4 , EN_SIGN_OPTION::SIGN_ECDSA , msg_from_sha256 , sizeof(msg_from_sha256) , &st_sign_ecdsa , sizeof(st_sign_ecdsa));
-	print_result("g3api_sign", ret);
-	print_value("st_sign_ecdsa",&st_sign_ecdsa,sizeof(st_sign_ecdsa));
-	
-	
-	
-	
-	
-	ret = g3api_verify(1 , EN_VERIFY_OPTION::VERYFY_ECDSA , msg_from_sha256 , sizeof(msg_from_sha256) , &st_sign_ecdsa , sizeof(st_sign_ecdsa));
-	print_result("g3api_verify", ret);
-	
-	
-	
-	
-	
-	
-	ret = g3api_get_chellange(32 , chal , &chal_size);
-	print_result("g3api_get_chellange", ret);
-	
-	
-	
 	int pos_pub_dynamic=0;
-	
-	
-	
-	ret = g3api_dynamic_auth(1 , EN_DYNAMIC_AUTH::DYN_AUTH_ECDSA_SHA256 , pos_pub_dynamic , chal , chal_size , &st_sign_ecdsa , sizeof(st_sign_ecdsa));
-	print_result("g3api_dynamic_auth", ret);
-	
-	
 	
 	ST_IV st_iv;
 	memcpy(&st_iv,iv,sizeof(ST_IV));
 	unsigned char outbuff[256] ={0,};
 	int out_size = 256;
-	
-	
-	ret = g3api_encryption(8 , EN_BLOCK_MODE::BL_CBC , &st_iv , plain , sizeof(plain) , outbuff , &out_size);
-	print_result("g3api_encryption", ret);
-	print_value("outbuff",outbuff,out_size);
-	
-	
 	out_size = 256;
-	
-	
-	ret = g3api_decryption(8 , EN_BLOCK_MODE::BL_CBC , &st_iv , cipher_aes_cbc , sizeof(cipher_aes_cbc) , outbuff , &out_size);
-	print_result("g3api_decryption", ret);
-	print_value("outbuff",outbuff,out_size);
-	
-	
-	
-	
-	
-	ret = g3api_get_chellange(32 , chal , &chal_size);
-	print_result("g3api_get_chellange", ret);
-	
-	
 	
 	ST_ECIES st_ecies = {0,};
 	
-	
-	ret = g3api_encryption_ecies(1 , &st_ecies);
-	print_result("g3api_encryption_ecies", ret);
-	print_value("st_ecies",&st_ecies,sizeof(st_ecies));
-	
-	
-	
-	
-	
-	ret = g3api_decryption_ecies(4 , &st_ecies);
-	print_result("g3api_decryption_ecies", ret);
-	print_value("st_ecies",&st_ecies,sizeof(st_ecies));
-	
-	
 	ST_ECC_PUBLIC st_ecc_pub;
 	
-	
-	ret = g3api_get_public_key(4 , EN_PUB_TYPE::KEY_SECTOR , &st_ecc_pub , sizeof(ST_ECC_PUBLIC));
-	print_result("g3api_get_public_key", ret);
-	print_value("st_ecc_pub",&st_ecc_pub,sizeof(ST_ECC_PUBLIC));
-	
+	ST_ECC_PUBLIC Q_chip ={0,};
+	ST_ECDH_KEY_BLOCK st_ecdh_key_block = {0,};
+	ST_ECDH_RANDOM st_ecdh_random ={0,};
 	
 	
+	ret = g3api_ecdh(EN_ECDH_MODE::GEN_TLS_BLOCK , outer_pub_key , sizeof(outer_pub_key) , &st_ecdh_random , &Q_chip , &st_ecdh_key_block , sizeof(ST_ECDH_KEY_BLOCK));
+	print_result("g3api_ecdh", ret);
+	print_value("st_ecdh_key_block",&st_ecdh_key_block,sizeof(ST_ECDH_KEY_BLOCK));
+	print_value("Q_chip",&Q_chip,sizeof(ST_ECC_PUBLIC));
 	
 	
-	ret = g3api_certification(6 , EN_CERTIFICATION_WRITE_MODE::TO_TEMP , cert , sizeof(cert));
-	print_result("g3api_certification", ret);
+	
+	ST_IV client_iv = {0,};
+	memcpy(&client_iv,st_ecdh_key_block.client_iv,sizeof(ST_IV));
+	out_size = 256;
+	
+	
+	ret = g3api_tls_mac_encrypt(0 , EN_CONTENT_TYPE::APPLICATION_DATA , EN_TLS_VERSION::TLS_1_2 , &client_iv , msg_org , sizeof(msg_org) , outbuff , &out_size);
+	print_result("g3api_tls_mac_encrypt", ret);
+	
+	
+	
+	ST_IV server_iv = {0,};
+	memcpy(&server_iv,st_ecdh_key_block.server_iv,sizeof(ST_IV));
+	unsigned char outbuff2[256] ={0,};
+	int out_size2 = 256;
+	
+	
+	ret = g3api_tls_decrypt_verify(0 , EN_CONTENT_TYPE::APPLICATION_DATA , EN_TLS_VERSION::TLS_1_2 , &server_iv , outbuff , out_size , outbuff2 , &out_size2);
+	print_result("g3api_tls_decrypt_verify", ret);
 	
 	
 	

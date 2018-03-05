@@ -4,20 +4,20 @@
 #include "neoDebug.h"
 #include "g3_api.h"
 #include "sample_def.h"
-
+extern FILE * _fp;
 
 void print_result(const char * title,int ret)
 {
-	printf("\n%s ret:0x%x \n", title, ret);
+	fprintf(_fp,"\n%s ret:0x%x \n", title, ret);
 }
 
 void print_value(const char * title, const void *buff,int size)
 {
-	printf("\n%s %s %d \n", title, NCL::BytetoHexStr(buff, size).c_str(), size);
+	fprintf(_fp,"\n%s %s %d \n", title, NCL::BytetoHexStr(buff, size).c_str(), size);
 }
 void print_result_value(const char * title, int ret,const void *buff, int size)
 {
-	printf("\n%s ret:0x%x\n%s %d \n", title, ret,NCL::BytetoHexStr(buff, size).c_str(), size);
+	fprintf(_fp,"\n%s ret:0x%x\n%s %d \n", title, ret,NCL::BytetoHexStr(buff, size).c_str(), size);
 }
 
 void set_buff_from_hexstr(void *pbuff, const char *hexstr)

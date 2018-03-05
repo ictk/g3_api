@@ -15,13 +15,14 @@ VAR_BYTES * convert_data(void *pure_data, int data_size);
 //extern PF_CONVERT _pconvert_data;
 extern PFSENDRECV _psend;
 extern void * _etcparam;
-
+extern FILE * _fp;
 void test()
 {
 	/*VECBYTE vecbyte = NCL::HexStr2Byte("2323");
-	printf("vecbyte :%d ",vecbyte.size() );*/
+	fprintf(_fp,"vecbyte :%d ",vecbyte.size() );*/
 
 }
+
 VAR_BYTES* alloc_var_bytes(int size)
 {
 	VAR_BYTES*ret = (VAR_BYTES*)malloc(8 + size);
@@ -58,17 +59,17 @@ bool append_var_bytes(VAR_BYTES**dist ,const void*buffer, int size)
 
 void api_view(const char *title)
 {
-	printf("\n#######################\n%s\n#######################\n",title);
+	fprintf(_fp,"\n#######################\n%s\n#######################\n", title);
 }
 void view_hexstr(const char *title,void *pbuff, int size)
 {
-	printf("%s:\n", title);
+	fprintf(_fp,"%s:\n", title);
 	unsigned char *pbyte = (unsigned char *)pbuff;
 	for (int i = 0; i < size; i++){
-		printf("%.2X", *pbyte);
+		fprintf(_fp,"%.2X", *pbyte);
 		pbyte++;
 	}
-	printf("\n");
+	fprintf(_fp,"\n");
 }
 LPWRITE_PACKET make_write_packet(char inst, char p1, short p2, const void * data, int data_size, int *packet_size)
 {
@@ -89,8 +90,8 @@ LPWRITE_PACKET make_write_packet(char inst, char p1, short p2, const void * data
 	unsigned long crc = calcCRC((unsigned char*)lp_write_packet+1, total_write_packet_size_without_crc);
 	memcpy(&lp_write_packet->data[data_size], &crc, 2);
 
-	//printf("0x%x 0x%x 0x%x \n", crc, lp_write_packet->data[total_write_packet_size_without_crc], lp_write_packet->data[total_write_packet_size_without_crc + 1]);
-	//printf("total_write_packet_size:%d \ntotal_write_packet_size_without_crc:%d\n", total_write_packet_size, total_write_packet_size_without_crc);
+	//fprintf(_fp,"0x%x 0x%x 0x%x \n", crc, lp_write_packet->data[total_write_packet_size_without_crc], lp_write_packet->data[total_write_packet_size_without_crc + 1]);
+	//fprintf(_fp,"total_write_packet_size:%d \ntotal_write_packet_size_without_crc:%d\n", total_write_packet_size, total_write_packet_size_without_crc);
 	if (packet_size) *packet_size = total_write_packet_size;
 	return lp_write_packet;
 }
@@ -106,24 +107,24 @@ VAR_BYTES * convert_data(void *pure_data, int data_size,  int max_res_size){
 LPWRITE_IEB100_PACKET make_write_ieb100_packet(char rom_inst, char res_size, const void * data, int data_size, int *packet_size){
 
 	//sizeof(WRITE_PACKET) is included crc
-	int total_write_packet_size = sizeof(HEADER_WRITE_IEB100_PACKET) + data_size + 1;//included crc
-	int body_size_big_end = 4 + 1 + 1 + data_size;//dummy+res_size+rom_type+data
+int total_write_packet_size = sizeof(HEADER_WRITE_IEB100_PACKET) + data_size + 1;//included crc
+int body_size_big_end = 4 + 1 + 1 + data_size;//dummy+res_size+rom_type+data
 
 
-	LPWRITE_IEB100_PACKET lp_write_packet = (LPWRITE_IEB100_PACKET)malloc(total_write_packet_size);
-	memset(lp_write_packet, 0x00, total_write_packet_size);
-	lp_write_packet->header.rom_inst = rom_inst;
-	lp_write_packet->header.body_size_big_end = body_size_big_end;
+LPWRITE_IEB100_PACKET lp_write_packet = (LPWRITE_IEB100_PACKET)malloc(total_write_packet_size);
+memset(lp_write_packet, 0x00, total_write_packet_size);
+lp_write_packet->header.rom_inst = rom_inst;
+lp_write_packet->header.body_size_big_end = body_size_big_end;
 //	lp_write_packet->header.rom_type = rom_type;
-	SwapBytes(&lp_write_packet->header.body_size_big_end, 4);
-	lp_write_packet->header.res_size = res_size;
+SwapBytes(&lp_write_packet->header.body_size_big_end, 4);
+lp_write_packet->header.res_size = res_size;
 
-	if (data_size > 0) memcpy(lp_write_packet->data, data, data_size);
-	if (packet_size) *packet_size = total_write_packet_size;
+if (data_size > 0) memcpy(lp_write_packet->data, data, data_size);
+if (packet_size) *packet_size = total_write_packet_size;
 
-	//printf("total_write_packet_size:%d \body_size_big_end:%d\n", total_write_packet_size, body_size_big_end);
+//fprintf(_fp,"total_write_packet_size:%d \body_size_big_end:%d\n", total_write_packet_size, body_size_big_end);
 
-	return lp_write_packet;
+return lp_write_packet;
 }
 
 
@@ -168,7 +169,7 @@ map<int, int> & get_map_size(){
 		_map_size_per_inst[RESET] = 4;
 		is_load = true;
 	}
-	
+
 
 
 	return _map_size_per_inst;
@@ -204,8 +205,11 @@ G3_API_RESULT do_normal_process(char inst, char p1, short p2, const void * data,
 		//memcpy(precvbuff->buffer, &buff[1], recv_size - 3);
 	}
 	map<int, int> map_size_per_inst = get_map_size();
-	
+
 	int max_res_size = map_size_per_inst[(unsigned char)inst];
+	if (max_res_size == 0){
+		max_res_size = 243;
+	}
 
 	LPWRITE_PACKET lp_write_packet = make_write_packet(inst, p1, p2, data, data_size, &packet_size);
 	//VAR_BYTES *psend_buff = _pconvert_data(lp_write_packet, packet_size, max_res_size);
@@ -213,7 +217,7 @@ G3_API_RESULT do_normal_process(char inst, char p1, short p2, const void * data,
 	
 	unsigned char buff[255] = { 0, };
 	int recv_size = max_res_size;
-	printf("_psend: 0x%x\n", _psend);
+	fprintf(_fp,"_psend: 0x%x\n", _psend);
 
 	_psend((unsigned char *)lp_write_packet, packet_size, buff, &recv_size, _etcparam);
 	view_hexstr("recv data", buff, recv_size);
@@ -232,9 +236,9 @@ G3_API_RESULT do_normal_process(char inst, char p1, short p2, const void * data,
 	//view_hexstr("precvbuff", buff, recv_size);
 	//view_hexstr("realbuff", buff, recv_size - 2);
 
-	printf("crc:0x%.4x calc_crc:0x%.4x\n", crc, calc_crc);
+	fprintf(_fp,"crc:0x%.4x calc_crc:0x%.4x\n", crc, calc_crc);
 	if (crc != calc_crc){
-		nRet = ERR_RECV_CRC_ERROR;
+		nRet = RET_ERR_RECV_CRC_ERROR;
 		//free(precvbuff);
 		//if (real_recv_size) *real_recv_size = 0;
 		goto END;
@@ -307,21 +311,21 @@ int check_sign_struct(EN_SIGN_OPTION sign_option, int structure_size)
 	case SIGN_ECDSA:
 	case SIGN_ECDSA_SHA256:
 		if (structure_size != sizeof(ST_SIGN_ECDSA)){
-			return ERR_SIGN_MODE_PARSE_ERR;
+			return RET_ERR_SIGN_MODE_PARSE_ERR;
 		}
 		break;
 	case SIGN_HMAC:
 		if (structure_size != sizeof(ST_SIGN_HMAC)){
-			return ERR_SIGN_MODE_PARSE_ERR;
+			return RET_ERR_SIGN_MODE_PARSE_ERR;
 		}
 		break;
 	case SIGN_SYMM:
 		if (structure_size != sizeof(ST_SIGN_SYMM)){
-			return ERR_SIGN_MODE_PARSE_ERR;
+			return RET_ERR_SIGN_MODE_PARSE_ERR;
 		}
 		break;
 	default:
-		return ERR_SIGN_MODE_PARSE_ERR;
+		return RET_ERR_SIGN_MODE_PARSE_ERR;
 		break;
 	}
 
@@ -337,23 +341,23 @@ int check_vefify_struct(EN_VERIFY_OPTION verify_option, int structure_size)
 	case VERYFY_CERT_PUB_ECDSA:
 	case VERYFY_CERT_PUB_ECDSA_SHA256:
 		if (structure_size != sizeof(ST_SIGN_ECDSA)){
-			return ERR_SIGN_MODE_PARSE_ERR;
+			return RET_ERR_SIGN_MODE_PARSE_ERR;
 		}
 
 		break;
 	case VERYFY_HMAC:
 		if (structure_size != sizeof(ST_SIGN_HMAC)){
-			return ERR_SIGN_MODE_PARSE_ERR;
+			return RET_ERR_SIGN_MODE_PARSE_ERR;
 		}
 		break;
 	case VERYFY_SYMM:
 		if (structure_size != sizeof(ST_SIGN_SYMM)){
-			return ERR_SIGN_MODE_PARSE_ERR;
+			return RET_ERR_SIGN_MODE_PARSE_ERR;
 		}
 		break;
 		break;
 	default:
-		return ERR_SIGN_MODE_PARSE_ERR;
+		return RET_ERR_SIGN_MODE_PARSE_ERR;
 		break;
 	}
 
@@ -368,23 +372,23 @@ int check_dynamic_auth_struct(EN_DYNAMIC_AUTH verify_etc, int structure_size)
 	case DYN_AUTH_ECDSA_SHA256:
 	case DYN_AUTH_CERT_PUB_ECDSA_SHA256:
 		if (structure_size != sizeof(ST_SIGN_ECDSA)){
-			return ERR_SIGN_MODE_PARSE_ERR;
+			return RET_ERR_SIGN_MODE_PARSE_ERR;
 		}
 		break;
 		break;
 	case DYN_AUTH_HMAC:
 		if (structure_size != sizeof(ST_SIGN_HMAC)){
-			return ERR_SIGN_MODE_PARSE_ERR;
+			return RET_ERR_SIGN_MODE_PARSE_ERR;
 		}
 		break;
 	case DYN_AUTH_SYMM:
 		if (structure_size != sizeof(ST_SIGN_SYMM)){
-			return ERR_SIGN_MODE_PARSE_ERR;
+			return RET_ERR_SIGN_MODE_PARSE_ERR;
 		}
 		break;
 
 	default:
-		return ERR_SIGN_MODE_PARSE_ERR;
+		return RET_ERR_SIGN_MODE_PARSE_ERR;
 	}
 
 

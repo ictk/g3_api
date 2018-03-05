@@ -11,7 +11,7 @@ void print_result(const char * title, int ret);
 void print_value(const char * title, const  void *buff, int size);
 void swap_bytes(void* value, int size);
 
-
+extern FILE * _fp;
 
 #pragma pack(push, 1)   
 typedef struct _tagHEADER_WRITE_IEB100_PACKET{
@@ -78,7 +78,7 @@ LPWRITE_IEB100_PACKET make_write_ieb100_packet(char rom_inst, char res_size, con
 	if (data_size > 0) memcpy(lp_write_packet->data, data, data_size);
 	if (packet_size) *packet_size = total_write_packet_size;
 
-	//printf("total_write_packet_size:%d \body_size_big_end:%d\n", total_write_packet_size, body_size_big_end);
+	//fprintf(_fp,"total_write_packet_size:%d \body_size_big_end:%d\n", total_write_packet_size, body_size_big_end);
 
 	return lp_write_packet;
 }
@@ -91,8 +91,8 @@ extern "C" int send_n_recv(const unsigned char*snd, int snd_size, unsigned char*
 	LPWRITE_IEB100_PACKET lpwrite_ieb100_packet = NULL;
 	unsigned char*sndbuff = (unsigned char*)snd;
 
-	printf("send_n_recv\n");
-	printf("PURE SND: %s (%d)\n", NCL::BytetoHexStr(snd, snd_size).c_str(), snd_size);
+	fprintf(_fp,"send_n_recv\n");
+	fprintf(_fp,"PURE SND: %s (%d)\n", NCL::BytetoHexStr(snd, snd_size).c_str(), snd_size);
 	if (!serreial) return -1;
 
 	if (inter_param->mode){
@@ -100,7 +100,7 @@ extern "C" int send_n_recv(const unsigned char*snd, int snd_size, unsigned char*
 		lpwrite_ieb100_packet = make_write_ieb100_packet(0x7, *recv_size, snd, snd_size, &packet_ieb100_size);
 
 
-		printf("SND: %s (%d)\n", NCL::BytetoHexStr(lpwrite_ieb100_packet, packet_ieb100_size).c_str(), packet_ieb100_size);
+		fprintf(_fp,"SND: %s (%d)\n", NCL::BytetoHexStr(lpwrite_ieb100_packet, packet_ieb100_size).c_str(), packet_ieb100_size);
 		sndbuff = (unsigned char*)lpwrite_ieb100_packet;
 		snd_size = packet_ieb100_size;
 
@@ -122,18 +122,18 @@ extern "C" int send_n_recv(const unsigned char*snd, int snd_size, unsigned char*
 		if (ressize == 1) break;
 
 		if (time_count * unit_delay > 300){
-			printf("first byte :%d\n", time_count);
+			fprintf(_fp,"first byte :%d\n", time_count);
 		}
 
 		if (time_count * unit_delay > 1000){
-			printf("TIME OUT!!!!!!!!!!!!");
+			fprintf(_fp,"TIME OUT!!!!!!!!!!!!");
 			return -1;
 		}
 		NCL::Sleep(unit_delay);
 
 		time_count++;
 	}
-	printf("first ressize :%x %d\n", first_byte, ressize);
+	fprintf(_fp,"first ressize :%x %d\n", first_byte, ressize);
 	vec_recv_byte.push_back(first_byte);
 
 	while (true){
@@ -143,8 +143,8 @@ extern "C" int send_n_recv(const unsigned char*snd, int snd_size, unsigned char*
 		NCL::Sleep(10);
 	}
 
-	printf("total ressize :%d\n", vec_recv_byte.size());
-	int real_recv_size = min((char)first_byte, 255);
+	fprintf(_fp,"total ressize :%d\n", vec_recv_byte.size());
+	int real_recv_size = min((byte)first_byte, 255);
 
 	if (recv && real_recv_size <= *recv_size){
 		memcpy(recv, V2A(vec_recv_byte), vec_recv_byte.size());
@@ -154,7 +154,7 @@ extern "C" int send_n_recv(const unsigned char*snd, int snd_size, unsigned char*
 	
 
 
-	printf("RECV %s (%d) \n", NCL::BytetoHexStr(V2A(vec_recv_byte), real_recv_size).c_str(), real_recv_size);
+	fprintf(_fp,"RECV %s (%d) \n", NCL::BytetoHexStr(V2A(vec_recv_byte), real_recv_size).c_str(), real_recv_size);
 
 
 
@@ -171,7 +171,7 @@ int init_sample_ieb100cdc(void *param)
 	g3api_set_user_send_recv_pf(send_n_recv, &_inter_params);
 
 	if (!serreial->open()){
-		printf("\nport is not open\n");
+		fprintf(_fp,"\nport is not open\n");
 		return -1;
 
 	}
@@ -194,11 +194,11 @@ void wake_up_and_convert_mode_ieb100cdc()
 
 	recvbuff_size = 1024;
 	int ret = g3api_raw_snd_recv(wake_buff, sizeof(wake_buff), recvbuff, &recvbuff_size);
-	printf("ret:0x%x recv %s %d \n", ret, NCL::BytetoHexStr(recvbuff, recvbuff_size).c_str(), recvbuff_size);
+	fprintf(_fp,"ret:0x%x recv %s %d \n", ret, NCL::BytetoHexStr(recvbuff, recvbuff_size).c_str(), recvbuff_size);
 	
 	recvbuff_size = 1024;
 	g3api_raw_snd_recv(convert_inst, sizeof(convert_inst), recvbuff, &recvbuff_size);
-	printf("ret:0x%x recv %s %d \n", ret, NCL::BytetoHexStr(recvbuff, recvbuff_size).c_str(), recvbuff_size);
+	fprintf(_fp,"ret:0x%x recv %s %d \n", ret, NCL::BytetoHexStr(recvbuff, recvbuff_size).c_str(), recvbuff_size);
 
 	_inter_params.mode = 1;
 

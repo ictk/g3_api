@@ -2,46 +2,56 @@
 #include "g3_define.h"
 
 
-//typedef unsigned char byte 
+//typedef byte byte 
 
 
 //START STRUCTURE
 //END STRUCTURE
 #pragma pack(push, 1)   
 typedef struct _tagSECTOR{
-	unsigned char first_byte;
-	unsigned char second_byte;
-	unsigned char ac[6];;
+	byte first_byte;
+	byte second_byte;
+	byte ac[6];;
 }SECTOR, *LPSECTOR;
 
 
 
 typedef struct _tagHEADER_WRITE_PACKET{
-	unsigned char  inst_flag;
-	unsigned char  length;
-	unsigned char  ins;
-	unsigned char  p1;
-	unsigned short  p2;;
+	byte  inst_flag;
+	byte  length;
+	byte  ins;
+	byte  p1;
+	word  p2;;
 }HEADER_WRITE_PACKET, *LPHEADER_WRITE_PACKET;
 
 typedef struct _tagWRITE_PACKET{
 	HEADER_WRITE_PACKET header;
-	unsigned char data[2];;//CRC 를 위해 2바이트 할당
+	byte data[2];;//CRC 를 위해 2바이트 할당
 }WRITE_PACKET, *LPWRITE_PACKET;
 
 
 typedef struct _tagHEADER_WRITE_IEB100_PACKET{
-	unsigned char  rom_inst;
-	unsigned long  body_size_big_end;//dummy+res_size+rom_type+data_size
-	unsigned long  dummy;
-	unsigned char  res_size;
-	//unsigned char  rom_type;
+	byte  rom_inst;
+	dword  body_size_big_end;//dummy+res_size+rom_type+data_size
+	dword  dummy;
+	byte  res_size;
+	//byte  rom_type;
 }HEADER_WRITE_IEB100_PACKET, *LPHEADER_WRITE_IEB100_PACKET;
 
 typedef struct _tagWRITE_IEB100_PACKET{
 	HEADER_WRITE_IEB100_PACKET header;
-	unsigned char data[1];;
+	byte data[1];;
 }WRITE_IEB100_PACKET, *LPWRITE_IEB100_PACKET;
+
+typedef struct _tagTLS_INTER_HEADER{
+	dword  hi_be_sequence;
+	dword  lo_be_sequence;
+	byte content_type;
+	word tls_be_ver;
+	word msg_be_size;
+
+}TLS_INTER_HEADER, *LPTLS_INTER_HEADER;
+
 
 #pragma pack(pop)  
 
@@ -77,8 +87,8 @@ typedef LPVAR_BYTES(*PF_CONVERT)(void *pure_data, int data_size, int max_res_siz
 #define	RESET	0x9F
 
 
-#define MAKEWORD(l_,h_)   ((unsigned short)(((unsigned char)(l_))|(((unsigned short)((unsigned char)(h_)))<<8)))
-//#define MAKEWORD_BIG(l_,h_)   ((unsigned short)(((unsigned char)(h_))|(((unsigned short)((unsigned char)(l_)))<<8)))
+#define MAKEWORD(l_,h_)   ((word)(((byte)(l_))|(((word)((byte)(h_)))<<8)))
+//#define MAKEWORD_BIG(l_,h_)   ((word)(((byte)(h_))|(((word)((byte)(l_)))<<8)))
 #define KEY_VALUE_SIZE 32
 
 #ifndef min

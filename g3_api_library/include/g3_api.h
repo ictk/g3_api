@@ -13,8 +13,8 @@
 #error "NO DEFILE"
 #endif
 
-#define LIB_VERSION "1.0.0"
-
+//#define LIB_VERSION "1.0.0"
+G3_API void g3api_set_fp(void *fp);
 //START API
 
 //###################################################	
@@ -92,9 +92,9 @@ G3_API char* g3api_get_sn
 //###################################################
 G3_API G3_API_RESULT g3api_raw_snd_recv
 (
-		IN const unsigned char* snd ,
+		IN const byte* snd ,
 		IN int snd_size,
-		OUT unsigned char* recv,
+		OUT byte* recv,
 		OUT int* recv_size
 );
 
@@ -198,7 +198,7 @@ G3_API G3_API_RESULT g3api_write_key_value
 G3_API G3_API_RESULT g3api_get_chellange
 (
 		IN int chall_size,
-		OUT unsigned char* challenge,
+		OUT byte* challenge,
 		INOUT int* res_chall_size
 );
 
@@ -218,7 +218,7 @@ G3_API G3_API_RESULT g3api_get_chellange
 G3_API G3_API_RESULT g3api_verify_passwd
 (
 		IN int key_index,
-		IN const unsigned char* passwd,
+		IN const byte* passwd,
 		IN int passwd_size
 );
 
@@ -238,7 +238,7 @@ G3_API G3_API_RESULT g3api_verify_passwd
 G3_API G3_API_RESULT g3api_change_password
 (
 		IN int key_index,
-		IN const unsigned char* passwd,
+		IN const byte* passwd,
 		IN int passwd_size
 );
 
@@ -280,7 +280,7 @@ G3_API G3_API_RESULT g3api_sign
 (
 		IN int key_index,
 		IN EN_SIGN_OPTION sign_option,
-		IN const unsigned char* msg,
+		IN const byte* msg,
 		IN int msg_size,
 		OUT void * sign_structure,
 		IN int structure_size
@@ -306,7 +306,7 @@ G3_API G3_API_RESULT g3api_verify
 (
 		IN int key_index,
 		IN EN_VERIFY_OPTION verify_option,
-		IN const unsigned char* msg,
+		IN const byte* msg,
 		IN int msg_size,
 		IN const void* sign_structure,
 		IN int structure_size
@@ -334,7 +334,7 @@ G3_API G3_API_RESULT g3api_dynamic_auth
 		IN int key_index,
 		IN EN_DYNAMIC_AUTH dauth_option,
 		IN int pos_pub_dynamic,
-		IN const unsigned char* msg,
+		IN const byte* msg,
 		IN int msg_size,
 		IN const void* sign_structure,
 		IN int structure_size
@@ -362,9 +362,9 @@ G3_API G3_API_RESULT g3api_encryption
 		IN int key_index,
 		IN EN_BLOCK_MODE block_mode,
 		IN const ST_IV * iv,
-		IN const unsigned char* data,
+		IN const byte* data,
 		IN int data_size,
-		OUT unsigned char* cipher,
+		OUT byte* cipher,
 		INOUT int* cipher_size
 );
 
@@ -390,9 +390,9 @@ G3_API G3_API_RESULT g3api_decryption
 		IN int key_index,
 		IN EN_BLOCK_MODE block_mode,
 		IN const ST_IV* iv,
-		IN const unsigned char* cipher,
+		IN const byte* cipher,
 		IN int cipher_size,
-		OUT unsigned char* data,
+		OUT byte* data,
 		INOUT int* data_size
 );
 
@@ -508,7 +508,7 @@ G3_API G3_API_RESULT g3api_certification
 (
 		IN int key_index,
 		IN EN_CERTIFICATION_WRITE_MODE certification_write_mode,
-		IN const unsigned char* cert,
+		IN const byte* cert,
 		IN int cert_size
 );
 
@@ -536,7 +536,7 @@ G3_API G3_API_RESULT g3api_issue_certification
 		IN EN_ISSUE_CERT_AREA_TYPE issue_cert_area_type,
 		IN int sector_num_to_store,
 		IN int key_id,
-		IN const unsigned char* cert,
+		IN const byte* cert,
 		IN int cert_size
 );
 
@@ -546,9 +546,10 @@ G3_API G3_API_RESULT g3api_issue_certification
 *   @name g3api_ecdh
 *   @brief  
 *
-*   @param key_index key sector index
+*   @param en_ecdh_mode 
 *   @param Q_b enable 4 follow structure ST_ECC_PUBLIC,ST_ECC_PUBLIC_COMPRESS
-*   @param Q_b__struct_size 
+*   @param Q_b_struct_size 
+*   @param st_ecdh_random 
 *   @param Q_chip 
 *   @param ecdh_value enable 4 follow structure 
 ST_ECDH_PRE_MASTER_SECRET|ST_ECDH_KEY_BLOCK|ST_ECDH_IV
@@ -559,12 +560,13 @@ ST_ECDH_PRE_MASTER_SECRET|ST_ECDH_KEY_BLOCK|ST_ECDH_IV
 //###################################################
 G3_API G3_API_RESULT g3api_ecdh
 (
-		IN int key_index,
+		IN EN_ECDH_MODE en_ecdh_mode,
 		IN const void* Q_b,
-		IN int Q_b__struct_size,
+		IN int Q_b_struct_size,
+		IN const ST_ECDH_RANDOM* st_ecdh_random,
 		OUT ST_ECC_PUBLIC* Q_chip,
 		OUT void* ecdh_value,
-		IN int ecdh_value_struct_size
+		OUT int ecdh_value_struct_size
 );
 
 	
@@ -591,9 +593,9 @@ G3_API G3_API_RESULT g3api_tls_mac_encrypt
 		IN EN_CONTENT_TYPE content_type,
 		IN EN_TLS_VERSION tls_version,
 		IN ST_IV* client_iv,
-		IN const unsigned char* msg,
+		IN const byte* msg,
 		IN int msg_size,
-		OUT unsigned char* crypto,
+		OUT byte* crypto,
 		INOUT int * crypto_size
 );
 
@@ -606,7 +608,7 @@ G3_API G3_API_RESULT g3api_tls_mac_encrypt
 *   @param seq_num 
 *   @param content_type 
 *   @param tls_version 
-*   @param client_iv 
+*   @param server_iv 
 *   @param crypto 
 *   @param crypto_size 
 *   @param msg 
@@ -620,11 +622,11 @@ G3_API G3_API_RESULT g3api_tls_decrypt_verify
 		IN int seq_num,
 		IN EN_CONTENT_TYPE content_type,
 		IN EN_TLS_VERSION tls_version,
-		IN ST_IV* client_iv,
-		IN const unsigned char* crypto,
-		IN int * crypto_size,
-		OUT unsigned char* msg,
-		INOUT int msg_size
+		IN ST_IV* server_iv,
+		IN const byte* crypto,
+		IN int crypto_size,
+		OUT byte* msg,
+		INOUT int* msg_size
 );
 
 	
@@ -655,7 +657,7 @@ G3_API G3_API_RESULT g3api_reset
 //###################################################
 G3_API G3_API_RESULT g3api_test
 (
-		IN const unsigned char* in,
+		IN const byte* in,
 		IN int in_size
 );
 

@@ -42,6 +42,7 @@ void get_functions_i2c(LPSAMPLE_FUNCTIONS lpsamplefunction);
 void general_read_write();
 void general_sign_verify();
 
+FILE * _fp = stdout;
 
 #ifdef __USE_CDC__
 #define GET_FUCNTION get_functions_ieb100cdc
@@ -82,6 +83,11 @@ int test_byload(){
 #endif
 void test_prf();
 void test_scenario_sample();
+void init_fp(){
+
+	_fp = fopen("out.txt", "wb");
+	g3api_set_fp(_fp);
+}
 int main(int argc, char* argv[])
 {
 	int ret = 0;
@@ -101,8 +107,7 @@ int main(int argc, char* argv[])
 		return -1;
 	}
 	printf("\nserila port name : (%s) \n",argv[1]);
-	
-	
+	init_fp();
 	SAMPLE_FUNCTIONS samplefunction;
 	GET_FUCNTION(&samplefunction);
 
@@ -278,6 +283,7 @@ int main(int argc, char* argv[])
 	
 	
 	printf("%s", pchar);
+	NEO_TITLE(END);
 	return 0;
 }
 

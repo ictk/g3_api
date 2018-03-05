@@ -8,6 +8,8 @@
 
 //START STRUCTURE
 
+#pragma pack(push, 1)
+
 typedef struct _tagSECTOR{
 	unsigned char first_byte;
 	unsigned char second_byte;
@@ -26,7 +28,9 @@ typedef struct _tagWRITE_PACKET{
 	VAR_BYTES data;
 	unsigned short  crc;;
 }WRITE_PACKET, *LPWRITE_PACKET;
-//END STRUCTURE
+   
+#pragma pack(pop)  
+	//END STRUCTURE
 
 
 

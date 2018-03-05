@@ -2,36 +2,34 @@
 #ifndef __G3_DEFINE_HEADER__
 #define __G3_DEFINE_HEADER__
 
-#define NULL 0
-//typedef int(*PFSENDRECV) (unsigned char *, int, void*);
-//typedef const int(*PFSENDRECV) (unsigned char*, int, void*, SND_RECV_MODE mode);
 
 
-#define	RET_SUCCESS	0x00
+//START DEFINE
+#define LIB_VERSION  "1.0.0"
 
+#define RET_SUCCESS 0x00
 #define ERR_GENERAL 0x80000000
 #define ERR_INTERCHIP 0xF0000000
 
+#define RET_ERR_RECV_BUFF_SIZE ERR_GENERAL|0xF0
+#define RET_ERR_KEY_BUFF_SIZE ERR_GENERAL|0xF1
+#define RET_ERR_RECV_CRC_ERROR ERR_GENERAL|0xF2
+#define RET_ERR_SIGN_MODE_PARSE_ERR ERR_GENERAL|0xF3
+#define RET_ERR_DIFF_STRUCT_SIZE ERR_GENERAL|0xF4
+#define RET_ERR_RECV_ALLOC_ERROR ERR_GENERAL|0xF5
 
+#define RET_ERR_INTERCHIP_VERIFY_ERROR ERR_INTERCHIP|0x01
+#define RET_ERR_INTERCHIP_PARSE_ERROR ERR_INTERCHIP|0x03
+#define RET_ERR_INTERCHIP_EXECUTION_ERROR ERR_INTERCHIP|0x0F
+#define RET_ERR_INTERCHIP_AFTER_WAKE_UP ERR_INTERCHIP|0x11
+#define RET_ERR_INTERCHIP_COMMUNICATIONS_ERROR ERR_INTERCHIP|0xFF
+#define RET_ERR_INTERCHIP_ABNORMAL_INPUT_DETECTION ERR_INTERCHIP|0x21
 
-#define ERR_RECV_BUFF_SIZE ERR_GENERAL|0xF0
-#define ERR_KEY_BUFF_SIZE ERR_GENERAL|0xF1
-#define ERR_RECV_CRC_ERROR  ERR_GENERAL|0xF2
-#define ERR_SIGN_MODE_PARSE_ERR  ERR_GENERAL|0xF3
-#define ERR_DIFF_STRUCT_SIZE  ERR_GENERAL|0xF4
-#define ERR_RECV_ALLOC_ERROR  ERR_GENERAL|0xF5
-
-
-
-
-#define	ERR_INTERCHIP_VERIFY_ERROR	ERR_INTERCHIP|0x01
-#define	ERR_INTERCHIP_PARSE_ERROR	ERR_INTERCHIP|0x03
-#define	ERR_INTERCHIP_EXECUTION_ERROR	ERR_INTERCHIP|0x0F
-#define	ERR_INTERCHIP_AFTER_WAKE_UP	ERR_INTERCHIP|0x11
-#define	ERR_INTERCHIP_COMMUNICATIONS_ERROR	ERR_INTERCHIP|0xFF
-#define	ERR_INTERCHIP_ABNORMAL_INPUT_DETECTION	ERR_INTERCHIP|0x21
-
-
+#define NULL 0
+#define IN 
+#define OUT 
+#define INOUT 
+//END DEFINE
 
 
 //START ENUM
@@ -186,79 +184,99 @@ enum EN_TLS_VERSION
 	TLS_1_1=0x0302,
 	TLS_1_2=0x0303,	 
 };   	
+
+enum EN_ECDH_MODE  
+{
+	NORMAL_ECDH=0x0000,
+	GEN_TLS_BLOCK=0x0011,
+	SET_TLS_SESSION_KEY=0x0012,	 
+};   	
 //END ENUM
 
 
 
 
 
+typedef int(*PFTEST) (int, int);
+
+//START TYPE_DEF
+
+typedef unsigned int dword;
+typedef unsigned short word;
+typedef unsigned char byte;
+
+typedef int(*PFSENDRECV) (const unsigned char*,int,unsigned char*,int*,  void*etcparam );
+typedef int G3_API_RESULT;
+//END TYPE_DEF
 
 
 
 
 //START STRUCTURE
 
+#pragma pack(push, 1)
+
 typedef struct _tagVAR_BYTES{
 	int size;
 	int allocsize;
-	unsigned char buffer[1];;
+	byte buffer[1];;
 }VAR_BYTES, *LPVAR_BYTES;
 
 typedef struct _tagST_SIGN_ECDSA{
-	unsigned char r[32];
-	unsigned char s[32];;
+	byte r[32];
+	byte s[32];;
 }ST_SIGN_ECDSA, *LPST_SIGN_ECDSA;
 
 typedef struct _tagST_SIGN_SYMM{
-	unsigned char sign[16];;
+	byte sign[16];;
 }ST_SIGN_SYMM, *LPST_SIGN_SYMM;
 
 typedef struct _tagST_SIGN_HMAC{
-	unsigned char sign[32];;
+	byte sign[32];;
 }ST_SIGN_HMAC, *LPST_SIGN_HMAC;
 
 typedef struct _tagST_ECC_PUBLIC{
-	unsigned char puk[64];;
+	byte puk[64];;
 }ST_ECC_PUBLIC, *LPST_ECC_PUBLIC;
 
 typedef struct _tagST_ECC_PUBLIC_COMPRESS{
-	unsigned char puk[33];;
+	byte puk[33];;
 }ST_ECC_PUBLIC_COMPRESS, *LPST_ECC_PUBLIC_COMPRESS;
 
 typedef struct _tagST_ECC_PRV{
-	unsigned char prk[32];;
+	byte prk[32];;
 }ST_ECC_PRV, *LPST_ECC_PRV;
 
 typedef struct _tagST_DIVERSIFY_PARAM{
-	unsigned char param[16];;
+	byte param[16];;
 }ST_DIVERSIFY_PARAM, *LPST_DIVERSIFY_PARAM;
 
 typedef struct _tagST_KEY_VALUE{
-	unsigned char key_value[32];;
+	byte key_value[32];;
 }ST_KEY_VALUE, *LPST_KEY_VALUE;
 
 typedef struct _tagST_IV{
-	unsigned char iv[16];;
+	byte iv[16];;
 }ST_IV, *LPST_IV;
 
 typedef struct _tagST_RW_DATA{
-	unsigned char data[32];;
+	byte data[32];;
 }ST_RW_DATA, *LPST_RW_DATA;
 
 typedef struct _tagST_RW_DATA_WITH_IV{
-	unsigned char data[32];
-	unsigned char iv[16];;
+	byte data[32];
+	byte iv[16];;
 }ST_RW_DATA_WITH_IV, *LPST_RW_DATA_WITH_IV;
 
 typedef struct _tagST_RW_DATA_WITH_IV_MAC{
-	unsigned char data[32];
-	unsigned char iv[16];
-	unsigned char mac[16];;
+	byte data[32];
+	byte iv[16];
+	byte mac[16];;
 }ST_RW_DATA_WITH_IV_MAC, *LPST_RW_DATA_WITH_IV_MAC;
 
 typedef struct _tagST_ECIES{
-	unsigned char r[64];
-	unsigned char s[32];;
+	byte r[64];
+	byte s[32];;
 }ST_ECIES, *LPST_ECIES;
 
 typedef struct _tagST_AC_CONDITION{
@@ -288,33 +306,31 @@ typedef struct _tagST_SET_UP_VALUE{
 }ST_SET_UP_VALUE, *LPST_SET_UP_VALUE;
 
 typedef struct _tagST_ECDH_PRE_MASTER_SECRET{
-	unsigned char pre_master_secret[32];;
+	byte pre_master_secret[32];;
 }ST_ECDH_PRE_MASTER_SECRET, *LPST_ECDH_PRE_MASTER_SECRET;
 
 typedef struct _tagST_ECDH_KEY_BLOCK{
-	unsigned char client_mac_key[32];
-	unsigned char server_mac_key[32];
-	unsigned char client_symm_key[16];
-	unsigned char server_symm_key[16];
-	unsigned char client_symm_iv[16];
-	unsigned char server_symm_iv[16];;
+	byte client_mac_key[32];
+	byte server_mac_key[32];
+	byte client_key[16];
+	byte server_key[16];
+	byte client_iv[16];
+	byte server_iv[16];;
 }ST_ECDH_KEY_BLOCK, *LPST_ECDH_KEY_BLOCK;
 
 typedef struct _tagST_ECDH_IV{
-	unsigned char client_symm_iv[16];
-	unsigned char server_symm_iv[16];;
+	byte client_iv[16];
+	byte server_iv[16];;
 }ST_ECDH_IV, *LPST_ECDH_IV;
-//END STRUCTURE
 
-typedef int(*PFTEST) (int, int);
+typedef struct _tagST_ECDH_RANDOM{
+	byte server[32];
+	byte client[32];;
+}ST_ECDH_RANDOM, *LPST_ECDH_RANDOM;
+   
+#pragma pack(pop)  
+	//END STRUCTURE
 
-//START TYPE_DEF
-typedef int(*PFSENDRECV) (const unsigned char*,int,unsigned char*,int*,  void*etcparam );
-typedef int G3_API_RESULT;
-#define IN
-#define OUT
-#define INOUT
-//END TYPE_DEF
 
 #endif//__G3_DEFINE_HEADER__
 

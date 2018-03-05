@@ -34,6 +34,8 @@ PFSENDRECV _psend = def_send_n_recv;
 //PFSENDRECV _precv = NULL;
 void * _etcparam = NULL;
 bool is_use_ieb_100 = true;
+FILE * _fp = stdout;
+
 //
 //void g3api_set_user_send_recv_pf(const PFSENDRECV psend, const PFSENDRECV precv){
 //	_psend = psend;
@@ -87,6 +89,11 @@ void g3api_set_etc_param(void * etcparam){
 	_etcparam = etcparam;
 
 }
+void g3api_set_fp(void *fp)
+{
+	_fp = (FILE*)fp;
+	
+}
 
 
 VAR_BYTES* g3api_alloc_var_bytes(int size){
@@ -135,7 +142,7 @@ G3_API_RESULT g3api_write_key_value(const int key_index, EN_AREA_TYPE area_type,
 {
 	api_view("g3api_write_key_value");
 	//if (KEY_VALUE_SIZE > key_value_size){
-	//	return ERR_KEY_BUFF_SIZE;
+	//	return RET_RET_ERR_KEY_BUFF_SIZE;
 	//}
 
 
@@ -148,7 +155,7 @@ int g3api_get_chellange(int chall_size, unsigned char * challenge, int* res_chal
 	
 	api_view("g3api_get_chellange");
 	VAR_BYTES *precvbuff = NULL;
-	if (!res_chall_size) return ERR_RECV_ALLOC_ERROR;
+	if (!res_chall_size) return RET_ERR_RECV_ALLOC_ERROR;
 	//if (res_chall_size) *res_chall_size =0;
 
 	int nret = do_normal_process(GET_CHAL, chall_size, 0, NULL, 0, &precvbuff);
@@ -162,7 +169,7 @@ int g3api_get_chellange(int chall_size, unsigned char * challenge, int* res_chal
 
 	}
 	if ( precvbuff->size > *res_chall_size){
-		nret = ERR_RECV_BUFF_SIZE;
+		nret = RET_ERR_RECV_BUFF_SIZE;
 		goto END;
 	}
 
@@ -220,17 +227,17 @@ G3_API_RESULT g3api_sign(const int key_index, EN_SIGN_OPTION sign_option, const 
 	}
 
 	if (!precvbuff){
-		nret = ERR_RECV_ALLOC_ERROR;
+		nret = RET_ERR_RECV_ALLOC_ERROR;
 		goto END;
 	}
 
-	nret = return_from_recv(precvbuff);// ERR_INTERCHIP | err_ret;
+	nret = return_from_recv(precvbuff);// RET_ERR_INTERCHIP | err_ret;
 	if (nret < 0) {
 		goto END;;
 	}
 
 	if (precvbuff->size != structure_size) {
-		nret =  ERR_DIFF_STRUCT_SIZE;
+		nret =  RET_ERR_DIFF_STRUCT_SIZE;
 		goto END;
 	}
 
@@ -355,7 +362,7 @@ G3_API_RESULT g3api_encryption_ecies(IN int key_index, OUT ST_ECIES* rs)
 	if (nret < 0) goto END;
 
 	if (precvbuff->size != sizeof(ST_ECIES)){
-		nret = ERR_RECV_BUFF_SIZE;
+		nret = RET_ERR_RECV_BUFF_SIZE;
 		goto END;
 	}
 	if (rs) memcpy(rs, precvbuff->buffer, precvbuff->size);
@@ -376,7 +383,7 @@ G3_API_RESULT g3api_decryption_ecies(IN int key_index, INOUT ST_ECIES* rs)
 	api_view("g3api_decryption_ecies");
 	VAR_BYTES *precvbuff = NULL;
 	if (!rs){
-		return ERR_RECV_ALLOC_ERROR;
+		return RET_ERR_RECV_ALLOC_ERROR;
 
 
 	}
@@ -384,7 +391,7 @@ G3_API_RESULT g3api_decryption_ecies(IN int key_index, INOUT ST_ECIES* rs)
 	if (nret < 0) goto END;
 	
 	if (precvbuff->size != sizeof( ((ST_ECIES*)0)->s)){
-		nret = ERR_RECV_BUFF_SIZE;
+		nret = RET_ERR_RECV_BUFF_SIZE;
 		goto END;
 	}
 
@@ -400,27 +407,6 @@ END:
 
 }
 
-
-G3_API_RESULT g3api_ecdh(int key_index, const void * Q_b, int Q_b_size, ST_ECC_PUBLIC* Q_chip, ST_ECC_PUBLIC* ecdh_value)
-{
-
-	api_view("g3api_ecdh");
-	VAR_BYTES *precvbuff = NULL;
-	int nret = do_normal_process(SESSION, key_index, 0x0040, Q_b, Q_b_size, &precvbuff);
-	if (nret < 0) goto END;
-
-	memcpy(Q_chip, precvbuff->buffer, sizeof(ST_ECC_PUBLIC));
-	memcpy(ecdh_value, precvbuff->buffer + sizeof(ST_ECC_PUBLIC), sizeof(ST_ECC_PUBLIC));
-
-
-END:
-	if (precvbuff) free(precvbuff);
-
-	return nret;
-
-
-
-}
 
 G3_API_RESULT g3api_get_public_key(int key_index, EN_PUB_TYPE pub_type, void* pub_key, int structure_size)
 
@@ -439,7 +425,7 @@ G3_API_RESULT g3api_get_public_key(int key_index, EN_PUB_TYPE pub_type, void* pu
 									
 
 	default:
-		return ERR_DIFF_STRUCT_SIZE;
+		return RET_ERR_DIFF_STRUCT_SIZE;
 
 	}
 
@@ -565,6 +551,134 @@ END:
 
 }
 
+
+G3_API_RESULT g3api_ecdh(IN EN_ECDH_MODE en_ecdh_mode, IN const void* Q_b, IN int Q_b_struct_size, IN const ST_ECDH_RANDOM* st_ecdh_random, OUT ST_ECC_PUBLIC* Q_chip, OUT void* ecdh_value, OUT int ecdh_value_struct_size)
+{
+
+
+	api_view("g3api_ecdh");
+	VAR_BYTES *precvbuff = NULL;
+	int p2 = 0x0000;
+	
+	VAR_BYTES * buff = create_var_bytes(Q_b, Q_b_struct_size);
+	
+	switch (en_ecdh_mode)
+	{
+	case NORMAL_ECDH:
+		break;
+	case GEN_TLS_BLOCK:
+		append_var_bytes(&buff, st_ecdh_random, sizeof(ST_ECDH_RANDOM));
+		break;
+	case SET_TLS_SESSION_KEY:
+		break;
+	}
+	
+	if (ecdh_value_struct_size == sizeof(ST_ECDH_PRE_MASTER_SECRET)){
+
+	}
+	int nret = do_normal_process(ECDH, 0, en_ecdh_mode, buff->buffer, buff->size, &precvbuff);
+	if (nret < 0) goto END;
+
+	memcpy(Q_chip, precvbuff->buffer, sizeof(ST_ECC_PUBLIC));
+	memcpy(ecdh_value, precvbuff->buffer + sizeof(ST_ECC_PUBLIC), ecdh_value_struct_size);
+
+
+END:
+	if (precvbuff) free(precvbuff);
+
+	return nret;
+
+
+
+}
+G3_API_RESULT g3api_tls_mac_encrypt(IN int seq_num, IN EN_CONTENT_TYPE content_type, IN EN_TLS_VERSION tls_version, IN ST_IV* client_iv, IN const byte* msg, IN int msg_size, OUT byte* crypto, INOUT int * crypto_size)
+{
+
+	api_view("g3api_tls_mac_encrypt");
+	VAR_BYTES *precvbuff = NULL;
+	TLS_INTER_HEADER tls_inter_header = {0,};
+	tls_inter_header.lo_be_sequence = seq_num;
+	tls_inter_header.tls_be_ver = tls_version;
+	tls_inter_header.msg_be_size = msg_size;
+	tls_inter_header.content_type = content_type;
+
+	
+	SwapBytes(&tls_inter_header.lo_be_sequence,4);
+	SwapBytes(&tls_inter_header.tls_be_ver, 2);
+	SwapBytes(&tls_inter_header.msg_be_size, 2);
+
+	
+
+
+	VAR_BYTES * buff = create_var_bytes(&tls_inter_header, sizeof(TLS_INTER_HEADER));
+
+	append_var_bytes(&buff, client_iv, sizeof(ST_IV));
+
+
+
+	int nret = do_normal_process(TLS_MAC_ENC, 0, 0, buff->buffer, buff->size, &precvbuff);
+	if (nret < 0) goto END;
+
+	byte* pubb = (byte*) msg;
+
+	
+	int tail_size = msg_size % 16;
+	int remain_size = msg_size - tail_size;
+	int unit_size = 240;
+
+	int index = 0;
+	while (remain_size>0)
+	{
+		int realsize = min(remain_size, unit_size);
+		fprintf(_fp, "remain_size:%d realsize : %d\n", remain_size,realsize);
+
+		//VAR_BYTES *precvbuff = NULL;
+		int unit_pub_pos = -1;
+
+
+		nret = do_normal_process(TLS_MAC_ENC, 0, 1, pubb,realsize, &precvbuff);
+		if (nret < 0) return nret;
+
+		pubb += unit_size;
+		remain_size -= unit_size;
+
+		index++;
+	};
+	fprintf(_fp, "remain_size:%d tail_size : %d\n", remain_size, tail_size);
+
+	nret = do_normal_process(TLS_MAC_ENC, 0, 0xff, pubb, tail_size, &precvbuff);
+	if (nret < 0) goto END;
+
+	
+
+END:
+	if (buff) free(buff);
+	if (precvbuff) free(precvbuff);
+
+	return nret;
+
+
+
+}
+
+G3_API_RESULT g3api_tls_decrypt_verify(IN int seq_num, IN EN_CONTENT_TYPE content_type, IN EN_TLS_VERSION tls_version, IN ST_IV* server_iv, IN const byte* crypto, IN int crypto_size, OUT byte* msg, INOUT int* msg_size)
+{
+
+	api_view("g3api_tls_decrypt_verify");
+	return 0;
+	VAR_BYTES *precvbuff = NULL;
+	int nret = do_normal_process(TLS_DEC_VERIFY, 0, 0, NULL, 0, &precvbuff);
+	if (nret < 0) goto END;
+
+
+END:
+	if (precvbuff) free(precvbuff);
+
+	return nret;
+
+
+
+}
 VAR_BYTES * _testbuff = NULL;
 
 G3_API_RESULT g3api_test(const unsigned char * in, int in_size)
@@ -773,42 +887,6 @@ G3_API_RESULT g3api_diversify(IN int key_index,IN EN_DIVERSIFY_MODE diversify_mo
 	api_view("g3api_diversify");
 	VAR_BYTES *precvbuff = NULL;
 	int nret = do_normal_process(DIVERSIFY, 0, 0, NULL, 0, &precvbuff);
-	if (nret < 0) goto END;
-
-
-END:
-	if (precvbuff) free(precvbuff);
-	
-	return nret;
-
-	
-	
-}	
-	
-G3_API_RESULT g3api_tls_mac_encrypt(IN int seq_num,IN EN_CONTENT_TYPE content_type,IN EN_TLS_VERSION tls_version,IN ST_IV* client_iv,IN const unsigned char* msg,IN int msg_size,OUT unsigned char* crypto,INOUT int * crypto_size)
-{
-
-	api_view("g3api_tls_mac_encrypt");
-	VAR_BYTES *precvbuff = NULL;
-	int nret = do_normal_process(TLS_MAC_ENC, 0, 0, NULL, 0, &precvbuff);
-	if (nret < 0) goto END;
-
-
-END:
-	if (precvbuff) free(precvbuff);
-	
-	return nret;
-
-	
-	
-}	
-	
-G3_API_RESULT g3api_tls_decrypt_verify(IN int seq_num,IN EN_CONTENT_TYPE content_type,IN EN_TLS_VERSION tls_version,IN ST_IV* client_iv,IN const unsigned char* crypto,IN int * crypto_size,OUT unsigned char* msg,INOUT int msg_size)
-{
-
-	api_view("g3api_tls_decrypt_verify");
-	VAR_BYTES *precvbuff = NULL;
-	int nret = do_normal_process(TLS_DEC_VERIFY, 0, 0, NULL, 0, &precvbuff);
 	if (nret < 0) goto END;
 
 
