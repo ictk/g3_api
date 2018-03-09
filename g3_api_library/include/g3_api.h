@@ -439,13 +439,23 @@ G3_API G3_API_RESULT g3api_decryption_ecies
 *   @brief  
 *
 *   @param key_index key sector index
+*   @param en_session_mode 
+*   @param indata 
+*   @param indata_size 
+*   @param outdata 
+*   @param outdata_size 
 
 *   @return G3_API_RESULT
 */
 //###################################################
 G3_API G3_API_RESULT g3api_session
 (
-		IN int key_index
+		IN int key_index,
+		IN EN_SESSION_MODE en_session_mode,
+		IN const byte* indata,
+		IN int indata_size,
+		OUT byte* outdata,
+		INOUT int* outdata_size
 );
 
 	
@@ -579,6 +589,7 @@ G3_API G3_API_RESULT g3api_ecdh
 *   @param content_type 
 *   @param tls_version 
 *   @param client_iv 
+*   @param header_random 
 *   @param msg 
 *   @param msg_size 
 *   @param crypto 
@@ -592,7 +603,8 @@ G3_API G3_API_RESULT g3api_tls_mac_encrypt
 		IN int seq_num,
 		IN EN_CONTENT_TYPE content_type,
 		IN EN_TLS_VERSION tls_version,
-		IN ST_IV* client_iv,
+		IN const ST_IV* client_iv,
+		IN const ST_DATA_16* header_random,
 		IN const byte* msg,
 		IN int msg_size,
 		OUT byte* crypto,
@@ -611,6 +623,7 @@ G3_API G3_API_RESULT g3api_tls_mac_encrypt
 *   @param server_iv 
 *   @param crypto 
 *   @param crypto_size 
+*   @param header_random 
 *   @param msg 
 *   @param msg_size 
 
@@ -622,9 +635,10 @@ G3_API G3_API_RESULT g3api_tls_decrypt_verify
 		IN int seq_num,
 		IN EN_CONTENT_TYPE content_type,
 		IN EN_TLS_VERSION tls_version,
-		IN ST_IV* server_iv,
+		IN const ST_IV* server_iv,
 		IN const byte* crypto,
 		IN int crypto_size,
+		OUT ST_DATA_16* header_random,
 		OUT byte* msg,
 		INOUT int* msg_size
 );

@@ -61,7 +61,7 @@ void api_view(const char *title)
 {
 	fprintf(_fp,"\n#######################\n%s\n#######################\n", title);
 }
-void view_hexstr(const char *title,void *pbuff, int size)
+void view_hexstr(const char *title,const void *pbuff, int size)
 {
 	fprintf(_fp,"%s:\n", title);
 	unsigned char *pbyte = (unsigned char *)pbuff;
@@ -199,11 +199,11 @@ G3_API_RESULT do_normal_process(char inst, char p1, short p2, const void * data,
 	int packet_size = 0;
 	int packet_ieb100_size = 0;
 	G3_API_RESULT nRet = 0;
-	if (recv_buff) {
-		*recv_buff = NULL;
+	//if (recv_buff) {
+	//	*recv_buff = NULL;
 
-		//memcpy(precvbuff->buffer, &buff[1], recv_size - 3);
-	}
+	//	//memcpy(precvbuff->buffer, &buff[1], recv_size - 3);
+	//}
 	map<int, int> map_size_per_inst = get_map_size();
 
 	int max_res_size = map_size_per_inst[(unsigned char)inst];
@@ -256,10 +256,15 @@ G3_API_RESULT do_normal_process(char inst, char p1, short p2, const void * data,
 	
 
 	if (recv_buff) {
-		VAR_BYTES *precvbuff = alloc_var_bytes(recv_size - 3);
-		*recv_buff = precvbuff;
-		
-		memcpy(precvbuff->buffer, &buff[1], recv_size - 3);
+		if (*recv_buff == NULL){
+			*recv_buff = alloc_var_bytes( 0);
+		}
+		append_var_bytes(recv_buff, &buff[1], recv_size - 3);
+
+		//VAR_BYTES *precvbuff = alloc_var_bytes(recv_size - 3);
+		//*recv_buff = precvbuff;
+		//
+		//memcpy(precvbuff->buffer, &buff[1], recv_size - 3);
 	}
 	//if (real_recv_size) *real_recv_size = recv_size - 3;
 

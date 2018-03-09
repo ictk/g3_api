@@ -191,6 +191,16 @@ enum EN_ECDH_MODE
 	GEN_TLS_BLOCK=0x0011,
 	SET_TLS_SESSION_KEY=0x0012,	 
 };   	
+
+enum EN_SESSION_MODE  
+{
+	SYMM_KEY=0x80,
+	FACTORY_AES=0x90,
+	FACTORY_SM4=0x91,
+	EXT_SESSION_KEY_AES=0xA0,
+	EXT_SESSION_KEY_SM4=0xA1,
+	EXT_PUB_KEY=0xA2,	 
+};   	
 //END ENUM
 
 
@@ -327,6 +337,22 @@ typedef struct _tagST_ECDH_RANDOM{
 	byte server[32];
 	byte client[32];;
 }ST_ECDH_RANDOM, *LPST_ECDH_RANDOM;
+
+typedef struct _tagST_DATA_16{
+	byte data[16];;
+}ST_DATA_16, *LPST_DATA_16;
+
+typedef struct _tagST_DATA_32{
+	byte data[32];;
+}ST_DATA_32, *LPST_DATA_32;
+
+typedef struct _tagST_DATA_64{
+	byte data[64];;
+}ST_DATA_64, *LPST_DATA_64;
+
+typedef struct _tagST_DATA_128{
+	byte data[128];;
+}ST_DATA_128, *LPST_DATA_128;
    
 #pragma pack(pop)  
 	//END STRUCTURE
