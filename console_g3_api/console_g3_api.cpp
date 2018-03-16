@@ -8,7 +8,7 @@
 #include "CSerialRS232.h"
 #include "neoCoLib.h"
 #include "neoDebug.h"
-#include "g3_api.h"
+#include <g3_api.h>
 #include "sample_def.h"
 
 //#include<windows.h>
@@ -144,7 +144,7 @@ int main(int argc, char* argv[])
 	//general_read_write();
 	general_sign_verify();
 
-	test_scenario_sample();
+	//test_scenario_sample();
 #if 0	
 		
 	

@@ -1,4 +1,4 @@
-#include"g3_api.h"
+#include <g3_api.h>
 #include "inter_def.h"
 #include <stdlib.h>
 #include <memory.h>
@@ -313,8 +313,8 @@ int check_sign_struct(EN_SIGN_OPTION sign_option, int structure_size)
 {
 	switch (sign_option)
 	{
-	case SIGN_ECDSA:
-	case SIGN_ECDSA_SHA256:
+	case SIGN_ECDSA_EXT_SHA256:
+	case SIGN_ECDSA_WITH_SHA256:
 		if (structure_size != sizeof(ST_SIGN_ECDSA)){
 			return RET_ERR_SIGN_MODE_PARSE_ERR;
 		}
@@ -341,10 +341,10 @@ int check_vefify_struct(EN_VERIFY_OPTION verify_option, int structure_size)
 {
 	switch (verify_option)
 	{
-	case VERYFY_ECDSA:
-	case VERYFY_ECDSA_SHA256:
-	case VERYFY_CERT_PUB_ECDSA:
-	case VERYFY_CERT_PUB_ECDSA_SHA256:
+	case VERYFY_ECDSA_EXT_SHA256:
+	case VERYFY_ECDSA_WITH_SHA256:
+	case VERYFY_EXT_PUB_ECDSA_EXT_SHA256:
+	case VERYFY_EXT_PUB_ECDSA_WITH_SHA256:
 		if (structure_size != sizeof(ST_SIGN_ECDSA)){
 			return RET_ERR_SIGN_MODE_PARSE_ERR;
 		}

@@ -1,7 +1,8 @@
 #include "value_define.h"
-#include "g3_api.h"
+
 #include "neoCoLib.h"
 #include "neoDebug.h"
+#include <g3_api.h>
 #include <openssl/hmac.h>
 
 void print_result(const char * title, int ret);
@@ -52,14 +53,28 @@ void general_sign_verify()
 
 	VECBYTE vecbyte = NCL::HexStr2Byte("72CF56F5BF877DCF5823691682E9824C0B9742D1E0B41D288B478ECEF5218BAA");
 
-	ret = g3api_sign(4, EN_SIGN_OPTION::SIGN_ECDSA, V2A(vecbyte), vecbyte.size(), &sign, sizeof(ST_SIGN_ECDSA));
+	ret = g3api_sign(4, EN_SIGN_OPTION::SIGN_ECDSA_EXT_SHA256, V2A(vecbyte), vecbyte.size(), &sign, sizeof(ST_SIGN_ECDSA));
 	print_result_value("sign key", ret, &sign, sizeof(ST_SIGN_ECDSA));
 
-	ret = g3api_verify(1, EN_VERIFY_OPTION::VERYFY_ECDSA, V2A(vecbyte), vecbyte.size(), &sign, sizeof(ST_SIGN_ECDSA));
+	ret = g3api_verify(1, EN_VERIFY_OPTION::VERYFY_ECDSA_EXT_SHA256, V2A(vecbyte), vecbyte.size(), &sign, sizeof(ST_SIGN_ECDSA));
+	print_result("g3api_verify key", ret);
+	ST_DATA_32 st_data_32;
+	
+	ret = g3api_set_extern_public_key(ext_pubkey, sizeof(ext_pubkey), &st_data_32);
+	print_result("g3api_set_extern_public_key key", ret);
+	print_value("chal", &st_data_32, sizeof(ST_DATA_32));
+	
+	ret = g3api_verify(1, EN_VERIFY_OPTION::VERYFY_EXT_PUB_ECDSA_WITH_SHA256, org_msg, sizeof(org_msg), sign_rs, sizeof(sign_rs));
 	print_result("g3api_verify key", ret);
 
+	ret = g3api_verify(1, EN_VERIFY_OPTION::VERYFY_EXT_PUB_ECDSA_EXT_SHA256, org_msg_hash, sizeof(org_msg_hash), sign_rs, sizeof(sign_rs));
+	print_result("g3api_verify key", ret);
+
+	
 
 
+}
+void test_scenario_scenariol(){
 
 }
 void test_scenario_sample()

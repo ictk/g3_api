@@ -461,6 +461,26 @@ G3_API G3_API_RESULT g3api_session
 	
 //###################################################	
 /**
+*   @name g3api_set_extern_public_key
+*   @brief  
+*
+*   @param pub_key enable 4 follow structure ST_ECC_PUBLIC,ST_ECC_PUBLIC_COMPRESS
+*   @param structure_size 
+*   @param puk_hash 
+
+*   @return G3_API_RESULT
+*/
+//###################################################
+G3_API G3_API_RESULT g3api_set_extern_public_key
+(
+		IN const void* pub_key,
+		IN int structure_size,
+		OUT ST_DATA_32* puk_hash
+);
+
+	
+//###################################################	
+/**
 *   @name g3api_diversify
 *   @brief  
 *

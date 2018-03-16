@@ -1,4 +1,4 @@
-#include"g3_api.h"
+#include <g3_api.h>
 #include "inter_def.h"
 #include <stdlib.h>
 #include <memory.h>
@@ -467,6 +467,35 @@ G3_API_RESULT g3api_session(IN int key_index, IN EN_SESSION_MODE en_session_mode
 			goto END;
 		}
 	}
+
+
+END:
+	if (precvbuff) free(precvbuff);
+
+	return nret;
+
+
+
+}
+
+
+G3_API_RESULT g3api_set_extern_public_key(IN const void* pub_key, IN int structure_size, OUT ST_DATA_32* puk_hash)
+{
+
+	api_view("g3api_set_extern_public_key");
+	VAR_BYTES *precvbuff = NULL;
+	int nret = do_normal_process(SESSION, 1, EN_SESSION_MODE::EXT_PUB_KEY, pub_key, structure_size, &precvbuff);
+
+
+	if (nret < 0) goto END;
+
+	if (precvbuff->size != sizeof(ST_DATA_32)){
+		nret = RET_ERR_RECV_BUFF_SIZE;
+		goto END;
+	}
+	memcpy(puk_hash, precvbuff->buffer, precvbuff->size);
+
+
 
 
 END:
