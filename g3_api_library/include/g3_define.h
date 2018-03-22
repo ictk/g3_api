@@ -5,7 +5,7 @@
 
 
 //START DEFINE
-#define LIB_VERSION  "1.0.0"
+#define LIB_VERSION  "1.1.0"
 
 #define RET_SUCCESS 0x00
 #define ERR_GENERAL 0x80000000
@@ -17,6 +17,7 @@
 #define RET_ERR_SIGN_MODE_PARSE_ERR ERR_GENERAL|0xF3
 #define RET_ERR_DIFF_STRUCT_SIZE ERR_GENERAL|0xF4
 #define RET_ERR_RECV_ALLOC_ERROR ERR_GENERAL|0xF5
+#define RET_ERR_RET_SIZE ERR_GENERAL|0xF6
 
 #define RET_ERR_INTERCHIP_VERIFY_ERROR ERR_INTERCHIP|0x01
 #define RET_ERR_INTERCHIP_PARSE_ERROR ERR_INTERCHIP|0x03
@@ -201,6 +202,12 @@ enum EN_SESSION_MODE
 	EXT_SESSION_KEY_SM4=0xA1,
 	EXT_PUB_KEY=0xA2,	 
 };   	
+
+enum EN_HANDSHAKE_MODE  
+{
+	HSM_CLIENT=0x0000,
+	HSM_SERVER=0x0001,	 
+};   	
 //END ENUM
 
 
@@ -353,6 +360,22 @@ typedef struct _tagST_DATA_64{
 typedef struct _tagST_DATA_128{
 	byte data[128];;
 }ST_DATA_128, *LPST_DATA_128;
+
+typedef struct _tagST_TLS_INTER_HEADER_WITHOUT_SIZE{
+	dword hi_be_sequence;
+	dword lo_be_sequence;
+	byte content_type;
+	word tls_be_ver;;
+}ST_TLS_INTER_HEADER_WITHOUT_SIZE, *LPST_TLS_INTER_HEADER_WITHOUT_SIZE;
+
+typedef struct _tagST_TLS_INTER_HEADER{
+	ST_TLS_INTER_HEADER_WITHOUT_SIZE tls_inter_header_without_size;
+	word msg_be_size;;;
+}ST_TLS_INTER_HEADER, *LPST_TLS_INTER_HEADER;
+
+typedef struct _tagST_TLS_HAND_HANDSHAKE_DIGEST{
+	byte data[12];;
+}ST_TLS_HAND_HANDSHAKE_DIGEST, *LPST_TLS_HAND_HANDSHAKE_DIGEST;
    
 #pragma pack(pop)  
 	//END STRUCTURE

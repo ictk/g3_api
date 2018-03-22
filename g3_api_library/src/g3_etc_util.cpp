@@ -71,6 +71,16 @@ void SwapBytes(void* value, int size)
 
 
 }
+
+void SetBevalue(void* outvalue, int size,int value)
+{
+	memcpy(outvalue, &value, size);
+
+	SwapBytes(outvalue, size);
+
+}
+
+
 unsigned long calcCRCByTable(unsigned char* data, int iLength, const unsigned short *crctable)
 {
 	unsigned long crc = 0;

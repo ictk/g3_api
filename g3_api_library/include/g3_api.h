@@ -602,12 +602,32 @@ G3_API G3_API_RESULT g3api_ecdh
 	
 //###################################################	
 /**
-*   @name g3api_tls_mac_encrypt
+*   @name g3api_make_tls_inter_header_without_size
 *   @brief  
 *
 *   @param seq_num 
 *   @param content_type 
 *   @param tls_version 
+*   @param tls_inter_header_without_size 
+
+*   @return G3_API_RESULT
+*/
+//###################################################
+G3_API G3_API_RESULT g3api_make_tls_inter_header_without_size
+(
+		IN int seq_num,
+		IN EN_CONTENT_TYPE content_type,
+		IN EN_TLS_VERSION tls_version,
+		OUT ST_TLS_INTER_HEADER_WITHOUT_SIZE* tls_inter_header_without_size
+);
+
+	
+//###################################################	
+/**
+*   @name g3api_tls_mac_encrypt
+*   @brief  
+*
+*   @param tls_inter_header_without_size 
 *   @param client_iv 
 *   @param header_random 
 *   @param msg 
@@ -620,9 +640,7 @@ G3_API G3_API_RESULT g3api_ecdh
 //###################################################
 G3_API G3_API_RESULT g3api_tls_mac_encrypt
 (
-		IN int seq_num,
-		IN EN_CONTENT_TYPE content_type,
-		IN EN_TLS_VERSION tls_version,
+		IN const ST_TLS_INTER_HEADER_WITHOUT_SIZE* tls_inter_header_without_size,
 		IN const ST_IV* client_iv,
 		IN const ST_DATA_16* header_random,
 		IN const byte* msg,
@@ -637,9 +655,7 @@ G3_API G3_API_RESULT g3api_tls_mac_encrypt
 *   @name g3api_tls_decrypt_verify
 *   @brief  
 *
-*   @param seq_num 
-*   @param content_type 
-*   @param tls_version 
+*   @param tls_inter_header_without_size 
 *   @param server_iv 
 *   @param crypto 
 *   @param crypto_size 
@@ -652,15 +668,33 @@ G3_API G3_API_RESULT g3api_tls_mac_encrypt
 //###################################################
 G3_API G3_API_RESULT g3api_tls_decrypt_verify
 (
-		IN int seq_num,
-		IN EN_CONTENT_TYPE content_type,
-		IN EN_TLS_VERSION tls_version,
+		IN const ST_TLS_INTER_HEADER_WITHOUT_SIZE* tls_inter_header_without_size,
 		IN const ST_IV* server_iv,
 		IN const byte* crypto,
 		IN int crypto_size,
 		OUT ST_DATA_16* header_random,
 		OUT byte* msg,
 		INOUT int* msg_size
+);
+
+	
+//###################################################	
+/**
+*   @name g3api_tls_get_handshake_digest
+*   @brief  
+*
+*   @param handshake_mode 
+*   @param hash_handshake_msg 
+*   @param handshake_digest 
+
+*   @return G3_API_RESULT
+*/
+//###################################################
+G3_API G3_API_RESULT g3api_tls_get_handshake_digest
+(
+		IN EN_HANDSHAKE_MODE handshake_mode,
+		IN const ST_DATA_32* hash_handshake_msg,
+		OUT ST_TLS_HAND_HANDSHAKE_DIGEST* handshake_digest
 );
 
 	

@@ -84,6 +84,9 @@ int test_byload(){
 void test_prf();
 void general_sign_verify();
 void test_scenario_sample();
+void test_scenario_sample2();
+void test_scenario_sample3();
+
 void init_fp(){
 
 	_fp = fopen("out.txt", "wb");
@@ -142,9 +145,9 @@ int main(int argc, char* argv[])
 	ret = g3api_get_chellange(32, recvbuff, &recvbuff_size);
 
 	//general_read_write();
-	general_sign_verify();
+	//general_sign_verify();
 
-	//test_scenario_sample();
+	test_scenario_sample3();
 #if 0	
 		
 	
