@@ -12,10 +12,10 @@ WINDRES = windres
 OBJDIR = obj/gnu
 INC = -Iinclude -I../../BASE/include
 #DEFINC=-D_USE_UTF8_ -DNEOUSEMBCS -DNEO_STATIC -DLSA_EXPORTS_NOUSE -D__NOTUSEOPENSSL__
-DEFCFLAGS=-Wall -O2 -fPIC 
+DEFCFLAGS=-Wall -O2 -fPIC  -fpermissive
 DEFINC=-D_USE_UTF8_ -DNEOUSEMBCS -DNEO_STATIC -DLSA_EXPORTS_NOUSE
 # -DNEODEBUG
-DEFCFLAGS=-Wall -O2 -fPIC -Wl,-Bsymbolic
+DEFCFLAGS=-Wall -O2 -fPIC -Wl,-Bsymbolic -fpermissive
 #LIB = ../lib/gnu/libcrypto.a
 LDFLAGS      = -shared -fPIC -ldl
 OUTDIR = ../lib/gnu

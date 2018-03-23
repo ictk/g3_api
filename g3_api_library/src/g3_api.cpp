@@ -485,7 +485,7 @@ G3_API_RESULT g3api_set_extern_public_key(IN const void* pub_key, IN int structu
 
 	api_view("g3api_set_extern_public_key");
 	VAR_BYTES *precvbuff = NULL;
-	int nret = do_normal_process(SESSION, 1, EN_SESSION_MODE::EXT_PUB_KEY, pub_key, structure_size, &precvbuff);
+	int nret = do_normal_process(SESSION, 1, EXT_PUB_KEY, pub_key, structure_size, &precvbuff);
 
 
 	if (nret < 0) goto END;
@@ -692,7 +692,12 @@ G3_API_RESULT tls_crypto_temp(int cmd, IN const ST_TLS_INTER_HEADER* tls_inter_h
 	int tail_size,
 	VAR_BYTES **pprecvbuff)
 {
+	int last_index = 0;
+	int remain_size =0;
+	int unit_size = 240;
 
+	int index = 0;
+	byte* pubb = NULL;
 
 	if (!iv || !in || !pprecvbuff){
 		return RET_ERR_RECV_ALLOC_ERROR;
@@ -720,15 +725,15 @@ G3_API_RESULT tls_crypto_temp(int cmd, IN const ST_TLS_INTER_HEADER* tls_inter_h
 
 
 
-	byte* pubb = (byte*)in;
+	pubb = (byte*)in;
 	//byte* pubb = (byte*) msg;
 	view_hexstr("in", in, in_size);
 
 	//int tail_size = in_size % 16;
-	int remain_size = in_size - tail_size;
-	int unit_size = 240;
+	remain_size = in_size - tail_size;
+	unit_size = 240;
 
-	int index = 0;
+	index = 0;
 	while (remain_size>0)
 	{
 		int realsize = min(remain_size, unit_size);
@@ -763,7 +768,7 @@ G3_API_RESULT tls_crypto_temp(int cmd, IN const ST_TLS_INTER_HEADER* tls_inter_h
 		goto END;
 	}
 
-	int last_index = 0;
+	
 	if (cmd == TLS_DEC_VERIFY){
 		last_index = 1;
 
