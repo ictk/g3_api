@@ -18,12 +18,12 @@ void general_read_write()
 	int recvbuff_size = 1024;
 	int ret = 0;
 
-	ret = g3api_read_key_value(1, EN_AREA_TYPE::KEY_AREA, EN_RW_INST_OPTION::PLAIN_TEXT, &recv_key,  sizeof(ST_KEY_VALUE));
+	ret = g3api_read_key_value(1, KEY_AREA, PLAIN_TEXT, &recv_key,  sizeof(ST_KEY_VALUE));
 	print_result_value("read key", ret, &recv_key, sizeof(ST_KEY_VALUE));
 	
 	//printf("ret:0x%x recv %s %d \n", ret, NCL::BytetoHexStr(recvbuff, recvbuff_size).c_str(), recvbuff_size);
 
-	ret = g3api_write_key_value(1, EN_AREA_TYPE::KEY_AREA, EN_RW_INST_OPTION::PLAIN_TEXT, &recv_key, sizeof(ST_KEY_VALUE));
+	ret = g3api_write_key_value(1, KEY_AREA, PLAIN_TEXT, &recv_key, sizeof(ST_KEY_VALUE));
 	print_result("write key", ret);
 	//printf("ret:0x%x recv %s %d \n", ret, NCL::BytetoHexStr(recvbuff, recvbuff_size).c_str(), recvbuff_size);
 
@@ -31,13 +31,13 @@ void general_read_write()
 
 	//vecbyte = NCL::HexStr2Byte("72CF56F5BF877DCF5823691682E9824C0B9742D1E0B41D288B478ECEF5218BAA");
 	set_buff_from_hexstr(&write_key, "72CF56F5BF877DCF5823691682E9824C0B9742D1E0B41D288B478ECEF5218BAA");
-	ret = g3api_write_key_value(0, EN_AREA_TYPE::DATA_AREA_0, EN_RW_INST_OPTION::PLAIN_TEXT, &write_key, sizeof(ST_KEY_VALUE));
+	ret = g3api_write_key_value(0, DATA_AREA_0, PLAIN_TEXT, &write_key, sizeof(ST_KEY_VALUE));
 	print_result("write key", ret);
 	
 
 	//printf("ret:0x%x recv %s %d \n", ret, NCL::BytetoHexStr(recvbuff, recvbuff_size).c_str(), recvbuff_size);
 
-	ret = g3api_read_key_value(0, EN_AREA_TYPE::DATA_AREA_0, EN_RW_INST_OPTION::PLAIN_TEXT, &recv_key, sizeof(ST_KEY_VALUE));
+	ret = g3api_read_key_value(0, DATA_AREA_0, PLAIN_TEXT, &recv_key, sizeof(ST_KEY_VALUE));
 
 	print_result_value("read key", ret, &recv_key, sizeof(ST_KEY_VALUE));
 	
@@ -53,10 +53,10 @@ void general_sign_verify()
 
 	VECBYTE vecbyte = NCL::HexStr2Byte("72CF56F5BF877DCF5823691682E9824C0B9742D1E0B41D288B478ECEF5218BAA");
 
-	ret = g3api_sign(4, EN_SIGN_OPTION::SIGN_ECDSA_EXT_SHA256, V2A(vecbyte), vecbyte.size(), &sign, sizeof(ST_SIGN_ECDSA));
+	ret = g3api_sign(4, SIGN_ECDSA_EXT_SHA256, V2A(vecbyte), vecbyte.size(), &sign, sizeof(ST_SIGN_ECDSA));
 	print_result_value("sign key", ret, &sign, sizeof(ST_SIGN_ECDSA));
 
-	ret = g3api_verify(1, EN_VERIFY_OPTION::VERYFY_ECDSA_EXT_SHA256, V2A(vecbyte), vecbyte.size(), &sign, sizeof(ST_SIGN_ECDSA));
+	ret = g3api_verify(1, VERYFY_ECDSA_EXT_SHA256, V2A(vecbyte), vecbyte.size(), &sign, sizeof(ST_SIGN_ECDSA));
 	print_result("g3api_verify key", ret);
 	ST_DATA_32 st_data_32;
 	
@@ -64,10 +64,10 @@ void general_sign_verify()
 	print_result("g3api_set_extern_public_key key", ret);
 	print_value("chal", &st_data_32, sizeof(ST_DATA_32));
 	
-	ret = g3api_verify(1, EN_VERIFY_OPTION::VERYFY_EXT_PUB_ECDSA_WITH_SHA256, org_msg, sizeof(org_msg), sign_rs, sizeof(sign_rs));
+	ret = g3api_verify(1, VERYFY_EXT_PUB_ECDSA_WITH_SHA256, org_msg, sizeof(org_msg), sign_rs, sizeof(sign_rs));
 	print_result("g3api_verify key", ret);
 
-	ret = g3api_verify(1, EN_VERIFY_OPTION::VERYFY_EXT_PUB_ECDSA_EXT_SHA256, org_msg_hash, sizeof(org_msg_hash), sign_rs, sizeof(sign_rs));
+	ret = g3api_verify(1, VERYFY_EXT_PUB_ECDSA_EXT_SHA256, org_msg_hash, sizeof(org_msg_hash), sign_rs, sizeof(sign_rs));
 	print_result("g3api_verify key", ret);
 
 	
@@ -133,7 +133,7 @@ void test_scenario_sample()
 	pubout 623CB27B2A45B9A613C00D165EDBE082931F0DC446298FE27FED4B311212A375429E5BFC656E3B07559663F20ACAB716163EA6DDBF25757B9C246257B25A9FF2
 
 	*/
-	ret = g3api_ecdh(EN_ECDH_MODE::GEN_TLS_BLOCK , outer_pub_key , sizeof(outer_pub_key) , &st_ecdh_random , &Q_chip , &st_ecdh_key_block , sizeof(ST_ECDH_KEY_BLOCK));
+	ret = g3api_ecdh(GEN_TLS_BLOCK , outer_pub_key , sizeof(outer_pub_key) , &st_ecdh_random , &Q_chip , &st_ecdh_key_block , sizeof(ST_ECDH_KEY_BLOCK));
 	print_result("g3api_ecdh", ret);
 	print_value("st_ecdh_key_block",&st_ecdh_key_block,sizeof(ST_ECDH_KEY_BLOCK));
 	print_value("Q_chip",&Q_chip,sizeof(ST_ECC_PUBLIC));
@@ -143,7 +143,7 @@ void test_scenario_sample()
 	ST_ECDH_IV st_ecdh_iv = { 0, };
 	memcpy(&st_ecdh_random, server_ecdh_random, sizeof(server_ecdh_random));
 	
-	ret = g3api_ecdh(EN_ECDH_MODE::SET_TLS_SESSION_KEY, outer_pub_key, sizeof(outer_pub_key), &st_ecdh_random, &Q_chip, &st_ecdh_iv, sizeof(ST_ECDH_IV));
+	ret = g3api_ecdh(SET_TLS_SESSION_KEY, outer_pub_key, sizeof(outer_pub_key), &st_ecdh_random, &Q_chip, &st_ecdh_iv, sizeof(ST_ECDH_IV));
 	print_result("g3api_ecdh", ret);
 	print_value("st_ecdh_iv",&st_ecdh_iv,sizeof(ST_ECDH_IV));
 	print_value("Q_chip",&Q_chip,sizeof(ST_ECC_PUBLIC));
@@ -151,7 +151,7 @@ void test_scenario_sample()
 	ST_TLS_INTER_HEADER_WITHOUT_SIZE st_tls_inter_header_without_size;
 
 
-	ret = g3api_make_tls_inter_header_without_size(0, EN_CONTENT_TYPE::APPLICATION_DATA, EN_TLS_VERSION::TLS_1_2, &st_tls_inter_header_without_size);
+	ret = g3api_make_tls_inter_header_without_size(0, APPLICATION_DATA, TLS_1_2, &st_tls_inter_header_without_size);
 	print_result("g3api_make_tls_inter_header_without_size", ret);
 	print_value("st_tls_inter_header_without_size", &st_tls_inter_header_without_size, sizeof(ST_TLS_INTER_HEADER_WITHOUT_SIZE));
 
@@ -187,7 +187,7 @@ void test_scenario_sample()
 	print_value("outbuff", outbuff2, out_size2);
 #endif
 	
-	/*ret = g3api_certification(6, EN_CERTIFICATION_WRITE_MODE::TO_KEY_SECTOR, cert, sizeof(cert));
+	/*ret = g3api_certification(6, TO_KEY_SECTOR, cert, sizeof(cert));
 	print_result("g3api_certification", ret);*/
 
 	
@@ -280,7 +280,7 @@ void test_scenario_sample2()
 	memcpy(st_ecdh_random.server, server_random, sizeof(server_random));
 
 
-	ret = g3api_ecdh(EN_ECDH_MODE::GEN_TLS_BLOCK, pubkey, sizeof(pubkey), &st_ecdh_random, &Q_chip, &st_ecdh_key_block, sizeof(ST_ECDH_KEY_BLOCK));
+	ret = g3api_ecdh(GEN_TLS_BLOCK, pubkey, sizeof(pubkey), &st_ecdh_random, &Q_chip, &st_ecdh_key_block, sizeof(ST_ECDH_KEY_BLOCK));
 	print_result("g3api_ecdh", ret);
 	print_value("st_ecdh_key_block", &st_ecdh_key_block, sizeof(ST_ECDH_KEY_BLOCK));
 	print_value("result_keyblock", result_keyblock, sizeof(result_keyblock));
@@ -292,7 +292,7 @@ void test_scenario_sample2()
 	ST_ECDH_IV st_ecdh_iv = { 0, };
 	//memcpy(&st_ecdh_random, server_ecdh_random, sizeof(server_ecdh_random));
 
-	ret = g3api_ecdh(EN_ECDH_MODE::SET_TLS_SESSION_KEY, pubkey, sizeof(pubkey), &st_ecdh_random, &Q_chip, &st_ecdh_iv, sizeof(ST_ECDH_IV));
+	ret = g3api_ecdh(SET_TLS_SESSION_KEY, pubkey, sizeof(pubkey), &st_ecdh_random, &Q_chip, &st_ecdh_iv, sizeof(ST_ECDH_IV));
 	print_result("g3api_ecdh", ret);
 	print_value("st_ecdh_iv", &st_ecdh_iv, sizeof(ST_ECDH_IV));
 	print_value("Q_chip", &Q_chip, sizeof(ST_ECC_PUBLIC));
@@ -303,7 +303,7 @@ void test_scenario_sample2()
 	ST_TLS_INTER_HEADER_WITHOUT_SIZE st_tls_inter_header_without_size;
 
 
-	ret = g3api_make_tls_inter_header_without_size(0, EN_CONTENT_TYPE::APPLICATION_DATA, EN_TLS_VERSION::TLS_1_2, &st_tls_inter_header_without_size);
+	ret = g3api_make_tls_inter_header_without_size(0, APPLICATION_DATA, TLS_1_2, &st_tls_inter_header_without_size);
 	print_result("g3api_make_tls_inter_header_without_size", ret);
 	print_value("st_tls_inter_header_without_size", &st_tls_inter_header_without_size, sizeof(ST_TLS_INTER_HEADER_WITHOUT_SIZE));
 
@@ -348,7 +348,7 @@ void test_scenario_sample2()
 	
 #endif
 
-	/*ret = g3api_certification(6, EN_CERTIFICATION_WRITE_MODE::TO_KEY_SECTOR, cert, sizeof(cert));
+	/*ret = g3api_certification(6, TO_KEY_SECTOR, cert, sizeof(cert));
 	print_result("g3api_certification", ret);*/
 
 
@@ -455,7 +455,7 @@ void test_scenario_sample3()
 	memcpy(st_ecdh_random.server, server_random, sizeof(server_random));
 
 
-	ret = g3api_ecdh(EN_ECDH_MODE::GEN_TLS_BLOCK, pubkey, sizeof(pubkey), &st_ecdh_random, &Q_chip, &st_ecdh_key_block, sizeof(ST_ECDH_KEY_BLOCK));
+	ret = g3api_ecdh(GEN_TLS_BLOCK, pubkey, sizeof(pubkey), &st_ecdh_random, &Q_chip, &st_ecdh_key_block, sizeof(ST_ECDH_KEY_BLOCK));
 	print_result("g3api_ecdh", ret);
 	print_value("st_ecdh_key_block", &st_ecdh_key_block, sizeof(ST_ECDH_KEY_BLOCK));
 	print_value("result_keyblock", result_keyblock, sizeof(result_keyblock));
@@ -467,7 +467,7 @@ void test_scenario_sample3()
 	ST_ECDH_IV st_ecdh_iv = { 0, };
 	//memcpy(&st_ecdh_random, server_ecdh_random, sizeof(server_ecdh_random));
 
-	ret = g3api_ecdh(EN_ECDH_MODE::SET_TLS_SESSION_KEY, pubkey, sizeof(pubkey), &st_ecdh_random, &Q_chip, &st_ecdh_iv, sizeof(ST_ECDH_IV));
+	ret = g3api_ecdh(SET_TLS_SESSION_KEY, pubkey, sizeof(pubkey), &st_ecdh_random, &Q_chip, &st_ecdh_iv, sizeof(ST_ECDH_IV));
 	print_result("g3api_ecdh", ret);
 	print_value("st_ecdh_iv", &st_ecdh_iv, sizeof(ST_ECDH_IV));
 	print_value("Q_chip", &Q_chip, sizeof(ST_ECC_PUBLIC));
@@ -478,7 +478,7 @@ void test_scenario_sample3()
 	ST_TLS_INTER_HEADER_WITHOUT_SIZE st_tls_inter_header_without_size;
 
 
-	ret = g3api_make_tls_inter_header_without_size(0, EN_CONTENT_TYPE::APPLICATION_DATA, EN_TLS_VERSION::TLS_1_2, &st_tls_inter_header_without_size);
+	ret = g3api_make_tls_inter_header_without_size(0, APPLICATION_DATA, TLS_1_2, &st_tls_inter_header_without_size);
 	print_result("g3api_make_tls_inter_header_without_size", ret);
 	print_value("st_tls_inter_header_without_size", &st_tls_inter_header_without_size, sizeof(ST_TLS_INTER_HEADER_WITHOUT_SIZE));
 
@@ -513,13 +513,13 @@ void test_scenario_sample3()
 
 	ST_DATA_32 sh_msg;
 	ST_TLS_HAND_HANDSHAKE_DIGEST digest;
-	g3api_tls_get_handshake_digest(EN_HANDSHAKE_MODE::HSM_CLIENT, &sh_msg, &digest);
+	g3api_tls_get_handshake_digest(HSM_CLIENT, &sh_msg, &digest);
 	print_value("sh_msg", &sh_msg, sizeof(sh_msg));
 	print_value("digest", &digest, sizeof(digest));
 
 #endif
 
-	/*ret = g3api_certification(6, EN_CERTIFICATION_WRITE_MODE::TO_KEY_SECTOR, cert, sizeof(cert));
+	/*ret = g3api_certification(6, TO_KEY_SECTOR, cert, sizeof(cert));
 	print_result("g3api_certification", ret);*/
 
 
@@ -568,7 +568,7 @@ void test_scenario_sample_ref()
 	
 	
 	
-	ret = g3api_certification(6 , EN_CERTIFICATION_WRITE_MODE::TO_TEMP , cert , sizeof(cert));
+	ret = g3api_certification(6 , TO_TEMP , cert , sizeof(cert));
 	print_result("g3api_certification", ret);
 	
 	
@@ -578,7 +578,7 @@ void test_scenario_sample_ref()
 	ST_ECDH_RANDOM st_ecdh_random ={0,};
 	
 	
-	ret = g3api_ecdh(EN_ECDH_MODE::GEN_TLS_BLOCK , outer_pub_key , sizeof(outer_pub_key) , &st_ecdh_random , &Q_chip , &st_ecdh_key_block , sizeof(ST_ECDH_KEY_BLOCK));
+	ret = g3api_ecdh(GEN_TLS_BLOCK , outer_pub_key , sizeof(outer_pub_key) , &st_ecdh_random , &Q_chip , &st_ecdh_key_block , sizeof(ST_ECDH_KEY_BLOCK));
 	print_result("g3api_ecdh", ret);
 	print_value("st_ecdh_key_block",&st_ecdh_key_block,sizeof(ST_ECDH_KEY_BLOCK));
 	print_value("Q_chip",&Q_chip,sizeof(ST_ECC_PUBLIC));
@@ -588,7 +588,7 @@ void test_scenario_sample_ref()
 	ST_ECDH_IV st_ecdh_iv = { 0, };
 	
 	
-	ret = g3api_ecdh(EN_ECDH_MODE::SET_TLS_SESSION_KEY , outer_pub_key , sizeof(outer_pub_key) , &st_ecdh_random , &Q_chip , &st_ecdh_iv , sizeof(ST_ECDH_KEY_BLOCK));
+	ret = g3api_ecdh(SET_TLS_SESSION_KEY , outer_pub_key , sizeof(outer_pub_key) , &st_ecdh_random , &Q_chip , &st_ecdh_iv , sizeof(ST_ECDH_KEY_BLOCK));
 	print_result("g3api_ecdh", ret);
 	print_value("st_ecdh_iv",&st_ecdh_iv,sizeof(ST_ECDH_IV));
 	print_value("Q_chip",&Q_chip,sizeof(ST_ECC_PUBLIC));
@@ -598,7 +598,7 @@ void test_scenario_sample_ref()
 	ST_TLS_INTER_HEADER_WITHOUT_SIZE st_tls_inter_header_without_size;
 	
 	
-	ret = g3api_make_tls_inter_header_without_size(0 , EN_CONTENT_TYPE::APPLICATION_DATA , EN_TLS_VERSION::TLS_1_2 , &st_tls_inter_header_without_size);
+	ret = g3api_make_tls_inter_header_without_size(0 , APPLICATION_DATA , TLS_1_2 , &st_tls_inter_header_without_size);
 	print_result("g3api_make_tls_inter_header_without_size", ret);
 	print_value("st_tls_inter_header_without_size",&st_tls_inter_header_without_size,sizeof(ST_TLS_INTER_HEADER_WITHOUT_SIZE));
 	
