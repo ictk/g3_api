@@ -90,7 +90,7 @@ void test_scenario_sample3();
 void init_fp(){
 
 	_fp = fopen("out.txt", "wb");
-	g3api_set_fp(_fp);
+	//g3api_set_fp(_fp);
 }
 int main(int argc, char* argv[])
 {
@@ -147,7 +147,7 @@ int main(int argc, char* argv[])
 	//general_read_write();
 	//general_sign_verify();
 
-	test_scenario_sample3();
+	test_scenario_sample2();
 #if 0	
 		
 	
