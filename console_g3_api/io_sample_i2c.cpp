@@ -17,7 +17,7 @@
 
 int _file_i2c = 0;
 int init_sample_i2c(void *param);
-void wake_up_and_convert_mode_i2c();
+int wake_up_and_convert_mode_i2c();
 void end_sample_i2c();
 
 VAR_BYTES* alloc_var_bytes_i2c(int size);
@@ -95,7 +95,11 @@ extern "C" int send_n_recv_4_i2c(const unsigned char*snd, int snd_size, unsigned
 	int file_i2c;
 	memcpy(&file_i2c,etcparam,4);
 	NEO_DWORD(file_i2c);
-	
+	if(file_i2c <0){
+		
+		return -1;
+	}
+
 	
 	
 	print_value("SND",snd, snd_size);
@@ -156,12 +160,12 @@ void end_sample_i2c()
 	NEO_TITLE(end_sample_i2c);
 }
 
-void wake_up_and_convert_mode_i2c()
+int wake_up_and_convert_mode_i2c()
 {
 	NEO_TITLE(wake_up_and_convert_mode_i2c);
 	wake_up(GPIO_WAKE_UP_PIN,1,10);	
 	
-	ictk_convert_to_inst_mode(_file_i2c);
+	return ictk_convert_to_inst_mode(_file_i2c);
 	
 	
 

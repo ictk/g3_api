@@ -38,7 +38,7 @@ INTER_PARAMS _inter_params = { 0, };
 
 
 int init_sample_ieb100cdc(void *param);
-void wake_up_and_convert_mode_ieb100cdc();
+int wake_up_and_convert_mode_ieb100cdc();
 void end_sample_ieb100cdc();
 
 
@@ -184,7 +184,7 @@ void end_sample_ieb100cdc()
 	_inter_params.pserreial->close();
 }
 
-void wake_up_and_convert_mode_ieb100cdc()
+int wake_up_and_convert_mode_ieb100cdc()
 {
 	unsigned char wake_buff[] = { 0xFF, 0x00, 0x00, 0x00, 0x00, 0x00, };
 	unsigned char convert_inst[] = { 0xFE, 0x00, 0x00, 0x00, 0x00, 0x00, };
@@ -202,6 +202,7 @@ void wake_up_and_convert_mode_ieb100cdc()
 
 	_inter_params.mode = 1;
 
+	return 0;
 }
 
 void convert_up(){
