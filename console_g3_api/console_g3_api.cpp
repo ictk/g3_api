@@ -110,8 +110,12 @@ int main(int argc, char* argv[])
 		printf("\n1st argument must be serial port name\n");
 		return -1;
 	}
+	const char *pchar = g3api_get_lib_version();
+
+
+	printf("%s", pchar);
 	printf("\nserila port name : (%s) \n",argv[1]);
-	init_fp();
+	//init_fp();
 	SAMPLE_FUNCTIONS samplefunction;
 	GET_FUCNTION(&samplefunction);
 
@@ -126,7 +130,11 @@ int main(int argc, char* argv[])
 		return -1;
 
 	}
-	wake_up_and_convert_mode();
+	if (wake_up_and_convert_mode()){
+		return -1;
+
+	}
+	;
 
 	
 	//return 0;
@@ -147,7 +155,7 @@ int main(int argc, char* argv[])
 	//general_read_write();
 	//general_sign_verify();
 
-	test_scenario_sample3();
+	//test_scenario_sample2();
 #if 0	
 		
 	
@@ -283,10 +291,7 @@ int main(int argc, char* argv[])
 	/*string recv = NCL::BytetoHexStr(buff, ressize);
 	printf("%s\n",recv.c_str());
 */
-	const char *pchar = g3api_get_lib_version();
 	
-	
-	printf("%s", pchar);
 	NEO_TITLE(END);
 	return 0;
 }
