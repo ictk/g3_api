@@ -35,35 +35,35 @@
 
 //START ENUM
 
-enum EN_SND_RECV_MODE  
+typedef enum  
 {
 	SND_N_RECV=0,
 	SND=1,
 	RECV=2,	 
-};   	
+}  EN_SND_RECV_MODE;   	
 
-enum EN_AND_OR  
+typedef enum  
 {
 	AND=0,
 	OR=1,	 
-};   	
+}  EN_AND_OR;   	
 
-enum EN_FORBIDDEN_TYPE  
+typedef enum  
 {
 	CONDITION=0,
 	FREE=1,
 	FORBIDDEN=2,	 
-};   	
+}  EN_FORBIDDEN_TYPE;   	
 
-enum EN_RW   
+typedef enum  
 {
 	ALL=0,
 	MASK_N_ENC =1,
 	ENC=2,
 	ENC_MAC=3,	 
-};   	
+}  EN_RW ;   	
 
-enum EN_DATA_SECTOR_TYPE  
+typedef enum  
 {
 	SECT_VOID=0,
 	SECT_ST_ECC_PUF=1,
@@ -76,42 +76,42 @@ enum EN_DATA_SECTOR_TYPE
 	SECT_PASSWORD=8,
 	SECT_DATA=9,
 	SECT_COUNTER=10,	 
-};   	
+}  EN_DATA_SECTOR_TYPE;   	
 
-enum EN_RESULT  
+typedef enum  
 {
 	SUCCESS=0,
 	FAIL=-1,	 
-};   	
+}  EN_RESULT;   	
 
-enum EN_DIVERSIFY_MODE  
+typedef enum  
 {
 	INHERIT=0,
 	SELF=1,	 
-};   	
+}  EN_DIVERSIFY_MODE;   	
 
-enum EN_BLOCK_MODE  
+typedef enum  
 {
 	BL_CBC=0,
 	BL_CTR=1,
 	BL_GCM=3,	 
-};   	
+}  EN_BLOCK_MODE;   	
 
-enum EN_CERTIFICATION_WRITE_MODE  
+typedef enum  
 {
 	TO_TEMP=0,
 	TO_KEY_SECTOR=1,	 
-};   	
+}  EN_CERTIFICATION_WRITE_MODE;   	
 
-enum EN_SIGN_OPTION  
+typedef enum  
 {
 	SIGN_ECDSA_EXT_SHA256=0,
 	SIGN_ECDSA_WITH_SHA256=1,
 	SIGN_HMAC=2,
 	SIGN_SYMM=3,	 
-};   	
+}  EN_SIGN_OPTION;   	
 
-enum EN_VERIFY_OPTION  
+typedef enum  
 {
 	VERYFY_ECDSA_EXT_SHA256=0,
 	VERYFY_ECDSA_WITH_SHA256=1,
@@ -119,31 +119,31 @@ enum EN_VERIFY_OPTION
 	VERYFY_SYMM=3,
 	VERYFY_EXT_PUB_ECDSA_EXT_SHA256=0x10,
 	VERYFY_EXT_PUB_ECDSA_WITH_SHA256=0x11,	 
-};   	
+}  EN_VERIFY_OPTION;   	
 
-enum EN_DYNAMIC_AUTH  
+typedef enum  
 {
 	DYN_AUTH_ECDSA_SHA256=0x21,
 	DYN_AUTH_HMAC=0x22,
 	DYN_AUTH_SYMM=0x23,
 	DYN_AUTH_CERT_PUB_ECDSA_SHA256=0x31,	 
-};   	
+}  EN_DYNAMIC_AUTH;   	
 
-enum EN_VERIFY_TYPE  
+typedef enum  
 {
 	USE_CERT_PUB_ECDSA_EXT_SHA256=0,
 	USE_CERT_PUB_ECDSA_WITH_SHA256=1,	 
-};   	
+}  EN_VERIFY_TYPE;   	
 
-enum EN_AREA_TYPE  
+typedef enum  
 {
 	SETUP_AREA=0,
 	KEY_AREA=1,
 	DATA_AREA_0=2,
 	DATA_AREA_1=3,	 
-};   	
+}  EN_AREA_TYPE;   	
 
-enum EN_RW_INST_OPTION  
+typedef enum  
 {
 	PLAIN_TEXT=0,
 	CBC=1,
@@ -155,45 +155,45 @@ enum EN_RW_INST_OPTION
 	SESSION_KEY_CCM=0x13,
 	SESSION_KEY_GCM=0x14,
 	MASKED=0xFF,	 
-};   	
+}  EN_RW_INST_OPTION;   	
 
-enum EN_PUB_TYPE  
+typedef enum  
 {
 	KEY_SECTOR=0,
 	TEMP_PUBLIC_KEY=1,	 
-};   	
+}  EN_PUB_TYPE;   	
 
-enum EN_ISSUE_CERT_AREA_TYPE  
+typedef enum  
 {
 	ISCRT_KEY_AREA=0,
 	ISCRT_DATA_AREA_0=1,
 	ISCRT_DATA_AREA_1=2,	 
-};   	
+}  EN_ISSUE_CERT_AREA_TYPE;   	
 
-enum EN_CONTENT_TYPE  
+typedef enum  
 {
 	CHANGE_CIPHER_SPEC=20,
 	ALERT=21,
 	HANDSHAKE=22,
 	APPLICATION_DATA=23,	 
-};   	
+}  EN_CONTENT_TYPE;   	
 
-enum EN_TLS_VERSION  
+typedef enum  
 {
 	SSL_3_0=0x0300,
 	TLS_1_0=0x0301,
 	TLS_1_1=0x0302,
 	TLS_1_2=0x0303,	 
-};   	
+}  EN_TLS_VERSION;   	
 
-enum EN_ECDH_MODE  
+typedef enum  
 {
 	NORMAL_ECDH=0x0000,
 	GEN_TLS_BLOCK=0x0011,
 	SET_TLS_SESSION_KEY=0x0012,	 
-};   	
+}  EN_ECDH_MODE;   	
 
-enum EN_SESSION_MODE  
+typedef enum  
 {
 	SYMM_KEY=0x80,
 	FACTORY_AES=0x90,
@@ -201,13 +201,13 @@ enum EN_SESSION_MODE
 	EXT_SESSION_KEY_AES=0xA0,
 	EXT_SESSION_KEY_SM4=0xA1,
 	EXT_PUB_KEY=0xA2,	 
-};   	
+}  EN_SESSION_MODE;   	
 
-enum EN_HANDSHAKE_MODE  
+typedef enum  
 {
 	HSM_CLIENT=0x0000,
 	HSM_SERVER=0x0001,	 
-};   	
+}  EN_HANDSHAKE_MODE;   	
 //END ENUM
 
 
