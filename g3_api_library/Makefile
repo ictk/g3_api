@@ -1,4 +1,6 @@
-
+###############################################
+# g3_api library
+###############################################
 
 #include ./Makefile.conf
 
@@ -10,12 +12,13 @@ LD = $(CXX)
 
 WINDRES = windres
 OBJDIR = obj/gnu
+OBJDIR_C = obj_c/gnu
 INC = -Iinclude -I../../BASE/include
 #DEFINC=-D_USE_UTF8_ -DNEOUSEMBCS -DNEO_STATIC -DLSA_EXPORTS_NOUSE -D__NOTUSEOPENSSL__
-DEFCFLAGS=-Wall -O2 -fPIC  -fpermissive
+DEFCFLAGS=-Wall -O2 -fPIC 
 DEFINC=-D_USE_UTF8_ -DNEOUSEMBCS -DNEO_STATIC -DLSA_EXPORTS_NOUSE
 # -DNEODEBUG
-DEFCFLAGS=-Wall -O2 -fPIC -Wl,-Bsymbolic -fpermissive
+DEFCFLAGS=-Wall -O2 -fPIC -Wl,-Bsymbolic
 #LIB = ../lib/gnu/libcrypto.a
 LDFLAGS      = -shared -fPIC -ldl
 OUTDIR = ../lib/gnu
@@ -24,7 +27,12 @@ OBJDIR_BASE_RELEASE = $(OBJDIR)
 
 
 
-TITLE=libg3_api
+NAME= g3_api
+TITLE=lib$(NAME)
+DST_DIR = /usr/local
+#DST_BIN_DIR = $(DST_DIR)/lib/gnu/
+DST_BIN_LIB = $(DST_DIR)/lib
+DST_BIN_INC = $(DST_DIR)/include/$(NAME)
 #CFLAGS=-L/usr/lib32/ -lstdc++
 #DEFINC=-D_USE_UTF8_ -DNEOUSEMBCS -DNEO_STATIC -DLSA_EXPORTS_NOUSE  -DNEODEBUG
 #include ./Makefile.def
@@ -62,14 +70,16 @@ OUT_SHARED_DEBUG = $(OUTDIR)/$(TITLE)d.so
 
 
 OBJDIR_RELEASE = $(OBJDIR)
+OBJDIR_RELEASE_C = $(OBJDIR_C)
 
 OBJ_RELEASE = $(OBJDIR_RELEASE)/g3_api.o \
 					$(OBJDIR_RELEASE)/g3_api_depend_function.o \
 					$(OBJDIR_RELEASE)/g3_etc_util.o 
 
+OBJ_RELEASE_C = $(OBJDIR_RELEASE_C)/test.o 
 					
 					
-OBJ_RELEASE_ALL =  $(OBJ_RELEASE)  $(DEP_RELEASE)
+OBJ_RELEASE_ALL =  $(OBJ_RELEASE)  $(OBJ_RELEASE_C) $(DEP_RELEASE)
 
 all: static
 
@@ -81,6 +91,7 @@ before_release:
 	test -d $(OBJDIR_BASE_RELEASE) || mkdir -p $(OBJDIR_RELEASE)
 	test -d $(OBJDIR_BASE_RELEASE) || mkdir -p $(OBJDIR_RELEASE)
 	test -d $(OBJDIR_RELEASE) || mkdir -p $(OBJDIR_RELEASE)
+	test -d $(OBJDIR_RELEASE_C) || mkdir -p $(OBJDIR_RELEASE_C)
 	test -d $(OBJDIR_RELEASE2) || mkdir -p $(OBJDIR_RELEASE2)
 
 after_release: 
@@ -103,8 +114,11 @@ out_shared_release: $(OBJ_RELEASE_ALL)
 	
 $(OBJDIR_RELEASE)/%.o: src/%.cpp
 	$(CXX) $(CFLAGS_RELEASE) $(INC_RELEASE)  -c -o $@ $<	
+
+$(OBJDIR_RELEASE_C)/%.o: src/%.c
+	$(CC) $(CFLAGS_RELEASE) $(INC_RELEASE)  -c -o $@ $<	
 	
-	
+
 
 clean_release: 
 	rm -f $(OBJ_RELEASE)
