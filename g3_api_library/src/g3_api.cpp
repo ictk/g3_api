@@ -27,7 +27,7 @@ void test();
 VAR_BYTES* alloc_var_bytes(int size);
 
 VAR_BYTES* create_var_bytes(const void*init, int size);
-int def_send_n_recv(const unsigned char*snd, int snd_size, unsigned char*recv, int* recv_size, void*etcparam);
+int CALLTYPE def_send_n_recv(const unsigned char*snd, int snd_size, unsigned char*recv, int* recv_size, void*etcparam);
 
 
 PFSENDRECV _psend = def_send_n_recv;
@@ -47,22 +47,24 @@ FILE * _fp = stderr;
 
 
 
-int def_send_n_recv(const unsigned char*snd, int snd_size, unsigned char*recv, int* recv_size, void*etcparam)
+int CALLTYPE def_send_n_recv(const unsigned char*snd, int snd_size, unsigned char*recv, int* recv_size, void*etcparam)
 {
 	api_view("def_send_n_recv");
 
 	return 0;
 }
-const char * g3api_get_lib_version(){
+const char * CALLTYPE g3api_get_lib_version(){
 	api_view("g3api_get_lib_version");
 	static char szVersion[32] = LIB_VERSION;
 	return szVersion;
 }
 
-void g3api_set_user_send_recv_pf(PFSENDRECV psendrecv, void * etcparam){
+void CALLTYPE g3api_set_user_send_recv_pf(PFSENDRECV psendrecv, void * etcparam){
 	api_view("g3api_set_user_send_recv_pf");
 	_psend = psendrecv;
 	_etcparam = etcparam;
+	fprintf(_fp, "0x%x\n", etcparam);
+	//_psend(NULL, 0, NULL, NULL, NULL);
 
 }
 
@@ -80,7 +82,7 @@ int send_receiv_packet(LPWRITE_PACKET write_packet,int delay){
 
 
 
-G3_API_RESULT g3api_raw_snd_recv(const unsigned char * snd, int snd_size, unsigned char * recv, int* recv_size){
+G3_API_RESULT CALLTYPE g3api_raw_snd_recv(const unsigned char * snd, int snd_size, unsigned char * recv, int* recv_size){
 	int ret = _psend(snd, snd_size, recv, recv_size, _etcparam);
 	return ret;
 }
@@ -105,7 +107,7 @@ VAR_BYTES* g3api_alloc_var_bytes(int size){
 void g3api_free_var_bytes(const VAR_BYTES* var_bytes){
 	free((void*)var_bytes);
 }
-G3_API_RESULT g3api_read_key_value(const int key_index, EN_AREA_TYPE area_type, EN_RW_INST_OPTION rw_type, void* data_structure, int structure_size)
+G3_API_RESULT CALLTYPE g3api_read_key_value(const int key_index, EN_AREA_TYPE area_type, EN_RW_INST_OPTION rw_type, void* data_structure, int structure_size)
 //G3_API_RESULT g3api_read_key_value(const int key_index, EN_AREA_TYPE area_type, EN_RW_INST_OPTION rw_type, ST_KEY_VALUE* key_value, ST_IV* iv, ST_MAC* mac)
 {
 
@@ -137,7 +139,7 @@ END:
 	if (precvbuff) free(precvbuff);
 	return ret;
 }
-G3_API_RESULT g3api_write_key_value(const int key_index, EN_AREA_TYPE area_type, EN_RW_INST_OPTION rw_type, const void* data_structure, int structure_size)
+G3_API_RESULT CALLTYPE g3api_write_key_value(const int key_index, EN_AREA_TYPE area_type, EN_RW_INST_OPTION rw_type, const void* data_structure, int structure_size)
 //G3_API_RESULT g3api_write_key_value(const int key_index, EN_AREA_TYPE area_type, EN_RW_INST_OPTION rw_type, const ST_KEY_VALUE* key_value, const ST_IV* iv, const ST_MAC* mac)
 //int g3api_write_key_value(const int key_index, AREA_TYPE area_type, EN_RW_INST_OPTION rw_type, const unsigned char * key_value, int key_value_size)
 {
@@ -152,7 +154,7 @@ G3_API_RESULT g3api_write_key_value(const int key_index, EN_AREA_TYPE area_type,
 }
 
 
-int g3api_get_chellange(int chall_size, unsigned char * challenge, int* res_chall_size){
+int CALLTYPE g3api_get_chellange(int chall_size, unsigned char * challenge, int* res_chall_size){
 	
 	api_view("g3api_get_chellange");
 	VAR_BYTES *precvbuff = NULL;
@@ -187,7 +189,7 @@ END:
 	
 }
 
-int g3api_verify_passwd(const int key_index, const unsigned char * passwd, int passwd_size){
+int CALLTYPE g3api_verify_passwd(const int key_index, const unsigned char * passwd, int passwd_size){
 	api_view("g3api_verify_passwd");
 	return  do_normal_process_return_ok(VERIFY_PWD, key_index, 0, passwd, passwd_size);
 
@@ -195,7 +197,7 @@ int g3api_verify_passwd(const int key_index, const unsigned char * passwd, int p
 	
 }
 
-int g3api_change_password(const int key_index, const unsigned char * passwd, int passwd_size){
+int CALLTYPE g3api_change_password(const int key_index, const unsigned char * passwd, int passwd_size){
 	api_view("g3api_change_password");
 	int recv_ret = 0;
 	int recv_ret_size = 4;
@@ -203,14 +205,14 @@ int g3api_change_password(const int key_index, const unsigned char * passwd, int
 
 }
 
-int g3api_init_puf(const int key_index, unsigned int initial){
+int CALLTYPE g3api_init_puf(const int key_index, unsigned int initial){
 	api_view("g3api_init_puf");
 	SwapBytes(&initial,4);
 
 	int nret = do_normal_process_return_ok(INIT_PRIV_KEY, key_index, 0, &initial, 4);
 	return nret;
 }
-G3_API_RESULT g3api_sign(const int key_index, EN_SIGN_OPTION sign_option, const unsigned char * msg, int msg_size, void * sign_structure, int structure_size)
+G3_API_RESULT CALLTYPE g3api_sign(const int key_index, EN_SIGN_OPTION sign_option, const unsigned char * msg, int msg_size, void * sign_structure, int structure_size)
 //int g3api_sign(const int key_index, SIGN_OPTION ecdsa_option, const unsigned char * msg, int msg_size, void * sign_structure, int structure_size)
 {
 	api_view("g3api_sign");
@@ -252,7 +254,7 @@ END:
 
 	return nret;
 }
-G3_API_RESULT g3api_verify(const int key_index, EN_VERIFY_OPTION verify_option, const unsigned char * msg, int msg_size, const void * sign_structure, int structure_size)
+G3_API_RESULT CALLTYPE g3api_verify(const int key_index, EN_VERIFY_OPTION verify_option, const unsigned char * msg, int msg_size, const void * sign_structure, int structure_size)
 //int g3api_verify(const int key_index, VERIFY_OPTION verify_option, const unsigned char * msg, int msg_size, const void * sign_structure, int structure_size)
 {
 	api_view("g3api_verify");
@@ -274,7 +276,7 @@ G3_API_RESULT g3api_verify(const int key_index, EN_VERIFY_OPTION verify_option, 
 	return nret;
 }
 
-G3_API_RESULT g3api_dynamic_auth(int key_index, EN_DYNAMIC_AUTH dauth_option, int pos_pub_dynamic, const unsigned char * msg, int msg_size, const void * sign_structure, int structure_size)
+G3_API_RESULT CALLTYPE g3api_dynamic_auth(int key_index, EN_DYNAMIC_AUTH dauth_option, int pos_pub_dynamic, const unsigned char * msg, int msg_size, const void * sign_structure, int structure_size)
 //int g3api_dynamic_auth(int key_index, DYNAMIC_AUTH dauth_option, int pos_pub_dynamic, const unsigned char * msg, int msg_size, const void * sign_structure, int structure_size)
 {
 	api_view("g3api_verify_dynamic");
@@ -296,7 +298,7 @@ G3_API_RESULT g3api_dynamic_auth(int key_index, EN_DYNAMIC_AUTH dauth_option, in
 }
 
 
-G3_API_RESULT g3api_encryption(IN int key_index, IN EN_BLOCK_MODE block_mode, IN const ST_IV * iv, IN const unsigned char* data, IN int data_size, OUT unsigned char* cipher, INOUT int* cipher_size)
+G3_API_RESULT CALLTYPE g3api_encryption(IN int key_index, IN EN_BLOCK_MODE block_mode, IN const ST_IV * iv, IN const unsigned char* data, IN int data_size, OUT unsigned char* cipher, INOUT int* cipher_size)
 {
 
 	
@@ -325,7 +327,7 @@ END:
 
 }
 
-G3_API_RESULT g3api_decryption(IN int key_index, IN EN_BLOCK_MODE block_mode, IN const ST_IV* iv, IN const unsigned char* cipher, IN int cipher_size, OUT unsigned char* data, INOUT int* data_size)
+G3_API_RESULT CALLTYPE g3api_decryption(IN int key_index, IN EN_BLOCK_MODE block_mode, IN const ST_IV* iv, IN const unsigned char* cipher, IN int cipher_size, OUT unsigned char* data, INOUT int* data_size)
 {
 
 	
@@ -354,7 +356,7 @@ END:
 	return nret;
 }
 
-G3_API_RESULT g3api_encryption_ecies(IN int key_index, OUT ST_ECIES* rs)
+G3_API_RESULT CALLTYPE g3api_encryption_ecies(IN int key_index, OUT ST_ECIES* rs)
 {
 
 	api_view("g3api_encryption_ecies");
@@ -378,7 +380,7 @@ END:
 
 }
 
-G3_API_RESULT g3api_decryption_ecies(IN int key_index, INOUT ST_ECIES* rs)
+G3_API_RESULT CALLTYPE g3api_decryption_ecies(IN int key_index, INOUT ST_ECIES* rs)
 {
 
 	api_view("g3api_decryption_ecies");
@@ -409,7 +411,7 @@ END:
 }
 
 
-G3_API_RESULT g3api_get_public_key(int key_index, EN_PUB_TYPE pub_type, void* pub_key, int structure_size)
+G3_API_RESULT CALLTYPE g3api_get_public_key(int key_index, EN_PUB_TYPE pub_type, void* pub_key, int structure_size)
 
 {
 
@@ -450,7 +452,7 @@ END:
 
 }
 
-G3_API_RESULT g3api_session(IN int key_index, IN EN_SESSION_MODE en_session_mode, IN const byte* indata, IN int indata_size, OUT byte* outdata, INOUT int* outdata_size)
+G3_API_RESULT CALLTYPE g3api_session(IN int key_index, IN EN_SESSION_MODE en_session_mode, IN const byte* indata, IN int indata_size, OUT byte* outdata, INOUT int* outdata_size)
 {
 
 	api_view("g3api_session");
@@ -480,7 +482,7 @@ END:
 }
 
 
-G3_API_RESULT g3api_set_extern_public_key(IN const void* pub_key, IN int structure_size, OUT ST_DATA_32* puk_hash)
+G3_API_RESULT CALLTYPE g3api_set_extern_public_key(IN const void* pub_key, IN int structure_size, OUT ST_DATA_32* puk_hash)
 {
 
 	api_view("g3api_set_extern_public_key");
@@ -508,7 +510,7 @@ END:
 
 }
 
-G3_API_RESULT g3api_certification(int key_index, EN_CERTIFICATION_WRITE_MODE certification_write_mode, const unsigned char * cert, int cert_size)
+G3_API_RESULT CALLTYPE g3api_certification(int key_index, EN_CERTIFICATION_WRITE_MODE certification_write_mode, const unsigned char * cert, int cert_size)
 //G3_API_RESULT g3api_certification(int key_index, CERTIFICATION_WRITE_MODE certification_write_mode, const unsigned char * cert, int cert_size)
 {
 	
@@ -551,7 +553,7 @@ G3_API_RESULT g3api_certification(int key_index, EN_CERTIFICATION_WRITE_MODE cer
 
 }
 
-G3_API_RESULT g3api_issue_certification(int key_index, int public_key_pos, EN_ISSUE_CERT_AREA_TYPE issue_cert_area_type, int sector_num_to_store, int key_id, const unsigned char * cert, int cert_size)
+G3_API_RESULT CALLTYPE g3api_issue_certification(int key_index, int public_key_pos, EN_ISSUE_CERT_AREA_TYPE issue_cert_area_type, int sector_num_to_store, int key_id, const unsigned char * cert, int cert_size)
 
 //int g3api_issue_certification(int key_index, const unsigned char * cert, int cert_size)
 {
@@ -620,7 +622,7 @@ END:
 }
 
 
-G3_API_RESULT g3api_ecdh(IN EN_ECDH_MODE en_ecdh_mode, IN const void* Q_b, IN int Q_b_struct_size, IN const ST_ECDH_RANDOM* st_ecdh_random, OUT ST_ECC_PUBLIC* Q_chip, OUT void* ecdh_value, OUT int ecdh_value_struct_size)
+G3_API_RESULT CALLTYPE g3api_ecdh(IN EN_ECDH_MODE en_ecdh_mode, IN const void* Q_b, IN int Q_b_struct_size, IN const ST_ECDH_RANDOM* st_ecdh_random, OUT ST_ECC_PUBLIC* Q_chip, OUT void* ecdh_value, OUT int ecdh_value_struct_size)
 {
 
 
@@ -665,7 +667,7 @@ END:
 }
 
 
-G3_API_RESULT g3api_make_tls_inter_header_without_size(IN int seq_num, IN EN_CONTENT_TYPE content_type, IN EN_TLS_VERSION tls_version, OUT ST_TLS_INTER_HEADER_WITHOUT_SIZE* tls_inter_header_without_size)
+G3_API_RESULT CALLTYPE g3api_make_tls_inter_header_without_size(IN int seq_num, IN EN_CONTENT_TYPE content_type, IN EN_TLS_VERSION tls_version, OUT ST_TLS_INTER_HEADER_WITHOUT_SIZE* tls_inter_header_without_size)
 {
 	api_view("g3api_make_tls_inter_header_without_size");
 
@@ -685,7 +687,7 @@ G3_API_RESULT g3api_make_tls_inter_header_without_size(IN int seq_num, IN EN_CON
 
 	return 0;
 }
-G3_API_RESULT tls_crypto_temp(int cmd, IN const ST_TLS_INTER_HEADER* tls_inter_header,
+G3_API_RESULT CALLTYPE tls_crypto_temp(int cmd, IN const ST_TLS_INTER_HEADER* tls_inter_header,
 	IN const ST_IV* iv, 
 	IN const byte* init_buff, IN int init_buff_size,
 	IN const byte* in, IN int in_size, 
@@ -803,7 +805,7 @@ END:
 
 
 
-G3_API_RESULT g3api_tls_mac_encrypt(
+G3_API_RESULT CALLTYPE g3api_tls_mac_encrypt(
 	IN const ST_TLS_INTER_HEADER_WITHOUT_SIZE* tls_inter_header_without_size, 
 	IN const ST_IV* client_iv, IN const ST_DATA_16* header_random, 
 	IN const byte* msg, IN int msg_size, 
@@ -853,7 +855,7 @@ END:
 
 
 }
-G3_API_RESULT g3api_tls_decrypt_verify(
+G3_API_RESULT CALLTYPE g3api_tls_decrypt_verify(
 	IN const ST_TLS_INTER_HEADER_WITHOUT_SIZE* tls_inter_header_without_size, 
 	IN const ST_IV* server_iv, 
 	IN const byte* crypto, IN int crypto_size, 
@@ -910,7 +912,7 @@ END:
 }
 
 
-G3_API_RESULT g3api_tls_get_handshake_digest(IN EN_HANDSHAKE_MODE handshake_mode, IN const ST_DATA_32* hash_handshake_msg, OUT ST_TLS_HAND_HANDSHAKE_DIGEST* handshake_digest)
+G3_API_RESULT CALLTYPE g3api_tls_get_handshake_digest(IN EN_HANDSHAKE_MODE handshake_mode, IN const ST_DATA_32* hash_handshake_msg, OUT ST_TLS_HAND_HANDSHAKE_DIGEST* handshake_digest)
 {
 
 	api_view("g3api_tls_get_handshake_digest");
@@ -936,35 +938,59 @@ END:
 
 }
 VAR_BYTES * _testbuff = NULL;
+int CALLTYPE deffunction(int param){
+	fprintf(_fp, "\n %d \n", param);
+	return param;
+}
+PFTEST _in = deffunction;
+
+int _test_value = -1;
+int * _ptest_value = &_test_value;
+G3_API_RESULT CALLTYPE g3api_test(IN PFTEST in, IN int in_size)
+{
+	api_view("g3api_test");
+	_in = in;
+	_in(in_size);
+	_test_value = in_size;
+	fprintf(_fp, "\n0x%x\n", _in);
+	return 0;
+}
 
 
+
+G3_API_RESULT CALLTYPE g3api_test2(IN char* test, IN int* out_size)
+{
+	api_view("g3api_test2");
+	//const unsigned char tempbuff[] = { 0xE2, 0xC4, 0x26, 0xE7, 0xF1, 0x77, 0x8C, 0x6F, 0xC5, 0x95, 0xF5, 0x4E, 0x9F, 0xEF, 0xDA, 0x71, 0x14, 0x00, 0x00, 0x0C, 0x92, 0x28, 0xE3, 0xFD, 0x2E, 0xB4, 0x11, 0xAE, 0x47, 0xF1, 0x0F, 0x1E, };
+	const unsigned char tempbuff[] = { 0xE2, 0xC4, 0x26, 0xE7, 0xF1, 0x77, 0, 0x6F, 0xC5, 0x95, 0xF5, 0x4E, 0x9F, 0xEF, 0xDA, 0x71, 0x14, 0x00, 0x00, 0x0C, 0x92, 0x28, 0xE3, 0xFD, 0x2E, 0xB4, 0x11, 0xAE, 0x47, 0xF1, 0x0F, 0x1E, };
+	memcpy(test, tempbuff, 32);
+	*out_size = 32;
+
+	return 0;
+}
+G3_API_RESULT CALLTYPE g3api_test3(IN int* in_size)
+{
+	api_view("g3api_test3");
+	_ptest_value = in_size;
+	fprintf(_fp, "\n%d\n", *in_size);
+	*in_size = 123132;
+	return 0;
+}
 //START API
 
-G3_API_RESULT g3api_get_device_version()
+G3_API_RESULT CALLTYPE g3api_get_device_version()
 {
 	api_view("g3api_get_device_version");
 	return 0;
 }	
 	
-char* g3api_get_sn()
+char* CALLTYPE g3api_get_sn()
 {
 	api_view("g3api_get_sn");
 	return 0;
 }	
 	
-G3_API_RESULT g3api_setup_core(INOUT ST_SETUP_CORE* st_setup_fixed)
-{
-	api_view("g3api_setup_core");
-	return 0;
-}	
-	
-G3_API_RESULT g3api_set_up_keys(INOUT ST_SET_UP_VALUE* array_set_up_value,IN int array_size)
-{
-	api_view("g3api_set_up_keys");
-	return 0;
-}	
-	
-G3_API_RESULT g3api_diversify(IN int key_index,IN EN_DIVERSIFY_MODE diversify_mode,OUT ST_DIVERSIFY_PARAM* param)
+G3_API_RESULT CALLTYPE g3api_diversify(IN int key_index,IN EN_DIVERSIFY_MODE diversify_mode,OUT ST_DIVERSIFY_PARAM* param)
 {
 
 	api_view("g3api_diversify");
@@ -982,7 +1008,7 @@ END:
 	
 }	
 	
-G3_API_RESULT g3api_reset()
+G3_API_RESULT CALLTYPE g3api_reset()
 {
 
 	api_view("g3api_reset");
@@ -999,9 +1025,11 @@ END:
 	
 	
 }	
-	//END API
 
-G3_API_RESULT g3api_test(const unsigned char * in, int in_size)
+	//END API
+#if 0
+
+G3_API_RESULT CALLTYPE g3api_test(const unsigned char * in, int in_size)
 {
 	api_view("g3api_test");
 	//_testbuff = create_var_bytes(in, in_size);
@@ -1114,7 +1142,7 @@ G3_API_RESULT g3api_test4(PFTEST pfsend)
 
 
 
-	pfsend(23, 42);
+	//pfsend(23, 42);
 
 
 	return 0;
@@ -1157,3 +1185,5 @@ G3_API_RESULT g3api_test8(PFSENDRECV pfsend, const unsigned char * in, int in_si
 	asfdaafdasf();
 	return 0;
 }
+
+#endif // 0

@@ -1,9 +1,11 @@
 #include<windows.h>
 #include<stdio.h>
 #include <openssl/hmac.h>
+#include <g3_api.h>
 
-typedef int(*PFSENDRECV) (const unsigned char*, int, unsigned char*, int*, void*etcparam);
-extern "C" int send_n_recv(const unsigned char*snd, int snd_size, unsigned char*recv, int* recv_size, void*etcparam);
+
+
+extern "C" int CALLTYPE send_n_recv(const unsigned char*snd, int snd_size, unsigned char*recv, int* recv_size, void*etcparam);
 void print_value(const char * title, const void *buff, int size);
 
 

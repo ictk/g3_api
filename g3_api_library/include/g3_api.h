@@ -5,14 +5,6 @@
 #include"g3_define.h"
 
 
-#ifdef WIN32
-#define G3_API extern "C" __declspec(dllexport)
-#elif __linux__
-#define G3_API 
-#else
-#error "NO DEFILE"
-#endif
-
 //#define LIB_VERSION "1.0.0"
 G3_API void g3api_set_fp(void *fp);
 //START API
@@ -26,7 +18,7 @@ G3_API void g3api_set_fp(void *fp);
 *   @return const char *
 */
 //###################################################
-G3_API const char * g3api_get_lib_version
+G3_API const char * CALLTYPE g3api_get_lib_version
 (
 );
 
@@ -42,7 +34,7 @@ G3_API const char * g3api_get_lib_version
 *   @return void
 */
 //###################################################
-G3_API void g3api_set_user_send_recv_pf
+G3_API void CALLTYPE g3api_set_user_send_recv_pf
 (
 		IN PFSENDRECV psendrecv,
 		IN void* etcparam
@@ -58,7 +50,7 @@ G3_API void g3api_set_user_send_recv_pf
 *   @return G3_API_RESULT
 */
 //###################################################
-G3_API G3_API_RESULT g3api_get_device_version
+G3_API G3_API_RESULT CALLTYPE g3api_get_device_version
 (
 );
 
@@ -72,7 +64,7 @@ G3_API G3_API_RESULT g3api_get_device_version
 *   @return char*
 */
 //###################################################
-G3_API char* g3api_get_sn
+G3_API char* CALLTYPE g3api_get_sn
 (
 );
 
@@ -90,46 +82,12 @@ G3_API char* g3api_get_sn
 *   @return G3_API_RESULT
 */
 //###################################################
-G3_API G3_API_RESULT g3api_raw_snd_recv
+G3_API G3_API_RESULT CALLTYPE g3api_raw_snd_recv
 (
 		IN const byte* snd ,
 		IN int snd_size,
 		OUT byte* recv,
 		OUT int* recv_size
-);
-
-	
-//###################################################	
-/**
-*   @name g3api_setup_core
-*   @brief  
-*
-*   @param st_setup_fixed 
-
-*   @return G3_API_RESULT
-*/
-//###################################################
-G3_API G3_API_RESULT g3api_setup_core
-(
-		INOUT ST_SETUP_CORE* st_setup_fixed
-);
-
-	
-//###################################################	
-/**
-*   @name g3api_set_up_keys
-*   @brief  
-*
-*   @param array_set_up_value 
-*   @param array_size 
-
-*   @return G3_API_RESULT
-*/
-//###################################################
-G3_API G3_API_RESULT g3api_set_up_keys
-(
-		INOUT ST_SET_UP_VALUE* array_set_up_value,
-		IN int array_size
 );
 
 	
@@ -148,7 +106,7 @@ enable 4 follow structure ST_RW_DATA,ST_RW_DATA_WITH_IV,ST_RW_DATA_WITH_IV_MAC
 *   @return G3_API_RESULT
 */
 //###################################################
-G3_API G3_API_RESULT g3api_read_key_value
+G3_API G3_API_RESULT CALLTYPE g3api_read_key_value
 (
 		IN int key_index,
 		IN EN_AREA_TYPE area_type,
@@ -173,7 +131,7 @@ enable 4 follow structure ST_RW_DATA,ST_RW_DATA_WITH_IV,ST_RW_DATA_WITH_IV_MAC
 *   @return G3_API_RESULT
 */
 //###################################################
-G3_API G3_API_RESULT g3api_write_key_value
+G3_API G3_API_RESULT CALLTYPE g3api_write_key_value
 (
 		IN int key_index,
 		IN EN_AREA_TYPE area_type,
@@ -195,7 +153,7 @@ G3_API G3_API_RESULT g3api_write_key_value
 *   @return G3_API_RESULT
 */
 //###################################################
-G3_API G3_API_RESULT g3api_get_chellange
+G3_API G3_API_RESULT CALLTYPE g3api_get_chellange
 (
 		IN int chall_size,
 		OUT byte* challenge,
@@ -215,7 +173,7 @@ G3_API G3_API_RESULT g3api_get_chellange
 *   @return G3_API_RESULT
 */
 //###################################################
-G3_API G3_API_RESULT g3api_verify_passwd
+G3_API G3_API_RESULT CALLTYPE g3api_verify_passwd
 (
 		IN int key_index,
 		IN const byte* passwd,
@@ -235,7 +193,7 @@ G3_API G3_API_RESULT g3api_verify_passwd
 *   @return G3_API_RESULT
 */
 //###################################################
-G3_API G3_API_RESULT g3api_change_password
+G3_API G3_API_RESULT CALLTYPE g3api_change_password
 (
 		IN int key_index,
 		IN const byte* passwd,
@@ -254,7 +212,7 @@ G3_API G3_API_RESULT g3api_change_password
 *   @return G3_API_RESULT
 */
 //###################################################
-G3_API G3_API_RESULT g3api_init_puf
+G3_API G3_API_RESULT CALLTYPE g3api_init_puf
 (
 		IN int key_index,
 		IN unsigned int initial
@@ -276,7 +234,7 @@ G3_API G3_API_RESULT g3api_init_puf
 *   @return G3_API_RESULT
 */
 //###################################################
-G3_API G3_API_RESULT g3api_sign
+G3_API G3_API_RESULT CALLTYPE g3api_sign
 (
 		IN int key_index,
 		IN EN_SIGN_OPTION sign_option,
@@ -302,7 +260,7 @@ G3_API G3_API_RESULT g3api_sign
 *   @return G3_API_RESULT
 */
 //###################################################
-G3_API G3_API_RESULT g3api_verify
+G3_API G3_API_RESULT CALLTYPE g3api_verify
 (
 		IN int key_index,
 		IN EN_VERIFY_OPTION verify_option,
@@ -329,7 +287,7 @@ G3_API G3_API_RESULT g3api_verify
 *   @return G3_API_RESULT
 */
 //###################################################
-G3_API G3_API_RESULT g3api_dynamic_auth
+G3_API G3_API_RESULT CALLTYPE g3api_dynamic_auth
 (
 		IN int key_index,
 		IN EN_DYNAMIC_AUTH dauth_option,
@@ -357,7 +315,7 @@ G3_API G3_API_RESULT g3api_dynamic_auth
 *   @return G3_API_RESULT
 */
 //###################################################
-G3_API G3_API_RESULT g3api_encryption
+G3_API G3_API_RESULT CALLTYPE g3api_encryption
 (
 		IN int key_index,
 		IN EN_BLOCK_MODE block_mode,
@@ -385,7 +343,7 @@ G3_API G3_API_RESULT g3api_encryption
 *   @return G3_API_RESULT
 */
 //###################################################
-G3_API G3_API_RESULT g3api_decryption
+G3_API G3_API_RESULT CALLTYPE g3api_decryption
 (
 		IN int key_index,
 		IN EN_BLOCK_MODE block_mode,
@@ -408,7 +366,7 @@ G3_API G3_API_RESULT g3api_decryption
 *   @return G3_API_RESULT
 */
 //###################################################
-G3_API G3_API_RESULT g3api_encryption_ecies
+G3_API G3_API_RESULT CALLTYPE g3api_encryption_ecies
 (
 		IN int key_index,
 		OUT ST_ECIES* rs
@@ -426,7 +384,7 @@ G3_API G3_API_RESULT g3api_encryption_ecies
 *   @return G3_API_RESULT
 */
 //###################################################
-G3_API G3_API_RESULT g3api_decryption_ecies
+G3_API G3_API_RESULT CALLTYPE g3api_decryption_ecies
 (
 		IN int key_index,
 		INOUT ST_ECIES* rs
@@ -448,7 +406,7 @@ G3_API G3_API_RESULT g3api_decryption_ecies
 *   @return G3_API_RESULT
 */
 //###################################################
-G3_API G3_API_RESULT g3api_session
+G3_API G3_API_RESULT CALLTYPE g3api_session
 (
 		IN int key_index,
 		IN EN_SESSION_MODE en_session_mode,
@@ -471,7 +429,7 @@ G3_API G3_API_RESULT g3api_session
 *   @return G3_API_RESULT
 */
 //###################################################
-G3_API G3_API_RESULT g3api_set_extern_public_key
+G3_API G3_API_RESULT CALLTYPE g3api_set_extern_public_key
 (
 		IN const void* pub_key,
 		IN int structure_size,
@@ -491,7 +449,7 @@ G3_API G3_API_RESULT g3api_set_extern_public_key
 *   @return G3_API_RESULT
 */
 //###################################################
-G3_API G3_API_RESULT g3api_diversify
+G3_API G3_API_RESULT CALLTYPE g3api_diversify
 (
 		IN int key_index,
 		IN EN_DIVERSIFY_MODE diversify_mode,
@@ -512,7 +470,7 @@ G3_API G3_API_RESULT g3api_diversify
 *   @return G3_API_RESULT
 */
 //###################################################
-G3_API G3_API_RESULT g3api_get_public_key
+G3_API G3_API_RESULT CALLTYPE g3api_get_public_key
 (
 		IN int key_index,
 		IN EN_PUB_TYPE pub_type,
@@ -534,7 +492,7 @@ G3_API G3_API_RESULT g3api_get_public_key
 *   @return G3_API_RESULT
 */
 //###################################################
-G3_API G3_API_RESULT g3api_certification
+G3_API G3_API_RESULT CALLTYPE g3api_certification
 (
 		IN int key_index,
 		IN EN_CERTIFICATION_WRITE_MODE certification_write_mode,
@@ -559,7 +517,7 @@ G3_API G3_API_RESULT g3api_certification
 *   @return G3_API_RESULT
 */
 //###################################################
-G3_API G3_API_RESULT g3api_issue_certification
+G3_API G3_API_RESULT CALLTYPE g3api_issue_certification
 (
 		IN int key_index,
 		IN int public_key_pos,
@@ -588,7 +546,7 @@ ST_ECDH_PRE_MASTER_SECRET|ST_ECDH_KEY_BLOCK|ST_ECDH_IV
 *   @return G3_API_RESULT
 */
 //###################################################
-G3_API G3_API_RESULT g3api_ecdh
+G3_API G3_API_RESULT CALLTYPE g3api_ecdh
 (
 		IN EN_ECDH_MODE en_ecdh_mode,
 		IN const void* Q_b,
@@ -613,7 +571,7 @@ G3_API G3_API_RESULT g3api_ecdh
 *   @return G3_API_RESULT
 */
 //###################################################
-G3_API G3_API_RESULT g3api_make_tls_inter_header_without_size
+G3_API G3_API_RESULT CALLTYPE g3api_make_tls_inter_header_without_size
 (
 		IN int seq_num,
 		IN EN_CONTENT_TYPE content_type,
@@ -638,7 +596,7 @@ G3_API G3_API_RESULT g3api_make_tls_inter_header_without_size
 *   @return G3_API_RESULT
 */
 //###################################################
-G3_API G3_API_RESULT g3api_tls_mac_encrypt
+G3_API G3_API_RESULT CALLTYPE g3api_tls_mac_encrypt
 (
 		IN const ST_TLS_INTER_HEADER_WITHOUT_SIZE* tls_inter_header_without_size,
 		IN const ST_IV* client_iv,
@@ -666,7 +624,7 @@ G3_API G3_API_RESULT g3api_tls_mac_encrypt
 *   @return G3_API_RESULT
 */
 //###################################################
-G3_API G3_API_RESULT g3api_tls_decrypt_verify
+G3_API G3_API_RESULT CALLTYPE g3api_tls_decrypt_verify
 (
 		IN const ST_TLS_INTER_HEADER_WITHOUT_SIZE* tls_inter_header_without_size,
 		IN const ST_IV* server_iv,
@@ -690,7 +648,7 @@ G3_API G3_API_RESULT g3api_tls_decrypt_verify
 *   @return G3_API_RESULT
 */
 //###################################################
-G3_API G3_API_RESULT g3api_tls_get_handshake_digest
+G3_API G3_API_RESULT CALLTYPE g3api_tls_get_handshake_digest
 (
 		IN EN_HANDSHAKE_MODE handshake_mode,
 		IN const ST_DATA_32* hash_handshake_msg,
@@ -707,7 +665,7 @@ G3_API G3_API_RESULT g3api_tls_get_handshake_digest
 *   @return G3_API_RESULT
 */
 //###################################################
-G3_API G3_API_RESULT g3api_reset
+G3_API G3_API_RESULT CALLTYPE g3api_reset
 (
 );
 
@@ -723,10 +681,28 @@ G3_API G3_API_RESULT g3api_reset
 *   @return G3_API_RESULT
 */
 //###################################################
-G3_API G3_API_RESULT g3api_test
+G3_API G3_API_RESULT CALLTYPE g3api_test
 (
-		IN const byte* in,
+		IN PFTEST in,
 		IN int in_size
+);
+
+	
+//###################################################	
+/**
+*   @name g3api_test2
+*   @brief  
+*
+*   @param test 
+*   @param out_size 
+
+*   @return G3_API_RESULT
+*/
+//###################################################
+G3_API G3_API_RESULT CALLTYPE g3api_test2
+(
+		IN char* test,
+		IN int* out_size
 );
 
 	//END API

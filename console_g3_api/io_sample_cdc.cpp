@@ -83,7 +83,7 @@ LPWRITE_IEB100_PACKET make_write_ieb100_packet(char rom_inst, char res_size, con
 	return lp_write_packet;
 }
 
-extern "C" int send_n_recv(const unsigned char*snd, int snd_size, unsigned char*recv, int* recv_size, void*etcparam)
+extern "C"  int CALLTYPE send_n_recv(const unsigned char*snd, int snd_size, unsigned char*recv, int* recv_size, void*etcparam)
 {
 
 	LPINTER_PARAMS inter_param = (LPINTER_PARAMS)etcparam;

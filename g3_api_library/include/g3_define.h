@@ -3,6 +3,29 @@
 #define __G3_DEFINE_HEADER__
 
 
+#ifdef WIN32
+//#define G3_API extern "C" __declspec(dllexport)
+
+#ifdef G3_API_LIBRARY_EXPORTS
+#define G3_API extern "C" __declspec(dllexport) 
+#else
+#define G3_API  extern "C" __declspec(dllimport) 
+#endif
+
+//#define CALLTYPE __stdcall
+#define CALLTYPE
+
+#elif __linux__
+
+#define CALLTYPE
+#define G3_API 
+
+
+#else
+#error "NO DEFILE"
+#endif
+
+
 
 //START DEFINE
 #define LIB_VERSION  "1.1.0"
@@ -214,7 +237,7 @@ typedef enum
 
 
 
-typedef int(*PFTEST) (int, int);
+
 
 //START TYPE_DEF
 
@@ -222,8 +245,9 @@ typedef unsigned int dword;
 typedef unsigned short word;
 typedef unsigned char byte;
 
-typedef int(*PFSENDRECV) (const unsigned char*,int,unsigned char*,int*,  void*etcparam );
+typedef int(CALLTYPE *PFSENDRECV) (const unsigned char*,int,unsigned char*,int*,  void*etcparam );
 typedef int G3_API_RESULT;
+typedef int(CALLTYPE *PFTEST) (int param);
 //END TYPE_DEF
 
 
