@@ -12,8 +12,11 @@
 #define G3_API  extern "C" __declspec(dllimport) 
 #endif
 
-//#define CALLTYPE __stdcall
+#ifdef __STDCALL__
+#define CALLTYPE __stdcall
+#else
 #define CALLTYPE
+#endif
 
 #elif __linux__
 
