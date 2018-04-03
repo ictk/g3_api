@@ -8,7 +8,6 @@ using namespace std;
 
 
 
-
 //#pragma comment(lib,"libBASE.lib")
 VAR_BYTES * convert_data_ieb100(void *pure_data, int data_size, int max_res_size);
 //int do_normal_process(char inst, char p1, short p2, const void * data, int data_size, void * recv_data, int *real_recv_size);
