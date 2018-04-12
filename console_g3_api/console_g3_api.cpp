@@ -156,7 +156,7 @@ int main(int argc, char* argv[])
 	//general_sign_verify();
 
 
-	test_scenario_sample2();
+	//test_scenario_sample2();
 
 
 

@@ -112,7 +112,7 @@ extern "C" int send_n_recv_4_i2c(const unsigned char*snd, int snd_size, unsigned
 		printf("Failed to write to the i2c bus. %d \n",ret);
 		return -1;
 	}
-	delay(100);
+	delay(1);
 	int length = * recv_size;			//<<< Number of bytes to read
 	ret = read(file_i2c, recv, length);
 	
@@ -164,7 +164,7 @@ int wake_up_and_convert_mode_i2c()
 {
 	NEO_TITLE(wake_up_and_convert_mode_i2c);
 	wake_up(GPIO_WAKE_UP_PIN,1,10);	
-	
+	return 0;	
 	return ictk_convert_to_inst_mode(_file_i2c);
 	
 	
