@@ -114,18 +114,25 @@ extern "C" int send_n_recv_4_i2c(const unsigned char*snd, int snd_size, unsigned
 	}
 	delay(1);
 	int length = * recv_size;			//<<< Number of bytes to read
-	ret = read(file_i2c, recv, length);
-	
-	
-	if (ret != length)		//read() returns the number of bytes actually read, if it doesn't match then an error occurred (e.g. no response from the device)
-	{
-		//ERROR HANDLING: i2c transaction failed
-		printf("Failed to read from the i2c bus ret:0x%x. err:0x%x\n",ret,errno);
-		return -1;
+	for(int i = 0 ; i<10;i++) {
+		
+		ret = read(file_i2c, recv, length);
+		printf("read :%d\n",ret);
+		if (ret == length)		//read() returns the number of bytes actually read, if it doesn't match then an error occurred (e.g. no response from the device)
+		{
+			break;
+		}
+		printf("trying to read :%d\n",i);
+		delay(100);
+		
 	}
+	if (ret <0){
+		printf("Failed to read from the i2c bus ret:0x%x. err:0x%x\n",ret,errno);
+	}
+
 	print_value("RECV",recv, length);
 	*recv_size = ret;
-	return 0;
+	return ret;
 	
 	
 }
