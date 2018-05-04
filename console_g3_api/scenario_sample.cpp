@@ -3,76 +3,882 @@
 #include "neoCoLib.h"
 #include "neoDebug.h"
 #include <g3_api.h>
-#include <openssl/hmac.h>
+//#include <openssl/hmac.h>
 
 void print_result(const char * title, int ret);
 void print_value(const char * title, const void *buff, int size);
 void print_result_value(const char * title, int ret, const void *buff, int size);
 void set_buff_from_hexstr(void *pbuff,const char *hexstr);
 
-void general_read_write()
+void initialize()
 {
-
 	ST_KEY_VALUE recv_key;
 	ST_KEY_VALUE write_key;
-	int recvbuff_size = 1024;
+	byte rcv_buffer[1024];
+	int rcv_buffer_size = 1024;
+
 	int ret = 0;
 
-	ret = g3api_read_key_value(1, KEY_AREA, PLAIN_TEXT, &recv_key,  sizeof(ST_KEY_VALUE));
-	print_result_value("read key", ret, &recv_key, sizeof(ST_KEY_VALUE));
+	const unsigned char passwd2[] = { 0x11, 0x22, 0x33, 0x44 };
+
+	// get Root_AC
+	ret = g3api_verify_passwd(0, passwd2, sizeof(passwd2));
+	print_result("g3api_verify_passwd", ret);
+
+	// write setup area sector 4
+	set_buff_from_hexstr(&write_key, "80540000000000004E5400000000000000540000000000000054000000000000");
+	ret = g3api_write_key_value(4, SETUP_AREA, PLAIN_TEXT, &write_key, sizeof(ST_KEY_VALUE));
+	print_result("init  write key", ret);
+
+	// write setup area sector 2
+	set_buff_from_hexstr(&write_key, "0E00000000000000005400000000000000540000000000000054000000000000");
+	ret = g3api_write_key_value(2, SETUP_AREA, PLAIN_TEXT, &write_key, sizeof(ST_KEY_VALUE));
+	print_result("init  write key", ret);
+
+	// write key area sector 0
+	set_buff_from_hexstr(&write_key, "0405050511223344000000000000000000000000000000000000000000000000");
+	ret = g3api_write_key_value(0, KEY_AREA, PLAIN_TEXT, &write_key, sizeof(ST_KEY_VALUE));
+	print_result("init  write key", ret);
+}
+
+void general_read_write()
+{
+	ST_KEY_VALUE recv_key;
+	ST_KEY_VALUE write_key;
+	byte rcv_buffer[1024];
+	int rcv_buffer_size = 32;
+
+	const unsigned char passwd2[] = { 0x11, 0x22, 0x33, 0x44 };
+	int ret = 0;
+
+	byte msg[48];
+	int msg_size = 32;
+
+	ST_SIGN_SYMM sign;
+
+	ST_RW_DATA_WITH_IV write_iv;
+	ST_RW_DATA_WITH_IV read_iv;
+
+	ST_RW_DATA_WITH_IV_MAC write_mac;
+	ST_RW_DATA_WITH_IV_MAC read_mac;
+
+	ST_DATA_64 write_mask;
+	byte session_mac[64];
+	byte signature[16];
+	ST_IV session_iv;
+	byte session_key[32];
+	int session_key_size = 16;
+
+	// get Root_AC
+	ret = g3api_verify_passwd(0, passwd2, sizeof(passwd2));
+	print_result("g3api_verify_passwd", ret);
+
+	// write setup area sector 10
+	set_buff_from_hexstr(&write_key, "9E540000000000009E031B001B0000009E001B001B0000004E54000000000000");
+	ret = g3api_write_key_value(10, SETUP_AREA, PLAIN_TEXT, &write_key, sizeof(ST_KEY_VALUE));
+	print_result("write key setup 10", ret);
+
+	// write key area sector 27 ( aes128_key )
+	set_buff_from_hexstr(&write_key, "6B8B3A2D115E4683A540FF6C1515A13D21AABF36472D3C112FD134AD5F4F3122");
+	ret = g3api_write_key_value(27, KEY_AREA, PLAIN_TEXT, &write_key, sizeof(ST_KEY_VALUE));
+	print_result("write key 27", ret);
+
+	// sign & verify dynamic_auth sector 27
+	ret = g3api_get_challenge(32, msg + 16, &msg_size);
+	print_result("g3api_get_challenge", ret);
+	print_value("challenge_value", msg + 16, msg_size);
+
+	ret = g3api_sign(27, SIGN_SYMM, msg + 16, msg_size, &sign, sizeof(ST_SIGN_SYMM));
+	print_result_value("sign key_symm 27", ret, &sign, sizeof(ST_SIGN_SYMM));
+
+	set_buff_from_hexstr(msg, "861B0003000000000000000000000000");
+	ret = g3api_dynamic_auth(27, DYN_AUTH_SYMM, 0x10, msg, sizeof(msg), &sign, sizeof(ST_SIGN_SYMM));
+	print_result("g3api_verify dynamic auth 27", ret);
+
+	// session_key
+	memset(session_key, 0, sizeof(ST_DATA_32));
+	set_buff_from_hexstr(&session_iv, "871B1023000000000000000000000000");
+	memcpy(signature, &sign, 16);
+	ret = g3api_encryption(27, SECTOR_KEY, BL_CBC, &session_iv, signature, sizeof(ST_SIGN_SYMM), session_key, &session_key_size);
+	ret = g3api_write_key_value(1, KEY_AREA, PLAIN_TEXT, session_key, sizeof(ST_KEY_VALUE));
 	
-	//printf("ret:0x%x recv %s %d \n", ret, NCL::BytetoHexStr(recvbuff, recvbuff_size).c_str(), recvbuff_size);
-
-	ret = g3api_write_key_value(1, KEY_AREA, PLAIN_TEXT, &recv_key, sizeof(ST_KEY_VALUE));
-	print_result("write key", ret);
-	//printf("ret:0x%x recv %s %d \n", ret, NCL::BytetoHexStr(recvbuff, recvbuff_size).c_str(), recvbuff_size);
-
-
-
-	//vecbyte = NCL::HexStr2Byte("72CF56F5BF877DCF5823691682E9824C0B9742D1E0B41D288B478ECEF5218BAA");
-	set_buff_from_hexstr(&write_key, "72CF56F5BF877DCF5823691682E9824C0B9742D1E0B41D288B478ECEF5218BAA");
+	// write key area sector 24
+	set_buff_from_hexstr(&write_key, "A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0");
+	ret = g3api_write_key_value(24, KEY_AREA, PLAIN_TEXT, &write_key, sizeof(ST_KEY_VALUE));
+	print_result("write key 24", ret);
+	
+	// write data0 area sector 0
+	set_buff_from_hexstr(&write_key, "A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0");
 	ret = g3api_write_key_value(0, DATA_AREA_0, PLAIN_TEXT, &write_key, sizeof(ST_KEY_VALUE));
-	print_result("write key", ret);
+	print_result("write key data0 0", ret);
+
+	// write data1 area sector 0
+	set_buff_from_hexstr(&write_key, "A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0");
+	ret = g3api_write_key_value(0, DATA_AREA_1, PLAIN_TEXT, &write_key, sizeof(ST_KEY_VALUE));
+	print_result("write key data1 0", ret);
+
+	// write key area sector 26 iv
+	set_buff_from_hexstr(&write_iv, "10D1079D8F2862AA39CF960BF45A47B5370DBE0D9992F840C243FF763EA37C2E811A0101000000000000000000000000");
+	ret = g3api_write_key_value(26, KEY_AREA, CBC, &write_iv, sizeof(ST_RW_DATA_WITH_IV));
+	print_result("write key 26", ret);
+	
+	// write key area sector 26 session cbc
+	set_buff_from_hexstr(&write_iv, "7F0E62ED59A6DA36B296D95BEDDD2370B5C225819C1B649C0AA9226430ED4456811A1101000000000000000000000000");
+	ret = g3api_write_key_value(26, KEY_AREA, SESSION_KEY_CBC, &write_iv, sizeof(ST_RW_DATA_WITH_IV));
+	print_result("write key 26 session cbc", ret);
+
+	// write key area sector 26 session cbc with mac
+	memset(msg, 0, 48);
+	memset(rcv_buffer, 0, 1024);
+	set_buff_from_hexstr(&session_iv, "811A1501000000000000000000000000");
+	set_buff_from_hexstr(msg, "A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0");
+	// cipher_text
+	ret = g3api_encryption(1, SECTOR_KEY, BL_CBC, &session_iv, msg, msg_size, rcv_buffer, &rcv_buffer_size);
+	//print_result_value("session_cipher_text", ret, rcv_buffer, rcv_buffer_size);
+	memcpy(rcv_buffer + 32, &session_iv, sizeof(ST_IV));
+	// mac
+	ret = g3api_encryption(1, SECTOR_KEY, BL_CBC, &session_iv, rcv_buffer, rcv_buffer_size, rcv_buffer + 16 + 32, &rcv_buffer_size);
+	memcpy(rcv_buffer + 48, rcv_buffer + 48 + 16, 16);
+	ret = g3api_write_key_value(26, KEY_AREA, SESSION_KEY_CBC_with_MAC, rcv_buffer, sizeof(ST_RW_DATA_WITH_IV_MAC));
+	print_result("write key 26 session cbc mac", ret);
+	
+	
+	// write key area sector 25 with mac
+	set_buff_from_hexstr(&write_mac, "D458239ADBF1AA69486D0C492A3F5D3CA32B45E041BFB917ACE8CA23A47922C681190501000000000000000000000000A1D8C26F685D944F67D6C31CE43EA944");
+	ret = g3api_write_key_value(25, KEY_AREA, CBC_with_MAC, &write_mac, sizeof(ST_RW_DATA_WITH_IV_MAC));
+	print_result("write key with mac", ret);
+
+	// write key area sector 24 mask
+	set_buff_from_hexstr(&write_mask, "0000000000000000000000000000000000000000000000000000000000000000A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0");
+	ret = g3api_write_key_value(24, KEY_AREA, MASKED, &write_mask, sizeof(ST_DATA_64));
+	print_result("write key 24 mask", ret);
+
+	// read setup area sector 10
+	ret = g3api_read_key_value(10, SETUP_AREA, PLAIN_TEXT, NULL, 0, &recv_key,  sizeof(ST_KEY_VALUE));
+	print_result_value("read key setup 10", ret, &recv_key, sizeof(ST_KEY_VALUE));
+	memset(&recv_key, 0, sizeof(ST_KEY_VALUE));
+
+	// read key area sector 24
+	set_buff_from_hexstr(&write_key, "0A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0A");
+	ret = g3api_read_key_value(24, KEY_AREA, MASKED, &write_key, sizeof(ST_KEY_VALUE), &recv_key, sizeof(ST_KEY_VALUE));
+	print_result_value("read key 24 mask", ret, &recv_key, sizeof(ST_KEY_VALUE));
+	memset(&recv_key, 0, sizeof(ST_KEY_VALUE));
+
+	// read key area sector 25
+	ret = g3api_read_key_value(25, KEY_AREA, CBC_with_MAC, NULL, 0, &read_mac, sizeof(ST_RW_DATA_WITH_IV_MAC));
+	print_result_value("read key 25 mac", ret, &read_mac, sizeof(ST_RW_DATA_WITH_IV_MAC));
+	memset(&read_mac, 0, sizeof(ST_RW_DATA_WITH_IV_MAC));
+	
+	// read key area sector 26 iv
+	ret = g3api_read_key_value(26, KEY_AREA, CBC, NULL, 0, &read_iv, sizeof(ST_RW_DATA_WITH_IV));
+	print_result_value("read key 26 iv", ret, &read_iv, sizeof(ST_RW_DATA_WITH_IV));
+	memset(&read_iv, 0, sizeof(ST_RW_DATA_WITH_IV));
 	
 
-	//printf("ret:0x%x recv %s %d \n", ret, NCL::BytetoHexStr(recvbuff, recvbuff_size).c_str(), recvbuff_size);
+	// read key area sector 26 session cbc
+	ret = g3api_read_key_value(26, KEY_AREA, SESSION_KEY_CBC, NULL, 0, &read_iv, sizeof(ST_RW_DATA_WITH_IV));
+	print_result_value("read key 26 session cbc", ret, &read_iv, sizeof(ST_RW_DATA_WITH_IV));
+	memset(&read_iv, 0, sizeof(ST_RW_DATA_WITH_IV));
+	
 
-	ret = g3api_read_key_value(0, DATA_AREA_0, PLAIN_TEXT, &recv_key, sizeof(ST_KEY_VALUE));
+	// read key area sector 26 session cbc mac
+	ret = g3api_read_key_value(26, KEY_AREA, SESSION_KEY_CBC_with_MAC, NULL, 0, &read_mac, sizeof(ST_RW_DATA_WITH_IV_MAC));
+	print_result_value("read key 26 session cbc mac", ret, &read_mac, sizeof(ST_RW_DATA_WITH_IV_MAC));
+	memset(&read_mac, 0, sizeof(ST_RW_DATA_WITH_IV_MAC));
+	
+	// read data0 area secotr 0
+	ret = g3api_read_key_value(0, DATA_AREA_0, PLAIN_TEXT, NULL, 0, &recv_key, sizeof(ST_KEY_VALUE));
+	print_result_value("read key data0 0", ret, &recv_key, sizeof(ST_KEY_VALUE));
+	memset(&recv_key, 0, sizeof(ST_KEY_VALUE));
 
-	print_result_value("read key", ret, &recv_key, sizeof(ST_KEY_VALUE));
+	// read data1 area sector 0
+	ret = g3api_read_key_value(0, DATA_AREA_1, PLAIN_TEXT, NULL, 0, &recv_key, sizeof(ST_KEY_VALUE));
+	print_result_value("read key data1 0", ret, &recv_key, sizeof(ST_KEY_VALUE));
+	memset(&recv_key, 0, sizeof(ST_KEY_VALUE));
 	
 
 }
+void general_password()
+{
+	ST_KEY_VALUE recv_key;
+	ST_KEY_VALUE write_key;
+	byte rcv_buffer[1024];
+	int rcv_buffer_size = 32;
 
+	const unsigned char passwd2[] = { 0x11, 0x22, 0x33, 0x44 };
+	const unsigned char passwd3[] = { 0x11, 0x22, 0x33, 0x45 };
+	int ret = 0;
+
+	// get Root_AC
+	ret = g3api_verify_passwd(0, passwd2, sizeof(passwd2));
+	print_result("g3api_verify_passwd", ret);
+
+	// write setup area sector 11
+	set_buff_from_hexstr(&write_key, "8E540000000000008E540000000000008E540000000000008E54000000000000");
+	ret = g3api_write_key_value(11, SETUP_AREA, PLAIN_TEXT, &write_key, sizeof(ST_KEY_VALUE));
+	print_result("write key", ret);
+
+	// write key area sector 28
+	set_buff_from_hexstr(&write_key, "0403050511223344000000000000000000000000000000000000000000000000");
+	ret = g3api_write_key_value(28, KEY_AREA, PLAIN_TEXT, &write_key, sizeof(ST_KEY_VALUE));
+	print_result("write key", ret);
+
+	// verify password sector 28 ( valid )
+	ret = g3api_verify_passwd(28, passwd2, sizeof(passwd2));
+	print_result("g3api_verify_passwd", ret);
+
+	// verify password sector 28 ( invalid )
+	ret = g3api_verify_passwd(28, passwd3, sizeof(passwd2));
+	print_result("g3api_verify_passwd", ret);
+
+	// verify password sector 28 ( invalid )
+	ret = g3api_verify_passwd(28, passwd3, sizeof(passwd2));
+	print_result("g3api_verify_passwd", ret);
+
+	// verify password sector 28 ( invalid )
+	ret = g3api_verify_passwd(28, passwd3, sizeof(passwd2));
+	print_result("g3api_verify_passwd", ret);
+
+	// verify password sector 28 ( invalid )
+	ret = g3api_verify_passwd(28, passwd3, sizeof(passwd2));
+	print_result("g3api_verify_passwd", ret);
+
+	// verify password sector 28 ( invalid )
+	ret = g3api_verify_passwd(28, passwd3, sizeof(passwd2));
+	print_result("g3api_verify_passwd", ret);
+
+	// verify password sector 28 ( invalid )
+	ret = g3api_verify_passwd(28, passwd3, sizeof(passwd2));
+	print_result("g3api_verify_passwd", ret);
+
+	// change password sector 28
+	ret = g3api_change_password(28, passwd3, sizeof(passwd3));
+	print_result("g3api_change_passwd", ret);
+
+	// verify password sector 28 ( valid )
+	ret = g3api_verify_passwd(28, passwd3, sizeof(passwd2));
+	print_result("g3api_verify_passwd", ret);
+}
 void general_sign_verify()
 {
+	ST_KEY_VALUE recv_key;
+	ST_KEY_VALUE write_key;
+	byte rcv_buffer[1024];
+	int rcv_buffer_size = 1024;
 
-	int recvbuff_size = 1024;
-	int ret = 0;
 	ST_SIGN_ECDSA sign;
+	ST_SIGN_HMAC sign2;
+	ST_SIGN_SYMM sign3;
+
+	ST_DATA_32 st_data_32;
+
+	const unsigned char passwd2[] = { 0x11, 0x22, 0x33, 0x44 };
+	byte msg[48];
+	int msg_size = 32;
+
+	byte symm_input[48];
+	int ret = 0;
+
+	byte session_b[16];
+	byte session_out[32];
+	int session_out_size = 32;
+
+	// get Root_AC
+	ret = g3api_verify_passwd(0, passwd2, sizeof(passwd2));
+	print_result("g3api_verify_passwd", ret);
+
+	// write setup area sector 12
+	set_buff_from_hexstr(&write_key, "4E540000000000002E540000000000003E540000000000000E54000000000000");
+	ret = g3api_write_key_value(12, SETUP_AREA, PLAIN_TEXT, &write_key, sizeof(ST_KEY_VALUE));
+	print_result("write key", ret);
+
+	// write key area sector 32 ( aes128_key )
+	set_buff_from_hexstr(&write_key, "6B8B3A2D115E4683A540FF6C1515A13D21AABF36472D3C112FD134AD5F4F3122");
+	ret = g3api_write_key_value(32, KEY_AREA, PLAIN_TEXT, &write_key, sizeof(ST_KEY_VALUE));
+	print_result("write key", ret);
+
+	// write key area sector 33 ( ecc_prv_key )
+	set_buff_from_hexstr(&write_key, "8F0511C5F59C131D60BB96A12C07AB0D3E4D75D1CEE4FD747DF41D41696AA2A3");
+	ret = g3api_write_key_value(33, KEY_AREA, PLAIN_TEXT, &write_key, sizeof(ST_KEY_VALUE));
+	print_result("write key", ret);
+
+	// write key area sector 34 ( ecc_pub_key_1 )
+	set_buff_from_hexstr(&write_key, "7CC2F04BFCB22ACD94A230EAA57D90FD65AD7CDC16695FB3A1C4A71D7A2E7481");
+	ret = g3api_write_key_value(34, KEY_AREA, PLAIN_TEXT, &write_key, sizeof(ST_KEY_VALUE));
+	print_result("write key", ret);
+
+	// write key area sector 35 ( ecc_pub_key_2 )
+	set_buff_from_hexstr(&write_key, "961F49DCD5F33971FBF0320BA3CEB6F6A1CB8EA2D98AEBC24B023197EB76C625");
+	ret = g3api_write_key_value(35, KEY_AREA, PLAIN_TEXT, &write_key, sizeof(ST_KEY_VALUE));
+	print_result("write key", ret);
 
 	VECBYTE vecbyte = NCL::HexStr2Byte("72CF56F5BF877DCF5823691682E9824C0B9742D1E0B41D288B478ECEF5218BAA");
 
-	ret = g3api_sign(4, SIGN_ECDSA_EXT_SHA256, V2A(vecbyte), vecbyte.size(), &sign, sizeof(ST_SIGN_ECDSA));
-	print_result_value("sign key", ret, &sign, sizeof(ST_SIGN_ECDSA));
+	// sign&verify - ECDSA_EX_HASH
+	ret = g3api_sign(33, SIGN_ECDSA_EXT_SHA256, V2A(vecbyte), vecbyte.size(), &sign, sizeof(ST_SIGN_ECDSA));
+	print_result_value("sign key_ecdsa_ex_hash", ret, &sign, sizeof(ST_SIGN_ECDSA));
 
-	ret = g3api_verify(1, VERYFY_ECDSA_EXT_SHA256, V2A(vecbyte), vecbyte.size(), &sign, sizeof(ST_SIGN_ECDSA));
-	print_result("g3api_verify key", ret);
-	ST_DATA_32 st_data_32;
-	
+	ret = g3api_verify(34, VERYFY_ECDSA_EXT_SHA256, V2A(vecbyte), vecbyte.size(), &sign, sizeof(ST_SIGN_ECDSA));
+	print_result("g3api_verify key_ecdsa_ex_hash", ret);
+
+	// sign&verify - ECDSA_SHA256
+	ret = g3api_sign(33, SIGN_ECDSA_WITH_SHA256, V2A(vecbyte), vecbyte.size(), &sign, sizeof(ST_SIGN_ECDSA));
+	print_result_value("sign key_ecdsa_sha256", ret, &sign, sizeof(ST_SIGN_ECDSA));
+
+	ret = g3api_verify(34, VERYFY_ECDSA_WITH_SHA256, V2A(vecbyte), vecbyte.size(), &sign, sizeof(ST_SIGN_ECDSA));
+	print_result("g3api_verify key_ecdsa_sha256", ret);
+
+	// sign&verify - symmetric
+	ret = g3api_sign(32, SIGN_SYMM, V2A(vecbyte), vecbyte.size(), &sign3, sizeof(ST_SIGN_SYMM));
+	print_result_value("sign key_symm", ret, &sign3, sizeof(ST_SIGN_SYMM));
+
+	set_buff_from_hexstr(symm_input, "8620000300000000000000000000000072CF56F5BF877DCF5823691682E9824C0B9742D1E0B41D288B478ECEF5218BAA");
+
+	ret = g3api_verify(32, VERYFY_SYMM, symm_input, sizeof(symm_input), &sign3, sizeof(ST_SIGN_SYMM));
+	print_result("g3api_verify key_symm", ret);
+	memset(&sign3, 0, sizeof(ST_SIGN_SYMM));
+
+	// sign&verify - symmetric session key
+	set_buff_from_hexstr(session_b, "4A5E31F5D1D5B6C438D1F155A1F3FE5A");
+	ret = g3api_session(32, SYMM_KEY, session_b, sizeof(session_b), session_out, &session_out_size);
+	print_result_value("session_ins", ret, session_out, session_out_size);
+
+	ret = g3api_sign(0, SIGN_SESSION_SYMM, V2A(vecbyte), vecbyte.size(), &sign3, sizeof(ST_SIGN_SYMM));
+	print_result_value("sign key symmetric session key", ret, &sign3, sizeof(ST_SIGN_SYMM));
+
+	set_buff_from_hexstr(symm_input, "8600000400000000000000000000000072CF56F5BF877DCF5823691682E9824C0B9742D1E0B41D288B478ECEF5218BAA");
+
+	ret = g3api_verify(0, VERIFY_SESSION_SYMM, symm_input, sizeof(symm_input), &sign3, sizeof(ST_SIGN_SYMM));
+	print_result("g3api verify symmetric session key", ret);
+	memset(&sign3, 0, sizeof(ST_SIGN_SYMM));
+
+
+	// write setup area sector 12
+	set_buff_from_hexstr(&write_key, "4E540000000000007E540000000000003E540000000000000E54000000000000");
+	ret = g3api_write_key_value(12, SETUP_AREA, PLAIN_TEXT, &write_key, sizeof(ST_KEY_VALUE));
+	print_result("write key", ret);
+
+	// write key area sector 32 ( SHA256 )
+	set_buff_from_hexstr(&write_key, "6B8B3A2D115E4683A540FF6C1515A13D21AABF36472D3C112FD134AD5F4F3122");
+	ret = g3api_write_key_value(33, KEY_AREA, PLAIN_TEXT, &write_key, sizeof(ST_KEY_VALUE));
+	print_result("write key", ret);
+
+	// sign&verify - hmac
+	ret = g3api_sign(33, SIGN_HMAC, V2A(vecbyte), vecbyte.size(), &sign2, sizeof(ST_SIGN_HMAC));
+	print_result_value("sign key hmac", ret, &sign2, sizeof(ST_SIGN_HMAC));
+
+	ret = g3api_verify(33, VERYFY_HMAC, V2A(vecbyte), vecbyte.size(), &sign2, sizeof(ST_SIGN_HMAC));
+	print_result("g3api_verify key hmac", ret);
+
 	ret = g3api_set_extern_public_key(ext_pubkey, sizeof(ext_pubkey), &st_data_32);
 	print_result("g3api_set_extern_public_key key", ret);
 	print_value("chal", &st_data_32, sizeof(ST_DATA_32));
-	
+
 	ret = g3api_verify(1, VERYFY_EXT_PUB_ECDSA_WITH_SHA256, org_msg, sizeof(org_msg), sign_rs, sizeof(sign_rs));
-	print_result("g3api_verify key", ret);
+	print_result("g3api_verify key_ext_sha256", ret);
 
 	ret = g3api_verify(1, VERYFY_EXT_PUB_ECDSA_EXT_SHA256, org_msg_hash, sizeof(org_msg_hash), sign_rs, sizeof(sign_rs));
-	print_result("g3api_verify key", ret);
+	print_result("g3api_verify key_ext_ex_hash", ret);
+
+	// sign & verify  - dynamic_auth
+	ret = g3api_get_challenge(32, msg+16, &msg_size);
+	print_result("g3api_get_challenge", ret);
+	print_value("challenge_value", msg+16, msg_size);
+
+	ret = g3api_sign(32, SIGN_SYMM, msg+16, msg_size, &sign3, sizeof(ST_SIGN_SYMM));
+	print_result_value("sign key_symm", ret, &sign3, sizeof(ST_SIGN_SYMM));
+
+	set_buff_from_hexstr(msg, "86200003000000000000000000000000");
+	ret = g3api_dynamic_auth(32, DYN_AUTH_SYMM, 0x10, msg, sizeof(msg), &sign3, sizeof(ST_SIGN_SYMM));
+	print_result("g3api_verify dynamic auth", ret);
+
+}
+
+void general_enc_dec()
+{
+	ST_KEY_VALUE recv_key;
+	ST_KEY_VALUE write_key;
+	byte rcv_buffer[1024];
+	int rcv_buffer_size = 32;
+
+	const unsigned char passwd2[] = { 0x11, 0x22, 0x33, 0x44 };
+	int ret = 0;
+
+	ST_IV iv;
+	byte plain_text[16],cipher_text[16];
+	int cipher_text_size = 16;
+
+	ST_ECIES ecies;
+	byte msg[32];
+	int msg_size = 32;
+
+	byte session_b[16];
+	byte session_out[32];
+	int session_out_size = 32;
+
+	// get Root_AC
+	ret = g3api_verify_passwd(0, passwd2, sizeof(passwd2));
+	print_result("g3api_verify_passwd", ret);
+
+	// write setup area sector 13
+	set_buff_from_hexstr(&write_key, "4E540000000000002E540000000000003E540000000000000E54000000000000");
+	ret = g3api_write_key_value(13, SETUP_AREA, PLAIN_TEXT, &write_key, sizeof(ST_KEY_VALUE));
+	print_result("write key", ret);
+
+	// write key area sector 36 ( aes128_key )
+	set_buff_from_hexstr(&write_key, "6B8B3A2D115E4683A540FF6C1515A13D21AABF36472D3C112FD134AD5F4F3122");
+	ret = g3api_write_key_value(36, KEY_AREA, PLAIN_TEXT, &write_key, sizeof(ST_KEY_VALUE));
+	print_result("write key", ret);
+
+	// write key area sector 37 ( ecc_prv_key )
+	set_buff_from_hexstr(&write_key, "8F0511C5F59C131D60BB96A12C07AB0D3E4D75D1CEE4FD747DF41D41696AA2A3");
+	ret = g3api_write_key_value(37, KEY_AREA, PLAIN_TEXT, &write_key, sizeof(ST_KEY_VALUE));
+	print_result("write key", ret);
+
+	// write key area sector 38 ( ecc_pub_key_1 )
+	set_buff_from_hexstr(&write_key, "7CC2F04BFCB22ACD94A230EAA57D90FD65AD7CDC16695FB3A1C4A71D7A2E7481");
+	ret = g3api_write_key_value(38, KEY_AREA, PLAIN_TEXT, &write_key, sizeof(ST_KEY_VALUE));
+	print_result("write key", ret);
+
+	// write key area sector 39 ( ecc_pub_key_2 )
+	set_buff_from_hexstr(&write_key, "961F49DCD5F33971FbF0320BA3CEB6F6A1CB8EA2D98AEBC24B023197EB76C625");
+	ret = g3api_write_key_value(39, KEY_AREA, PLAIN_TEXT, &write_key, sizeof(ST_KEY_VALUE));
+	print_result("write key", ret);
+
+	// encrypt_cbc
+	set_buff_from_hexstr(&iv, "00000000000000000000000000000000");
+	set_buff_from_hexstr(plain_text, "A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0");
+	ret = g3api_encryption(36, SECTOR_KEY, BL_CBC, &iv, plain_text, sizeof(plain_text), cipher_text, &cipher_text_size);
+	print_result("encrypt cbc", ret);
+	print_value("cipher text", cipher_text, sizeof(cipher_text));
+
+	memset(cipher_text, 0, cipher_text_size);
+	memset(plain_text, 0, sizeof(plain_text));
+
+	// decrpyt_cbc
+	ret = g3api_decryption(36, SECTOR_KEY, BL_CBC, &iv, cipher_text, sizeof(cipher_text), plain_text, &cipher_text_size);
+	print_result("decrypt cbc", ret);
+	print_value("plain text", plain_text, sizeof(plain_text));
+
+	// encrypt_ecies
+	ret = g3api_get_challenge(32, msg, &msg_size);
+	print_result("g3api_get_challenge", ret);
+	print_value("challenge_value", msg, msg_size);
+	
+	ret = g3api_encryption_ecies(38, &ecies);
+	print_result("encrpyt ecies", ret);
+	//print_value("ecies->r", (ecies->r, sizeof(ecies->r));
+	//print_value("ecies->s", ecies->s, sizeof(ecies->s));
+
+	// decrypt_ecies
+	ret = g3api_decryption_ecies(37, &ecies);
+	print_result("decrpyt ecies", ret);
+
+	// session_
+	set_buff_from_hexstr(session_b, "4A5E31F5D1D5B6C438D1F155A1F3FE5A");
+	ret = g3api_session(36, SYMM_KEY, session_b, sizeof(session_b), session_out, &session_out_size);
+	print_result_value("session_ins", ret, session_out, session_out_size);
+
+	// enc_session_key
+	set_buff_from_hexstr(&iv, "00000000000000000000000000000000");
+	set_buff_from_hexstr(plain_text, "A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0");
+	ret = g3api_encryption(0, SESSION_KEY, BL_CBC, &iv, plain_text, sizeof(plain_text), cipher_text, &cipher_text_size);
+	print_result_value("enc_session_key", ret, cipher_text,cipher_text_size);
+
+	memset(cipher_text, 0, cipher_text_size);
+	memset(plain_text, 0, sizeof(plain_text));
+
+}
+void general_diversify()
+{
+	ST_KEY_VALUE recv_key;
+	ST_KEY_VALUE write_key;
+	byte rcv_buffer[1024];
+	int rcv_buffer_size = 32;
+
+	ST_DATA_16 data;
+	ST_DATA_32 data2;
+
+	const unsigned char passwd2[] = { 0x11, 0x22, 0x33, 0x44 };
+	int ret = 0;
+
+	// get Root_AC
+	ret = g3api_verify_passwd(0, passwd2, sizeof(passwd2));
+	print_result("g3api_verify_passwd", ret);
+
+	// write setup area sector 14
+	set_buff_from_hexstr(&write_key, "4E540000000000004E540000000000000E540000000000000E54000000000000");
+	ret = g3api_write_key_value(14, SETUP_AREA, PLAIN_TEXT, &write_key, sizeof(ST_KEY_VALUE));
+	print_result("write key", ret);
+
+	// write key area sector 40
+	set_buff_from_hexstr(&write_key, "6B8B3A2D115E4683A540FF6C1515A13D21AABF36472D3C112FD134AD5F4F3122");
+	ret = g3api_write_key_value(40, KEY_AREA, PLAIN_TEXT, &write_key, sizeof(ST_KEY_VALUE));
+	print_result("write key", ret);
+
+	// write key area sector 41
+	set_buff_from_hexstr(&write_key, "6B8B3A2D115E4683A540FF6C1515A13D21AABF36472D3C112FD134AD5F4F3122");
+	ret = g3api_write_key_value(41, KEY_AREA, PLAIN_TEXT, &write_key, sizeof(ST_KEY_VALUE));
+	print_result("write key", ret);
+
+	// g3api_diversify without MAC
+	set_buff_from_hexstr(&data, "00000000000000000000000000000000");
+	ret = g3api_diversify(40, SELF, data.data, sizeof(data));
+	print_result("g3api_diversify_self", ret);
+
+	// g3api_diversify with MAC
+	set_buff_from_hexstr(&data2, "000000000000000000000000000000006A3D9CF10CD15242145D119A10D74FCB");
+	ret = g3api_diversify(41, SELF, data2.data, sizeof(data2));
+	print_result("g3api_diversify self with mac", ret);
+
+
+}
+void general_certificate()
+{
+	ST_KEY_VALUE recv_key;
+	ST_KEY_VALUE write_key;
+	byte cert[1024];
+	int cert_size = 567;
+
+	set_buff_from_hexstr(cert, "30820233A003020102020900B366C6CD34956A56300A06082A8648CE3D040302304C310B3009060355040613024B52311F301D060355040A0C164943544B20486F6C64696E677320636F2E204C54442E311C301A06035504030C134943544B2053656C66205369676E6564204341301E170D3138303430353035343734335A170D3438303332383035343734335A3081B3310B3009060355040613024B52310E300C06035504110C0531333438383114301206035504080C0B4779656F6E6767692D646F3114301206035504070C0B53656F6E676E616D2D7369311F301D060355040A0C164943544B20486F6C64696E677320636F2E204C54442E311C301A060355040B0C135365637572697479205226442043656E7465723129302706035504030C2030303030303030303030303030303030303030303030303030303030303030303059301306072A8648CE3D020106082A8648CE3D0301070342000469520DAFC528A8BE57C9CF25FC22414346468D0588C4CFE42EF634F3D5A6253889324325BED11402CF9FD0CD22FDCDB51EDCCCBA1255C1F0A87627D0B2C68EC1A3819530819230090603551D1304023000301F0603551D230418301680147DB615A129C3CCCCD3CCE9107E5735BD257BAC5B301D0603551D0E041604143D449AFA6CA08D0A2CABB1A451A02CAB517F7D4C300B0603551D0F0404030203E830130603551D25040C300A06082B0601050507030230230603551D11041C301A820A2A2E6963746B2E636F6D820C7777772E6963746B2E636F6D");
+
+
+	byte issued_cert[1024];
+	int issued_cert_size = 0;
+
+	ST_DATA_32 encrypted_key;
+	//set_buff_from_hexstr(issued_cert, "");
+
+	const unsigned char passwd2[] = { 0x11, 0x22, 0x33, 0x44 };
+	int ret = 0;
+
+	// get Root_AC
+	ret = g3api_verify_passwd(0, passwd2, sizeof(passwd2));
+	print_result("g3api_verify_passwd", ret);
+
+	// write setup area sector 15
+	set_buff_from_hexstr(&write_key, "2E540000000000003E540000000000000E540000000000000E54000000000000");
+	ret = g3api_write_key_value(15, SETUP_AREA, PLAIN_TEXT, &write_key, sizeof(ST_KEY_VALUE));
+	print_result("write key", ret);
+
+	// write key area sector 44 ( ecc_prv_key )
+	set_buff_from_hexstr(&write_key, "8F0511C5F59C131D60BB96A12C07AB0D3E4D75D1CEE4FD747DF41D41696AA2A3");
+	ret = g3api_write_key_value(44, KEY_AREA, PLAIN_TEXT, &write_key, sizeof(ST_KEY_VALUE));
+	print_result("write key", ret);
+
+	// write key area sector 45 ( ecc_pub_key_1 )
+	set_buff_from_hexstr(&write_key, "7CC2F04BFCB22ACD94A230EAA57D90FD65AD7CDC16695FB3A1C4A71D7A2E7481");
+	ret = g3api_write_key_value(45, KEY_AREA, PLAIN_TEXT, &write_key, sizeof(ST_KEY_VALUE));
+	print_result("write key", ret);
+
+	// write key area sector 46 ( ecc_pub_key_2 )
+	set_buff_from_hexstr(&write_key, "961F49DCD5F33971FBF0320BA3CEB6F6A1CB8EA2D98AEBC24B023197EB76C625");
+	ret = g3api_write_key_value(46, KEY_AREA, PLAIN_TEXT, &write_key, sizeof(ST_KEY_VALUE));
+	print_result("write key", ret);
+	// g3api issue certificate
+	ret = g3api_issue_certification(44, 0x15E, ISCRT_DATA_AREA_0, 0, 0x2C, NULL, cert, cert_size);
+	print_result("g3api issue certification", ret);
+
+	// read issued cert 
+	int cnt = 21;
+	for (int i = 0; i < cnt; i++)
+	{	
+		ret = g3api_read_key_value(i, DATA_AREA_0, PLAIN_TEXT,NULL,0, &recv_key, sizeof(ST_KEY_VALUE));
+		memcpy(issued_cert+(i*sizeof(ST_KEY_VALUE)), &recv_key, sizeof(ST_KEY_VALUE));
+		memset(&recv_key, 0, sizeof(ST_KEY_VALUE));
+	}
+	issued_cert_size = issued_cert[2] * 256 + issued_cert[3] + 4;
+	print_value("issued_cert", issued_cert, issued_cert_size);
+
+	// g3api certificate
+	ret = g3api_certification(45, TO_TEMP, issued_cert, issued_cert_size);
+	print_result("g3api certification", ret);
+	memset(issued_cert, 0, 1024);
+	issued_cert_size = 0;
+
+
+
+
+	// g3api issue certificate encrypted prv key
+	set_buff_from_hexstr(&encrypted_key, "AA286EAE7A9F20BB5B9DF56EBA11985285DB33417D9A1A603E73FF58161158CA");
+	ret = g3api_issue_certification(44, 0x15E, ISCRT_DATA_AREA_1, 0, 0x1000, &encrypted_key, cert, cert_size);
+	print_result("g3api issue certification", ret);
+
+	// read issued cert 
+	for (int i = 0; i < cnt; i++)
+	{
+		ret = g3api_read_key_value(i, DATA_AREA_1, PLAIN_TEXT, NULL, 0, &recv_key, sizeof(ST_KEY_VALUE));
+		memcpy(issued_cert + (i*sizeof(ST_KEY_VALUE)), &recv_key, sizeof(ST_KEY_VALUE));
+		memset(&recv_key, 0, sizeof(ST_KEY_VALUE));
+	}
+	issued_cert_size = issued_cert[2] * 256 + issued_cert[3] + 4;
+	print_value("issued_cert2", issued_cert, issued_cert_size);
+
+	// g3api certificate
+	ret = g3api_certification(45, TO_TEMP, issued_cert, issued_cert_size);
+	print_result("g3api certification2", ret);
+	memset(issued_cert, 0, 1024);
+	issued_cert_size = 0;
+
+
+}
+void general_session()
+{
+	ST_KEY_VALUE recv_key;
+	ST_KEY_VALUE write_key;
+
+	const unsigned char passwd2[] = { 0x11, 0x22, 0x33, 0x44 };
+	int ret = 0;
+
+	byte session_b[16];
+	byte output_32[32];
+	int output_32_size = 32;
+
+	byte output_16[16];
+	int output_16_size = 16;
+
+	byte factory_data[18];
+
+	// get Root_AC
+	ret = g3api_verify_passwd(0, passwd2, sizeof(passwd2));
+	print_result("g3api_verify_passwd", ret);
+
+	// write setup area sector 16
+	set_buff_from_hexstr(&write_key, "4E540000000000004E540000000000000E540000000000000E54000000000000");
+	ret = g3api_write_key_value(16, SETUP_AREA, PLAIN_TEXT, &write_key, sizeof(ST_KEY_VALUE));
+	print_result("write key", ret);
+
+	// write key area sector 48 ( aes128 key )
+	set_buff_from_hexstr(&write_key, "6B8B3A2D115E4683A540FF6C1515A13D21AABF36472D3C112FD134AD5F4F3122");
+	ret = g3api_write_key_value(48, KEY_AREA, PLAIN_TEXT, &write_key, sizeof(ST_KEY_VALUE));
+	print_result("write key", ret);
+	/*
+	typedef enum
+	{
+		SYMM_KEY = 0x80,
+		FACTORY_AES = 0x90,
+		FACTORY_SM4 = 0x91,
+		EXT_SESSION_KEY_AES = 0xA0,
+		EXT_SESSION_KEY_SM4 = 0xA1,
+		EXT_PUB_KEY = 0xA2,
+	}  EN_SESSION_MODE;
+	*/
+
+	// session_symmetric
+	set_buff_from_hexstr(session_b, "4A5E31F5D1D5B6C438D1F155A1F3FE5A");
+	ret = g3api_session(48, SYMM_KEY, session_b, sizeof(session_b), output_32, &output_32_size);
+	print_result("session symmetric", ret);
+	print_value("sessino output", output_32,output_32_size);
+	memset(output_32, 0, sizeof(output_32));
+
+	// session factory key
+	set_buff_from_hexstr(factory_data, "1000");
+	memcpy(factory_data+2, session_b, sizeof(session_b));
+	ret = g3api_session(0, FACTORY_AES, factory_data, sizeof(factory_data), output_16, &output_16_size);
+	print_result_value("session factory key", ret, output_16, sizeof(output_16));
+	memset(output_16, 0, sizeof(output_16));
+
+	// external session key
+	ret = g3api_session(0, EXT_SESSION_KEY_AES, session_b, sizeof(session_b), output_16, &output_16_size);
+	print_result_value("external session key", ret, output_16, output_16_size);
+
+}
+void general_etc()
+{
+	ST_KEY_VALUE recv_key;
+	ST_KEY_VALUE write_key;
+
+	const unsigned char passwd2[] = { 0x11, 0x22, 0x33, 0x44 };
+	int ret = 0;
+
+	ST_ECC_PUBLIC PUB_KEY_64;
+	ST_ECC_PUBLIC_COMPRESS PUB_KEY_33;
+
+	byte msg[4];
+	ST_DATA_32 output[32];
+
+	// get Root_AC
+	ret = g3api_verify_passwd(0, passwd2, sizeof(passwd2));
+	print_result("g3api_verify_passwd", ret);
+
+	// write setup area sector 17
+	set_buff_from_hexstr(&write_key, "1E540000000000002E540000000000003E540000000000000E54000000000000");
+	ret = g3api_write_key_value(17, SETUP_AREA, PLAIN_TEXT, &write_key, sizeof(ST_KEY_VALUE));
+	print_result("write key", ret);
+
+	// write key area sector 53 ( ecc prv key )
+	set_buff_from_hexstr(&write_key, "8F0511C5F59C131D60BB96A12C07AB0D3E4D75D1CEE4FD747DF41D41696AA2A3");
+	ret = g3api_write_key_value(53, KEY_AREA, PLAIN_TEXT, &write_key, sizeof(ST_KEY_VALUE));
+	print_result("write key", ret);
+
+	// write key area sector 54 ( ecc pub key_1 )
+	set_buff_from_hexstr(&write_key, "7CC2F04BFCB22ACD94A230EAA57D90FD65AD7CDC16695FB3A1C4A71D7A2E7481");
+	ret = g3api_write_key_value(54, KEY_AREA, PLAIN_TEXT, &write_key, sizeof(ST_KEY_VALUE));
+	print_result("write key", ret);
+
+	// write key area sector 55 ( ecc pub key_2 )
+	set_buff_from_hexstr(&write_key, "961F49DCD5F33971FBF0320BACEB6F6A1cCBEA2D98AEBC24B023197EB76C625");
+	ret = g3api_write_key_value(55, KEY_AREA, PLAIN_TEXT, &write_key, sizeof(ST_KEY_VALUE));
+	print_result("write key", ret);
+
+	// init_priv_key sector 52 ( ecc puf )
+	ret = g3api_init_puf(52, 0x01);
+	print_result("init priv key", ret);
+
+	// get public key sector 52
+	ret = g3api_get_public_key(52, KEY_SECTOR, &PUB_KEY_64, sizeof(PUB_KEY_64));
+	print_result("get public key ecc puf 64", ret);
+	print_value("public key", &PUB_KEY_64, sizeof(PUB_KEY_64));
+
+	// get public key sector 52
+	ret = g3api_get_public_key(52, KEY_SECTOR, &PUB_KEY_33, sizeof(PUB_KEY_33));
+	print_result("get public key ecc puf 33", ret);
+	print_value("public key", &PUB_KEY_33, sizeof(PUB_KEY_33));
+
+	memset(&PUB_KEY_64, 0, sizeof(PUB_KEY_64));
+	memset(&PUB_KEY_33, 0, sizeof(PUB_KEY_33));
+
+	// get public key sector 53
+	ret = g3api_get_public_key(53, KEY_SECTOR, &PUB_KEY_64, sizeof(PUB_KEY_64));
+	print_result("get public key ecc prv 64", ret);
+	print_value("public key", &PUB_KEY_64, sizeof(PUB_KEY_64));
+
+	// get public key sector 53
+	ret = g3api_get_public_key(53, KEY_SECTOR, &PUB_KEY_33, sizeof(PUB_KEY_33));
+	print_result("get public key ecc prv key 33", ret);
+	print_value("public key", &PUB_KEY_33, sizeof(PUB_KEY_33));
+	/*
+	typedef enum
+	{
+		Initialize = 0x0000,
+		Update = 0x0001,
+		Finalize = 0x00FF,
+	}  EN_SHA256_MODE;
+	*/
+	// g3api sha256
+	ret = g3api_sha256(Initialize, NULL, 0, NULL);
+	print_result("sha256 init", ret);
+
+	set_buff_from_hexstr(msg, "11223344");
+	ret = g3api_sha256(Update, msg, sizeof(msg), NULL);
+	print_result("sha256 init", ret);
+
+	ret = g3api_sha256(Finalize, NULL, 0, output);
+	print_value("sha256 final", output, 32);
+}
+void general_tls()
+{
+	ST_KEY_VALUE recv_key;
+	ST_KEY_VALUE write_key;
+
+	const unsigned char passwd2[] = { 0x11, 0x22, 0x33, 0x44 };
+	int ret = 0;
+
+	ST_ECC_PUBLIC Qb;
+	ST_ECC_PUBLIC Qchip;
+	
+	byte pre_m_secret[32];
+	byte tls_key_block[128];
+	ST_ECDH_IV ecdh_iv;
+
+	ST_ECDH_RANDOM ecdh_random;
+	set_buff_from_hexstr(&ecdh_random.server, "2A67C2B6A9505B4019ED11348F72D462F7F9843EE911F8A87DDCE675B1B0C0AE");
+	set_buff_from_hexstr(&ecdh_random.client, "DEBA9F24A361B65C3DFE11750A394359D3A2A81AA8331F712C413AA97C402EAD");
+
+	ST_TLS_INTER_HEADER_WITHOUT_SIZE tls_header;
+	set_buff_from_hexstr(&tls_header.hi_be_sequence, "38934393");
+	set_buff_from_hexstr(&tls_header.lo_be_sequence, "93923980");
+	set_buff_from_hexstr(&tls_header.content_type, "01");
+	set_buff_from_hexstr(&tls_header.tls_be_ver, "0303");
+
+	ST_IV tls_iv;
+	ST_DATA_16 header_random;
+	set_buff_from_hexstr(&header_random, "00000000000000000000000000000000");
+
+	byte msg[32];
+	set_buff_from_hexstr(msg, "A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0");
+	
+	byte msg_dec[32];
+	int msg_dec_size = 32;
+
+	ST_DATA_32 msg_hand;
+	ST_TLS_HAND_HANDSHAKE_DIGEST handshake_digest;
+
+	byte crypto[1024];
+	memset(crypto, 0, sizeof(crypto));
+	int crypto_size = 1024;
+
+	byte crypto_dec[32];
+	byte server_write_key[16];
+
+	// get Root_AC
+	ret = g3api_verify_passwd(0, passwd2, sizeof(passwd2));
+	print_result("g3api_verify_passwd", ret);
+
+	// write setup area sector 18
+	set_buff_from_hexstr(&write_key, "2E540000000000003E540000000000000E540000000000000E54000000000000");
+	ret = g3api_write_key_value(18, SETUP_AREA, PLAIN_TEXT, &write_key, sizeof(ST_KEY_VALUE));
+	print_result("write key", ret);
+
+	// write key area sector 56 ( ecc_prv_key )
+	set_buff_from_hexstr(&write_key, "8F0511C5F59C131D60BB96A12C07AB0D3E4D75D1CEE4FD747DF41D41696AA2A3");
+	ret = g3api_write_key_value(56, KEY_AREA, PLAIN_TEXT, &write_key, sizeof(ST_KEY_VALUE));
+	print_result("write key", ret);
+
+	// write key area sector 57 ( ecc_pub_key_1 )
+	set_buff_from_hexstr(&write_key, "7CC2F04BFCB22ACD94A230EAA57D90FD65AD7CDC16695FB3A1C4A71D7A2E7481");
+	ret = g3api_write_key_value(57, KEY_AREA, PLAIN_TEXT, &write_key, sizeof(ST_KEY_VALUE));
+	print_result("write key", ret);
+
+	// write key area sector 58 ( ecc_pub_key_2 )
+	set_buff_from_hexstr(&write_key, "961F49DCD5F33971FbF0320BA3CEB6F6A1CB8EA2D98AEBC24B023197EB76C625");
+	ret = g3api_write_key_value(58, KEY_AREA, PLAIN_TEXT, &write_key, sizeof(ST_KEY_VALUE));
+	print_result("write key", ret);
 
 	
+	// NORMAL ECDH
+	ret = g3api_get_public_key(56, KEY_SECTOR, &Qb, sizeof(Qb));
+	print_result_value("get public key", ret, &Qb, sizeof(Qb));
+
+	ret = g3api_ecdh(NORMAL_ECDH, &Qb, sizeof(Qb), NULL, &Qchip, pre_m_secret, sizeof(pre_m_secret));
+	print_result("NORMAL_ECDH", ret);
+	print_value("Qchip", &Qchip, sizeof(Qchip));
+	print_value("pre_m_secret", pre_m_secret, sizeof(pre_m_secret));
+
+	// GEN_TLS_BLOCK
+	ret = g3api_ecdh(GEN_TLS_BLOCK, &Qb, sizeof(Qb), &ecdh_random, &Qchip, tls_key_block, sizeof(tls_key_block));
+	print_result("GEN_TLS_BLOCK", ret);
+	print_value("Qchip", &Qchip, sizeof(Qchip));
+	print_value("TLS_KEY_BLOCK", tls_key_block, sizeof(tls_key_block));
+
+	// SET_TLS_SESSION_KEY
+	ret = g3api_ecdh(SET_TLS_SESSION_KEY, &Qb, sizeof(Qb), &ecdh_random, &Qchip, &ecdh_iv, sizeof(ecdh_iv));
+	print_result("SET_TLS_SESSION_KEY", ret);
+	print_value("Qchip", &Qchip, sizeof(Qchip));
+	print_value("ECDH_IV", &ecdh_iv, sizeof(ecdh_iv));
+
+	// TLS MAC and Encrypt instruction
+	memcpy(&tls_iv, &ecdh_iv.client_iv, sizeof(tls_iv));
+	ret = g3api_tls_mac_encrypt(&tls_header, &tls_iv, &header_random, msg, sizeof(msg), crypto, &crypto_size);
+	print_result_value("TLS MAC and Encrypt", ret, crypto, sizeof(crypto));
+
+	
+	// TLS Decrypt and Verify 
+	/*memcpy(&tls_iv, &ecdh_iv.server_iv, sizeof(tls_iv));
+	memcpy(server_write_key,)
+	ret = g3api_tls_decrypt_verify(&tls_header, &tls_iv, crypto_dec, sizeof(crypto_dec), &header_random, msg_dec, &msg_dec_size);
+	print_result_value("TLS Decrypt and Verify", ret, msg_dec, sizeof(msg_dec));*/
 
 
+	// TLS Get Handshake Digest
+	set_buff_from_hexstr(&msg_hand, "40CDAB386406A441D593171B343E735AA2274833884EBC3E0FD8054EF76D1C5B");
+	ret = g3api_tls_get_handshake_digest(HSM_CLIENT, &msg_hand, &handshake_digest);
+	print_result_value("TLS_CLIENT_HANDSHAKE", ret, &handshake_digest, sizeof(handshake_digest));
+	memset(&handshake_digest, 0, sizeof(handshake_digest));
+
+	ret = g3api_tls_get_handshake_digest(HSM_SERVER, &msg_hand, &handshake_digest);
+	print_result_value("TLS_SERVER_HANDSHAKE", ret, &handshake_digest, sizeof(handshake_digest));
+	memset(&handshake_digest, 0, sizeof(handshake_digest));
 }
 void test_scenario_scenariol(){
 
@@ -89,8 +895,8 @@ void test_scenario_sample()
 	int chal_size = 32;
 	
 	
-	ret = g3api_get_chellange(32 , chal , &chal_size);
-	print_result("g3api_get_chellange", ret);
+	ret = g3api_get_challenge(32 , chal , &chal_size);
+	print_result("g3api_get_challenge", ret);
 	print_value("chal",chal,chal_size);
 	
 	
@@ -124,7 +930,7 @@ void test_scenario_sample()
 	ST_ECC_PUBLIC Q_chip ={0,};
 	ST_ECDH_KEY_BLOCK st_ecdh_key_block = {0,};
 	ST_ECDH_RANDOM st_ecdh_random ={0,};
-	
+
 	/*
 	pubkey  8C46B8B8640CC67C558B60514CF4CE5186766234338666B1D0ADDDEFB70EB2BADBE00B2F9677873F9EA41CA47E061A8D389488F66F7E29750D26C58536E1015F
 	encin 1B0A295E77C2088610F4AB2CC0BA17B21400000CB3E32FC912C2A027AAFBFAA79329D4437F18BB4FE88E89D511D3B3D87FB6F025A5DBACD597FA2E20B27C48D90F0F0F0F0F0F0F0F0F0F0F0F0F0F0F0F
@@ -157,7 +963,7 @@ void test_scenario_sample()
 
 	
 
-	
+
 	ST_IV client_iv = {0,};
 	ST_DATA_16
 	 head_rand = {0,};
@@ -194,16 +1000,23 @@ void test_scenario_sample()
 }
 void test_scenario_sample2()
 {
-	int ret;
+	initialize();
+	
+	//general_read_write();
+	//general_diversify();
+	//general_enc_dec();
+	//general_password();
+	//general_session();
+	//general_sign_verify();
+	//general_certificate();
+	//general_etc();
+	//general_tls();
+
+	//ret = g3api_get_challenge(32, rcv_buffer, &rcv_buffer_size);
+	//print_result("g3api_get_challenge", ret);
 
 
-	ret = g3api_verify_passwd(3, passwd, sizeof(passwd));
-	print_result("g3api_verify_passwd", ret);
-
-
-
-
-#if 1	
+#if 0
 
 	ST_SIGN_ECDSA st_sign_ecdsa = { 0, };;
 
@@ -536,8 +1349,8 @@ void test_scenario_sample_ref()
 	int chal_size = 32;
 	
 	
-	ret = g3api_get_chellange(32 , chal , &chal_size);
-	print_result("g3api_get_chellange", ret);
+	ret = g3api_get_challenge(32 , chal , &chal_size);
+	print_result("g3api_get_challenge", ret);
 	print_value("chal",chal,chal_size);
 	
 	
@@ -568,7 +1381,7 @@ void test_scenario_sample_ref()
 	
 	
 	
-	ret = g3api_certification(6 , TO_TEMP , cert , sizeof(cert));
+	ret = g3api_certification(6 , EN_CERTIFICATION_WRITE_MODE::TO_TEMP , cert , sizeof(cert));
 	print_result("g3api_certification", ret);
 	
 	
@@ -578,7 +1391,7 @@ void test_scenario_sample_ref()
 	ST_ECDH_RANDOM st_ecdh_random ={0,};
 	
 	
-	ret = g3api_ecdh(GEN_TLS_BLOCK , outer_pub_key , sizeof(outer_pub_key) , &st_ecdh_random , &Q_chip , &st_ecdh_key_block , sizeof(ST_ECDH_KEY_BLOCK));
+	ret = g3api_ecdh(EN_ECDH_MODE::GEN_TLS_BLOCK , outer_pub_key , sizeof(outer_pub_key) , &st_ecdh_random , &Q_chip , &st_ecdh_key_block , sizeof(ST_ECDH_KEY_BLOCK));
 	print_result("g3api_ecdh", ret);
 	print_value("st_ecdh_key_block",&st_ecdh_key_block,sizeof(ST_ECDH_KEY_BLOCK));
 	print_value("Q_chip",&Q_chip,sizeof(ST_ECC_PUBLIC));
@@ -588,7 +1401,7 @@ void test_scenario_sample_ref()
 	ST_ECDH_IV st_ecdh_iv = { 0, };
 	
 	
-	ret = g3api_ecdh(SET_TLS_SESSION_KEY , outer_pub_key , sizeof(outer_pub_key) , &st_ecdh_random , &Q_chip , &st_ecdh_iv , sizeof(ST_ECDH_KEY_BLOCK));
+	ret = g3api_ecdh(EN_ECDH_MODE::SET_TLS_SESSION_KEY , outer_pub_key , sizeof(outer_pub_key) , &st_ecdh_random , &Q_chip , &st_ecdh_iv , sizeof(ST_ECDH_KEY_BLOCK));
 	print_result("g3api_ecdh", ret);
 	print_value("st_ecdh_iv",&st_ecdh_iv,sizeof(ST_ECDH_IV));
 	print_value("Q_chip",&Q_chip,sizeof(ST_ECC_PUBLIC));
@@ -598,7 +1411,7 @@ void test_scenario_sample_ref()
 	ST_TLS_INTER_HEADER_WITHOUT_SIZE st_tls_inter_header_without_size;
 	
 	
-	ret = g3api_make_tls_inter_header_without_size(0 , APPLICATION_DATA , TLS_1_2 , &st_tls_inter_header_without_size);
+	ret = g3api_make_tls_inter_header_without_size(0 , EN_CONTENT_TYPE::APPLICATION_DATA , EN_TLS_VERSION::TLS_1_2 , &st_tls_inter_header_without_size);
 	print_result("g3api_make_tls_inter_header_without_size", ret);
 	print_value("st_tls_inter_header_without_size",&st_tls_inter_header_without_size,sizeof(ST_TLS_INTER_HEADER_WITHOUT_SIZE));
 	

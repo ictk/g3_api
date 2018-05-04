@@ -1,6 +1,6 @@
 #include<windows.h>
 #include<stdio.h>
-#include <openssl/hmac.h>
+//#include <openssl/hmac.h>
 #include <g3_api.h>
 
 
@@ -43,7 +43,7 @@ int test_byload(){
 
 	return 0;
 }
-void test_hmac()
+/*void test_hmac()
 {
 	unsigned char key[] = {0x09, 0xA8, 0xD1, 0xAB, 0xDE, 0x2C, 0xCA, 0xC2, 0x1C, 0x3D, 0x82, 0xB4, 0xD3, 0x84, 0xBA, 0x45, };
 	unsigned char msg[] = { 0x52, 0xAD, 0x1D, 0x1D, 0x34, 0xC3, 0xCD, 0x12, 0x90, 0x60, 0x9F, 0x2A, 0x51, 0xC7, 0x01, 0x8A, 0x27, 0xF9, 0xDC, 0xEC, 0x22, 0xE1, 0x27, 0x48, 0x31, 0xE5, 0x64, 0xF8, 0x8B, 0x95, 0x40, 0xED, };
@@ -74,7 +74,7 @@ void test_hmac()
 #endif // 0
 
 }
-
+*/
 
 #if 1
 
@@ -124,8 +124,8 @@ void test_hmac()
 
 int PRF(uint8_t* digest, uint32_t digLen, const uint8_t* secret, uint32_t secLen,
 	const uint8_t* label, uint32_t labLen, const uint8_t* seed, uint32_t seedLen);
-CRYPTO_ERROR_T LibCrypto_PRF(uint8_t* digest, uint32_t digLen, const uint8_t* secret, uint32_t secLen,
-	const uint8_t* label, uint32_t labLen, const uint8_t* seed, uint32_t seedLen);
+//CRYPTO_ERROR_T LibCrypto_PRF(uint8_t* digest, uint32_t digLen, const uint8_t* secret, uint32_t secLen,
+//	const uint8_t* label, uint32_t labLen, const uint8_t* seed, uint32_t seedLen);
 
 void test_prf()
 {
@@ -134,10 +134,10 @@ void test_prf()
 	unsigned char seed[] = { 0x1A, 0xD0, 0x64, 0xDD, 0xF5, 0x74, 0xE9, 0xA3, 0xA0, 0x40, 0x61, 0x06, 0xFB, 0x21, 0x6E, 0xD6, 0xF7, 0x8A, 0xAF, 0x37, 0x3D, 0x0F, 0xCE, 0xC7, 0xD7, 0x40, 0xCC, 0x75, 0x6E, 0x75, 0xFD, 0xF0, 0x1C, 0x58, 0xEB, 0x63, 0x57, 0xFC, 0x47, 0xF5, 0xDE, 0x88, 0x65, 0x3D, 0xCF, 0xB3, 0x6E, 0x1B, 0x88, 0x81, 0xC0, 0x96, 0xC2, 0xBB, 0x23, 0x78, 0xF2, 0x65, 0x3C, 0x07, 0x6E, 0x15, 0xB2, 0x9C, };
 	unsigned char result[] = { 0x04, 0x89, 0x26, 0x81, 0x31, 0xBB, 0xF3, 0xF5, 0x48, 0xA6, 0x98, 0x3E, 0x80, 0xAF, 0xC3, 0x23, 0xAA, 0xB5, 0x22, 0x66, 0xD2, 0x32, 0x9E, 0x39, 0xE3, 0xA8, 0x26, 0xEA, 0xFE, 0xF4, 0x60, 0x74, 0x50, 0x79, 0xB7, 0xC6, 0x3B, 0xD0, 0xBF, 0x2A, 0xB8, 0x07, 0xCF, 0x0E, 0xBD, 0x2F, 0xD3, 0x1D, };
 	unsigned char calc_result[48];
-	LibCrypto_PRF(calc_result, 48,
+	/*LibCrypto_PRF(calc_result, 48,
 		secret, sizeof(secret),
 		label, sizeof(label),
-		seed, sizeof(seed));
+		seed, sizeof(seed));*/
 	print_value("calc_result", calc_result, 48);
 	print_value("result", result, 48);
 	if (!memcmp(result, calc_result, 48)){
@@ -148,7 +148,7 @@ void test_prf()
 }
 
 
-
+/*
 CRYPTO_ERROR_T LibCrypto_SHA_256_HMAC
 (
 void * pKey, uint32_t nKeyLen,
@@ -163,9 +163,10 @@ void * pOutHmacBuf, uint32_t nBufLen
 	if (outbuff != nBufLen) return -1;
 	
 	return 0;
-}
+}*/
 
 /* compute p_hash for MD5, SHA-1, SHA-256, or SHA-384 for TLSv1 PRF */
+#if 0
 int p_hash(uint8_t* result, uint32_t resLen, const uint8_t* secret,
 	uint32_t secLen, const uint8_t* seed, uint32_t seedLen)
 {
@@ -242,9 +243,10 @@ END:
 	if (current) LibUtilMemFree(current);
 	return ret;
 }
-
+#endif
 /* Wrapper to call straight thru to p_hash in TSL 1.2 cases to remove stack
 use */
+#if 0
 int PRF(uint8_t* digest, uint32_t digLen, const uint8_t* secret, uint32_t secLen,
 	const uint8_t* label, uint32_t labLen, const uint8_t* seed, uint32_t seedLen	)
 {
@@ -272,8 +274,8 @@ int PRF(uint8_t* digest, uint32_t digLen, const uint8_t* secret, uint32_t secLen
 
 	return ret;
 }
-
-
+#endif
+#if 0
 CRYPTO_ERROR_T LibCrypto_PRF(uint8_t* digest, uint32_t digLen, const uint8_t* secret, uint32_t secLen,
 	const uint8_t* label, uint32_t labLen, const uint8_t* seed, uint32_t seedLen)
 {
@@ -344,5 +346,6 @@ END:
 
 	return ret;
 }
+#endif
 
 #endif

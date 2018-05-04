@@ -99,6 +99,8 @@ G3_API G3_API_RESULT CALLTYPE g3api_raw_snd_recv
 *   @param key_index key sector index
 *   @param area_type 
 *   @param rw_type 
+*   @param data
+*   @param data_size
 *   @param data_structure read value from setup,key_sector,user data
 enable 4 follow structure ST_RW_DATA,ST_RW_DATA_WITH_IV,ST_RW_DATA_WITH_IV_MAC
 *   @param structure_size 
@@ -111,8 +113,10 @@ G3_API G3_API_RESULT CALLTYPE g3api_read_key_value
 		IN int key_index,
 		IN EN_AREA_TYPE area_type,
 		IN EN_RW_INST_OPTION rw_type,
-		IN void* data_structure,
-		IN int structure_size
+		IN const void* data,
+		IN int data_size,
+		OUT void* data_structure,
+		OUT int structure_size
 );
 
 	
@@ -143,7 +147,7 @@ G3_API G3_API_RESULT CALLTYPE g3api_write_key_value
 	
 //###################################################	
 /**
-*   @name g3api_get_chellange
+*   @name g3api_get_challange
 *   @brief  
 *
 *   @param chall_size 
@@ -153,7 +157,7 @@ G3_API G3_API_RESULT CALLTYPE g3api_write_key_value
 *   @return G3_API_RESULT
 */
 //###################################################
-G3_API G3_API_RESULT CALLTYPE g3api_get_chellange
+G3_API G3_API_RESULT CALLTYPE g3api_get_challenge
 (
 		IN int chall_size,
 		OUT byte* challenge,
@@ -305,6 +309,7 @@ G3_API G3_API_RESULT CALLTYPE g3api_dynamic_auth
 *   @brief  
 *
 *   @param key_index key sector index
+*   @param key_type
 *   @param block_mode 
 *   @param iv 
 *   @param data 
@@ -318,6 +323,7 @@ G3_API G3_API_RESULT CALLTYPE g3api_dynamic_auth
 G3_API G3_API_RESULT CALLTYPE g3api_encryption
 (
 		IN int key_index,
+		IN EN_KEY_TYPE key_type,
 		IN EN_BLOCK_MODE block_mode,
 		IN const ST_IV * iv,
 		IN const byte* data,
@@ -333,6 +339,7 @@ G3_API G3_API_RESULT CALLTYPE g3api_encryption
 *   @brief  
 *
 *   @param key_index key sector index
+*   @param key_type
 *   @param block_mode 
 *   @param iv 
 *   @param cipher 
@@ -346,6 +353,7 @@ G3_API G3_API_RESULT CALLTYPE g3api_encryption
 G3_API G3_API_RESULT CALLTYPE g3api_decryption
 (
 		IN int key_index,
+		IN EN_KEY_TYPE key_type,
 		IN EN_BLOCK_MODE block_mode,
 		IN const ST_IV* iv,
 		IN const byte* cipher,
@@ -444,7 +452,8 @@ G3_API G3_API_RESULT CALLTYPE g3api_set_extern_public_key
 *
 *   @param key_index key sector index
 *   @param diversify_mode 
-*   @param param 
+*   @param data
+*   @param data_size 
 
 *   @return G3_API_RESULT
 */
@@ -453,7 +462,8 @@ G3_API G3_API_RESULT CALLTYPE g3api_diversify
 (
 		IN int key_index,
 		IN EN_DIVERSIFY_MODE diversify_mode,
-		OUT ST_DIVERSIFY_PARAM* param
+		IN const byte* data,
+		IN int data_size
 );
 
 	
@@ -524,6 +534,7 @@ G3_API G3_API_RESULT CALLTYPE g3api_issue_certification
 		IN EN_ISSUE_CERT_AREA_TYPE issue_cert_area_type,
 		IN int sector_num_to_store,
 		IN int key_id,
+		IN const ST_DATA_32* encrypted_key,
 		IN const byte* cert,
 		IN int cert_size
 );
@@ -655,7 +666,29 @@ G3_API G3_API_RESULT CALLTYPE g3api_tls_get_handshake_digest
 		OUT ST_TLS_HAND_HANDSHAKE_DIGEST* handshake_digest
 );
 
-	
+
+//###################################################	
+/**
+*   @name g3api_sha256_mode
+*   @brief  
+*
+*   @param sha256_mode 
+*   @param data 
+*   @param data_size
+*   @param outdata
+
+*   @return G3_API_RESULT
+*/
+//###################################################
+G3_API G3_API_RESULT CALLTYPE g3api_sha256
+(
+		IN EN_SHA256_MODE sha256_mode,
+		IN const byte* data,
+		IN int data_size,
+		OUT ST_DATA_32* outdata
+);
+
+
 //###################################################	
 /**
 *   @name g3api_reset

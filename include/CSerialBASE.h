@@ -1,8 +1,6 @@
 #ifndef __CRSBASE__
 #define __CRSBASE__
-
-#define NULL 0
-
+#include "stddef.h"
 class CSerialBASE
 {
 public:

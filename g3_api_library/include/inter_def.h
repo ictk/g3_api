@@ -84,7 +84,7 @@ typedef LPVAR_BYTES(*PF_CONVERT)(void *pure_data, int data_size, int max_res_siz
 #define	TLS_MAC_ENC	0x91
 #define	TLS_DEC_VERIFY	0x92
 #define	TLS_GET_HANDSHAKE_DIGEST 0x93
-
+#define SHA256 0x94
 
 #define	RESET	0x9F
 

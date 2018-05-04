@@ -125,7 +125,7 @@ extern "C"  int CALLTYPE send_n_recv(const unsigned char*snd, int snd_size, unsi
 			fprintf(_fp,"first byte :%d\n", time_count);
 		}
 
-		if (time_count * unit_delay > 1000){
+		if (time_count * unit_delay > 100000){
 			fprintf(_fp,"TIME OUT!!!!!!!!!!!!");
 			return -1;
 		}
@@ -145,6 +145,8 @@ extern "C"  int CALLTYPE send_n_recv(const unsigned char*snd, int snd_size, unsi
 
 	fprintf(_fp,"total ressize :%d\n", vec_recv_byte.size());
 	int real_recv_size = min((byte)first_byte, 255);
+
+	fprintf(_fp, "real_recv_size : %d\n", real_recv_size);
 
 	if (recv && real_recv_size <= *recv_size){
 		memcpy(recv, V2A(vec_recv_byte), vec_recv_byte.size());

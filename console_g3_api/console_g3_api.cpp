@@ -39,8 +39,16 @@ void test_load();
 void get_functions_ieb100cdc(LPSAMPLE_FUNCTIONS lpsamplefunction);
 void get_functions_i2c(LPSAMPLE_FUNCTIONS lpsamplefunction);
 
+void initialize();
 void general_read_write();
 void general_sign_verify();
+void general_password();
+void general_enc_dec();
+void general_diversify();
+void general_certificate();
+void general_session();
+void general_tls();
+void general_etc();
 
 FILE * _fp = stdout;
 
@@ -147,16 +155,16 @@ int main(int argc, char* argv[])
 	VECBYTE vecbyte;
 
 
-	unsigned char recvbuff[1024];
+	//unsigned char recvbuff[1024];
 	
-	int recvbuff_size = 1024;
-	ret = g3api_get_chellange(32, recvbuff, &recvbuff_size);
+	//int recvbuff_size = 1024;
+	//ret = g3api_get_challenge(32, recvbuff, &recvbuff_size);
 
 	//general_read_write();
 	//general_sign_verify();
 
-	test_scenario_sample();
-	//test_scenario_sample2();
+
+	test_scenario_sample2();
 
 
 

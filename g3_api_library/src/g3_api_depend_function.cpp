@@ -151,9 +151,9 @@ map<int, int> & get_map_size(){
 	static map<int, int> _map_size_per_inst;
 	static bool is_load = false;
 	if (!is_load){
-		_map_size_per_inst[READ] = 43;
+		_map_size_per_inst[READ] = 67;
 		_map_size_per_inst[WRITE] = 4;
-		_map_size_per_inst[VERIFY_PWD] = 4;
+		_map_size_per_inst[VERIFY_PWD] = 5;
 		_map_size_per_inst[CHANGE_PWD] = 4;
 		_map_size_per_inst[GET_CHAL] = 35;
 		_map_size_per_inst[INIT_PRIV_KEY] = 4;
@@ -178,6 +178,7 @@ map<int, int> & get_map_size(){
 
 int return_from_recv(VAR_BYTES *precvbuff)
 {
+	/*
 	int nret = precvbuff->buffer[0];
 	//if (precvbuff->size == 4){
 	//	int err_ret = 0;
@@ -190,7 +191,13 @@ int return_from_recv(VAR_BYTES *precvbuff)
 		return precvbuff->buffer[0];
 	}
 	return 0;
-
+	*/
+	int nret = precvbuff->buffer[1];
+	
+	if (precvbuff->size == 1){
+		return precvbuff->buffer[0];
+	}
+	return nret;
 
 }
 
@@ -325,6 +332,7 @@ int check_sign_struct(EN_SIGN_OPTION sign_option, int structure_size)
 		}
 		break;
 	case SIGN_SYMM:
+	case SIGN_SESSION_SYMM:
 		if (structure_size != sizeof(ST_SIGN_SYMM)){
 			return RET_ERR_SIGN_MODE_PARSE_ERR;
 		}
@@ -356,6 +364,7 @@ int check_vefify_struct(EN_VERIFY_OPTION verify_option, int structure_size)
 		}
 		break;
 	case VERYFY_SYMM:
+	case VERIFY_SESSION_SYMM:
 		if (structure_size != sizeof(ST_SIGN_SYMM)){
 			return RET_ERR_SIGN_MODE_PARSE_ERR;
 		}

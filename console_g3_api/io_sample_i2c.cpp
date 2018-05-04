@@ -112,27 +112,20 @@ extern "C" int send_n_recv_4_i2c(const unsigned char*snd, int snd_size, unsigned
 		printf("Failed to write to the i2c bus. %d \n",ret);
 		return -1;
 	}
-	delay(1);
+	delay(100);
 	int length = * recv_size;			//<<< Number of bytes to read
-	for(int i = 0 ; i<10;i++) {
-		
-		ret = read(file_i2c, recv, length);
-		printf("read :%d\n",ret);
-		if (ret == length)		//read() returns the number of bytes actually read, if it doesn't match then an error occurred (e.g. no response from the device)
-		{
-			break;
-		}
-		printf("trying to read :%d\n",i);
-		delay(100);
-		
-	}
-	if (ret <0){
+	ret = read(file_i2c, recv, length);
+	
+	
+	if (ret != length)		//read() returns the number of bytes actually read, if it doesn't match then an error occurred (e.g. no response from the device)
+	{
+		//ERROR HANDLING: i2c transaction failed
 		printf("Failed to read from the i2c bus ret:0x%x. err:0x%x\n",ret,errno);
+		return -1;
 	}
-
 	print_value("RECV",recv, length);
 	*recv_size = ret;
-	return ret;
+	return 0;
 	
 	
 }
@@ -171,7 +164,7 @@ int wake_up_and_convert_mode_i2c()
 {
 	NEO_TITLE(wake_up_and_convert_mode_i2c);
 	wake_up(GPIO_WAKE_UP_PIN,1,10);	
-	return 0;	
+	
 	return ictk_convert_to_inst_mode(_file_i2c);
 	
 	

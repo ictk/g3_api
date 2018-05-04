@@ -7,7 +7,7 @@ LD = g++
 WINDRES = windres
 OUTDIR = ../bin/gnu
 OBJDIR = obj/gnu
-LIB = -L$(HOME)/project/lib -lg3_api_lib ../lib/gnu/libneolib_c_base.a -lwiringPi -ldl
+LIB = -L../lib/gnu -lg3_api ../lib/gnu/libneolib_c_base.a -lwiringPi -ldl
 #LIB = -lIPSF-100d -ldl -L/home/ictk/project/IPSF-100/IPSF-100-SOFTFORUM/lib/gnu/ 
 
 #------------------------------------------------------------------------------#

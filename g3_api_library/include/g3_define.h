@@ -116,6 +116,12 @@ typedef enum
 	SELF=1,	 
 }  EN_DIVERSIFY_MODE;   	
 
+typedef enum
+{
+	SECTOR_KEY = 0,
+	SESSION_KEY = 1,
+} EN_KEY_TYPE;
+
 typedef enum  
 {
 	BL_CBC=0,
@@ -135,6 +141,7 @@ typedef enum
 	SIGN_ECDSA_WITH_SHA256=1,
 	SIGN_HMAC=2,
 	SIGN_SYMM=3,	 
+	SIGN_SESSION_SYMM=4,
 }  EN_SIGN_OPTION;   	
 
 typedef enum  
@@ -143,6 +150,7 @@ typedef enum
 	VERYFY_ECDSA_WITH_SHA256=1,
 	VERYFY_HMAC=2,
 	VERYFY_SYMM=3,
+	VERIFY_SESSION_SYMM=4,
 	VERYFY_EXT_PUB_ECDSA_EXT_SHA256=0x10,
 	VERYFY_EXT_PUB_ECDSA_WITH_SHA256=0x11,	 
 }  EN_VERIFY_OPTION;   	
@@ -176,10 +184,14 @@ typedef enum
 	CTR=2,
 	CCM=3,
 	GCM=4,
+	CBC_with_MAC=5,
+	CTR_with_MAC=6,
 	SESSION_KEY_CBC=0x11,
 	SESSION_KEY_CTR=0x12,
 	SESSION_KEY_CCM=0x13,
 	SESSION_KEY_GCM=0x14,
+	SESSION_KEY_CBC_with_MAC=0x15,
+	SESSION_KEY_CTR_with_MAC=0x16,
 	MASKED=0xFF,	 
 }  EN_RW_INST_OPTION;   	
 
@@ -234,6 +246,14 @@ typedef enum
 	HSM_CLIENT=0x0000,
 	HSM_SERVER=0x0001,	 
 }  EN_HANDSHAKE_MODE;   	
+
+typedef enum  
+{
+	Initialize=0x0000,
+	Update=0x0001,
+	Finalize=0x00FF,
+}  EN_SHA256_MODE;   	
+
 //END ENUM
 
 
