@@ -146,7 +146,7 @@ G3_API G3_API_RESULT CALLTYPE g3api_write_key_value
 //###################################################	
 /**
 *   @name g3api_get_challenge
-*   @brief  Get challenge (random value) 
+*   @brief  Generates challenge
 *
 *   @param	chall_size		: The size of challenge to get
 *   @param	challenge		: The buffer to put challenge 
@@ -658,7 +658,7 @@ G3_API G3_API_RESULT CALLTYPE g3api_tls_decrypt_verify
 *
 *   @param handshake_mode		: It has two modes : client handshake and server handshake
 *   @param hash_handshake_msg	: The data for handshaking
-*   @param handshake_digest		: The buffer to put the handshake digest
+*   @param handshake_digest		: The handshake digest
 
 *   @return G3_API_RESULT
 */
@@ -679,7 +679,7 @@ G3_API G3_API_RESULT CALLTYPE g3api_tls_get_handshake_digest
 *	@param sha256_mode	: Sha256 command is executed in three steps : initialization, update and finalization
 *   @param data			: The data to be subjected to the sha256 operation
 *   @param data_size	: The size of input data
-*   @param outdata		: The buffer to put the outputs from sha256
+*   @param outdata		: Outputs from the command, hashed data
 
 *   @return G3_API_RESULT
 */
