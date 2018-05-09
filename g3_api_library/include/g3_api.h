@@ -95,11 +95,12 @@ G3_API G3_API_RESULT CALLTYPE g3api_raw_snd_recv
 /**
 *   @name g3api_read_key_value
 *   @brief  read value from setup,key_sector,user data
+*			It provides 3 types of read operation, plain read, masked read and encrypted read.
 *
 *   @param	key_index		: Key sector index(p1)
 *   @param	area_type		: The type of area to read(p2_lower)
-*   @param	rw_type			: The mode of the read command(p2_upper) 
-*   @param	data			: For masked operation( rw_type -> 0xFF )
+*   @param	rw_type			: Read operation mode(p2_upper) 
+*   @param	data			: Only for masked operation(rw_type -> MASKED)
 *   @param	data_size		: The size of the mask
 *   @param	data_structure	: Read data, enable 3 follow structure ST_RW_DATA,ST_RW_DATA_WITH_IV,ST_RW_DATA_WITH_IV_MAC
 *   @param	structure_size  : The size of data_structure
@@ -122,11 +123,12 @@ G3_API G3_API_RESULT CALLTYPE g3api_read_key_value
 //###################################################	
 /**
 *   @name g3api_write_key_value
-*   @brief  write value to setup,key_sector,user data
+*   @brief  write value to setup,key_sector,user data. 
+*			It provides 3 types of write operation, plain write, masked write and encrypted write
 *
 *   @param	key_index		: Key sector index(p1)
 *   @param	area_type		: The type of area to write(p2_lower)
-*   @param	rw_type			: The mode of the command(p2_upper) 
+*   @param	rw_type			: Write operation mode(p2_upper) 
 *   @param	data_structure	: Data to write, enable 4 follow structure ST_RW_DATA,ST_RW_DATA_WITH_IV,ST_RW_DATA_WITH_IV_MAC			  
 *   @param	structure_size	: The size of data_structure
 
@@ -146,11 +148,13 @@ G3_API G3_API_RESULT CALLTYPE g3api_write_key_value
 //###################################################	
 /**
 *   @name g3api_get_challenge
-*   @brief  Generates challenge
+*   @brief  Generates challenge and loads to temporary memory
+*			Whenever the generated challenge is used once for an authentication, the callenge becomes invalidated,
+*			regardless of whether the authentication has been passed or not.
 *
 *   @param	chall_size		: The size of challenge to get
 *   @param	challenge		: The buffer to put challenge 
-*   @param	res_chall_size	: The size of buffer to put challenge
+*   @param	res_chall_size	: The size of challnge
 
 *   @return G3_API_RESULT
 */
@@ -224,13 +228,13 @@ G3_API G3_API_RESULT CALLTYPE g3api_init_puf
 //###################################################	
 /**
 *   @name g3api_sign
-*   @brief  Generate a signature with input msg
+*   @brief  Generate a signature using input data and target key.
 *
 *   @param key_index		: Key sector index(p1)
-*   @param sign_option		: The option of command(p2)
+*   @param sign_option		: The option of the command, signature algorithm.(p2)
 *   @param msg				: Input data, it will be used to generate a signature
 *   @param msg_size			: The size of msg
-*   @param sign_structure	: Enable 4 follow structure ST_SIGN_ECDSA,ST_SIGN_SYMM,ST_SIGN_HMAC
+*   @param sign_structure	: Output from the command, enable 3 follow structure ST_SIGN_ECDSA,ST_SIGN_SYMM,ST_SIGN_HMAC
 *   @param structure_size	: The size of sign_structure
 
 *   @return G3_API_RESULT
@@ -250,7 +254,7 @@ G3_API G3_API_RESULT CALLTYPE g3api_sign
 //###################################################	
 /**
 *   @name g3api_verify
-*   @brief  Verify the signature 
+*   @brief  Verify the signature. The target sector should be a public key or symmetric key
 *
 *   @param key_index		: Key sector index(p1)
 *   @param verify_option	: The option of command(p2)
@@ -276,7 +280,7 @@ G3_API G3_API_RESULT CALLTYPE g3api_verify
 //###################################################	
 /**
 *   @name g3api_dynamic_auth
-*   @brief  Verify the signature and obtain AC. Input signature must be generated with challenge that generated in G3
+*   @brief  Verify the signature and obtain AC. Input signature must be generated using challenge that generated in G3
 *		
 *   @param key_index		: Key sector index(p1)
 *   @param dauth_option		: The mode of the command(p2)
@@ -304,10 +308,10 @@ G3_API G3_API_RESULT CALLTYPE g3api_dynamic_auth
 //###################################################	
 /**
 *   @name g3api_encryption
-*   @brief  Encrypt a given plain data
+*   @brief  Encrypt a given plain data using target key
 *
 *   @param key_index		: Key sector index(p1)
-*   @param key_type			: Key type of the key for encryption(p2_upper)
+*   @param key_type			: Key type of the target key(p2_upper)
 *   @param block_mode		: The block cipher operation mode(p2_lower)
 *   @param iv				: Initial vector 
 *   @param data				: The plain data for encryption
@@ -334,10 +338,10 @@ G3_API G3_API_RESULT CALLTYPE g3api_encryption
 //###################################################	
 /**
 *   @name g3api_decryption
-*   @brief  Decrypt a given cipher data
+*   @brief  Decrypt a given cipher data using target key
 *
 *   @param key_index		: Key sector index(p1)
-*   @param key_type			: Key type of the key for decryption(p2_upper)
+*   @param key_type			: Key type of the target key(p2_upper)
 *   @param block_mode		: The block cipher operation mode(p2_lower)
 *   @param iv				: Initial vector
 *   @param cipher			: The cipher data for decryption
@@ -364,7 +368,7 @@ G3_API G3_API_RESULT CALLTYPE g3api_decryption
 //###################################################	
 /**
 *   @name g3api_encryption_ecies
-*   @brief  Encrypt a given plain data with ECIES
+*   @brief  Encrypt a given plain data with ECIES. The target key must be a public key
 *
 *   @param key_index		: Key sector index(p1)
 *   @param rs				: R (R=rG, r:random) - ECC private key, S=x of (rKB=kBR), r: random, KB : public key of B, kB : private key of B)
@@ -382,7 +386,7 @@ G3_API G3_API_RESULT CALLTYPE g3api_encryption_ecies
 //###################################################	
 /**
 *   @name g3api_decryption_ecies
-*   @brief  Decrypt a given cipher data with ECIES
+*   @brief  Decrypt a given cipher data with ECIES. The target key must be a private key
 *
 *   @param key_index		: Key sector index(p1)
 *   @param rs				: R (R=rG, r:random) - ECC private key, S=x of (rKB=kBR), r: random, KB : public key of B, kB : private key of B)
@@ -400,10 +404,11 @@ G3_API G3_API_RESULT CALLTYPE g3api_decryption_ecies
 //###################################################	
 /**
 *   @name g3api_session
-*   @brief  Generate sessions. It provides four modes : Symmetric key, Factory key, External Session key and External public key
+*   @brief  Generates sessions and loads it to temporary memory.
+*			It provides four operation modes : Symmetric key, Factory key, External Session key and External public key
 *
 *   @param key_index		: Key sector index(p1)
-*   @param en_session_mode	: Selection of the mode of session instruction(p2)
+*   @param en_session_mode	: Session operation mode(p2)
 *   @param indata			: Parameter to make a session key
 *   @param indata_size		: The size of input data
 *   @param outdata			: Output from the command
@@ -426,7 +431,7 @@ G3_API G3_API_RESULT CALLTYPE g3api_session
 //###################################################	
 /**
 *   @name g3api_set_extern_public_key
-*   @brief  Load input public key to temporary memory
+*   @brief  Loads input public key to temporary memory
 *
 *   @param pub_key			: Public key to load, enable 2 follow structure ST_ECC_PUBLIC,ST_ECC_PUBLIC_COMPRESS
 *   @param structure_size	: The size of the public key buffer
@@ -451,8 +456,8 @@ G3_API G3_API_RESULT CALLTYPE g3api_set_extern_public_key
 *
 *   @param key_index		: Key sector index(p1)
 *   @param diversify_mode	: Selection of the mode in self mode or inherit mode(p2)
-*   @param data				: Parameter to be diversified
-*   @param data_size		: The size of data buffer
+*   @param data				: Parameter for diversifying
+*   @param data_size		: The size of data
 
 *   @return G3_API_RESULT
 */
@@ -469,7 +474,7 @@ G3_API G3_API_RESULT CALLTYPE g3api_diversify
 //###################################################	
 /**
 *   @name g3api_get_public_key
-*   @brief  Output a public key in a compress form(33bytes) or X,Y coordinate form(64 bytes)
+*   @brief  Outputs a public key in a compress form(33bytes) or X,Y coordinate form(64 bytes)
 *
 *   @param key_index		: Key sector index(p1)
 *   @param pub_type			: Select public key in key sector or temporary memory
@@ -550,7 +555,7 @@ G3_API G3_API_RESULT CALLTYPE g3api_issue_certification
 *			Generate TLS KEY BLOCK mode outputs public key chip[64] || TLS key block[128]
 *			Set TLS session key to temporary memory mode outputs public key chip[64] || client write iv[16] || server write iv[16]
 *
-*   @param en_ecdh_mode				: Provide 3 levels of key agreement functions : ECDH / Gen TLS Key Block / Set TLS Session key to temporary memory
+*   @param en_ecdh_mode				: Provides 3 levels of key agreement functions : ECDH / Gen TLS Key Block / Set TLS Session key to temporary memory
 *   @param Q_b						: Public key - enable 2 follow structure ST_ECC_PUBLIC, ST_ECC_PUBLIC_COMPRESS
 *   @param Q_b_struct_size			: The size of public key ( 33 byte or 64 byte )
 *   @param st_ecdh_random			: ServerHello.random[32] || ClientHello.random[32] 
@@ -674,11 +679,11 @@ G3_API G3_API_RESULT CALLTYPE g3api_tls_get_handshake_digest
 //###################################################	
 /**
 *   @name g3api_sha256_mode
-*   @brief  For SHA256 calculation
+*   @brief  For SHA256 calculation. Sha256 command is executed in three steps : initialization, update and finalization
 *	
-*	@param sha256_mode	: Sha256 command is executed in three steps : initialization, update and finalization
+*	@param sha256_mode	: SHA256 mode
 *   @param data			: The data to be subjected to the sha256 operation
-*   @param data_size	: The size of input data
+*   @param data_size	: The size of input datac
 *   @param outdata		: Outputs from the command, hashed data
 
 *   @return G3_API_RESULT

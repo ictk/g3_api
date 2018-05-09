@@ -220,6 +220,11 @@ void general_password()
 	ret = g3api_write_key_value(28, KEY_AREA, PLAIN_TEXT, &write_key, sizeof(ST_KEY_VALUE));
 	print_result("write key", ret);
 
+	// write key area sector 29
+	set_buff_from_hexstr(&write_key, "0403050511223344000000000000000000000000000000000000000000000000");
+	ret = g3api_write_key_value(28, KEY_AREA, PLAIN_TEXT, &write_key, sizeof(ST_KEY_VALUE));
+	print_result("write key", ret);
+
 	// verify password sector 28 ( valid )
 	ret = g3api_verify_passwd(28, passwd2, sizeof(passwd2));
 	print_result("g3api_verify_passwd", ret);
@@ -347,6 +352,33 @@ void general_sign_verify()
 	memset(&sign3, 0, sizeof(ST_SIGN_SYMM));
 
 
+	// sign & verify  - dynamic_auth symmetric
+	ret = g3api_get_challenge(32, msg + 16, &msg_size);
+	print_result("g3api_get_challenge", ret);
+	print_value("challenge_value(1)", msg + 16, msg_size);
+
+	ret = g3api_sign(32, SIGN_SYMM, msg + 16, msg_size, &sign3, sizeof(ST_SIGN_SYMM));
+	print_result_value("sign key_symm", ret, &sign3, sizeof(ST_SIGN_SYMM));
+
+	set_buff_from_hexstr(msg, "86200003000000000000000000000000");
+	ret = g3api_dynamic_auth(32, DYN_AUTH_SYMM, 0x10, msg, sizeof(msg), &sign3, sizeof(ST_SIGN_SYMM));
+	print_result("g3api_verify dynamic authentication symmetric", ret);
+
+
+	// sign & verify - dynamic authentication ECDSA with SHA256
+	memset(msg, 0, sizeof(msg));
+	ret = g3api_get_challenge(32, msg, &msg_size);
+	print_result("g3api_get_challenge", ret);
+	print_value("challenge_value(2)", msg, msg_size);
+
+	memset(&sign, 0, sizeof(sign));
+	ret = g3api_sign(33, SIGN_ECDSA_WITH_SHA256, msg, msg_size, &sign, sizeof(ST_SIGN_ECDSA));
+	print_result_value("sign key ecdsa", ret, &sign, sizeof(ST_SIGN_ECDSA));
+
+	ret = g3api_dynamic_auth(34, DYN_AUTH_ECDSA_SHA256, 0x00, msg, msg_size, &sign, sizeof(ST_SIGN_ECDSA));
+	print_result("g3api verify dynamic authentication ecdsa sha256", ret);
+
+
 	// write setup area sector 12
 	set_buff_from_hexstr(&write_key, "4E540000000000007E540000000000003E540000000000000E54000000000000");
 	ret = g3api_write_key_value(12, SETUP_AREA, PLAIN_TEXT, &write_key, sizeof(ST_KEY_VALUE));
@@ -374,17 +406,8 @@ void general_sign_verify()
 	ret = g3api_verify(1, VERYFY_EXT_PUB_ECDSA_EXT_SHA256, org_msg_hash, sizeof(org_msg_hash), sign_rs, sizeof(sign_rs));
 	print_result("g3api_verify key_ext_ex_hash", ret);
 
-	// sign & verify  - dynamic_auth
-	ret = g3api_get_challenge(32, msg+16, &msg_size);
-	print_result("g3api_get_challenge", ret);
-	print_value("challenge_value", msg+16, msg_size);
 
-	ret = g3api_sign(32, SIGN_SYMM, msg+16, msg_size, &sign3, sizeof(ST_SIGN_SYMM));
-	print_result_value("sign key_symm", ret, &sign3, sizeof(ST_SIGN_SYMM));
 
-	set_buff_from_hexstr(msg, "86200003000000000000000000000000");
-	ret = g3api_dynamic_auth(32, DYN_AUTH_SYMM, 0x10, msg, sizeof(msg), &sign3, sizeof(ST_SIGN_SYMM));
-	print_result("g3api_verify dynamic auth", ret);
 
 }
 void general_enc_dec()
@@ -534,7 +557,7 @@ void general_certificate()
 
 	ST_DATA_32 encrypted_key;
 	//set_buff_from_hexstr(issued_cert, "");
-
+	
 	const unsigned char passwd2[] = { 0x11, 0x22, 0x33, 0x44 };
 	int ret = 0;
 
@@ -621,6 +644,7 @@ void general_session()
 
 	byte factory_data[18];
 
+	ST_ECC_PUBLIC ecc_pub;
 
 	// write setup area sector 16
 	set_buff_from_hexstr(&write_key, "4E540000000000004E540000000000000E540000000000000E54000000000000");
@@ -631,17 +655,6 @@ void general_session()
 	set_buff_from_hexstr(&write_key, "6B8B3A2D115E4683A540FF6C1515A13D21AABF36472D3C112FD134AD5F4F3122");
 	ret = g3api_write_key_value(48, KEY_AREA, PLAIN_TEXT, &write_key, sizeof(ST_KEY_VALUE));
 	print_result("write key", ret);
-	/*
-	typedef enum
-	{
-		SYMM_KEY = 0x80,
-		FACTORY_AES = 0x90,
-		FACTORY_SM4 = 0x91,
-		EXT_SESSION_KEY_AES = 0xA0,
-		EXT_SESSION_KEY_SM4 = 0xA1,
-		EXT_PUB_KEY = 0xA2,
-	}  EN_SESSION_MODE;
-	*/
 
 	// session_symmetric
 	set_buff_from_hexstr(session_b, "4A5E31F5D1D5B6C438D1F155A1F3FE5A");
@@ -661,6 +674,11 @@ void general_session()
 	ret = g3api_session(0, EXT_SESSION_KEY_AES, session_b, sizeof(session_b), output_16, &output_16_size);
 	print_result_value("external session key", ret, output_16, output_16_size);
 
+	// external public key
+	set_buff_from_hexstr(&ecc_pub, "7CC2F04BFCB22ACD94A230EAA57D90FD65AD7CDC16695FB3A1C4A71D7A2E7481961F49DCD5F33971FBF0320BA3CEB6F6A1CB8EA2D98AEBC24B023197EB76C625");
+	ret = g3api_set_extern_public_key(&ecc_pub,sizeof(ST_ECC_PUBLIC),(ST_DATA_32 *)output_32);
+	print_result_value("external public key", ret, output_32, sizeof(output_32));
+
 }
 void general_etc()
 {
@@ -675,6 +693,8 @@ void general_etc()
 
 	byte msg[4];
 	ST_DATA_32 output[32];
+
+	
 
 
 	// write setup area sector 17
@@ -723,14 +743,18 @@ void general_etc()
 	ret = g3api_get_public_key(53, KEY_SECTOR, &PUB_KEY_33, sizeof(PUB_KEY_33));
 	print_result("get public key ecc prv key 33", ret);
 	print_value("public key", &PUB_KEY_33, sizeof(PUB_KEY_33));
-	/*
-	typedef enum
-	{
-		Initialize = 0x0000,
-		Update = 0x0001,
-		Finalize = 0x00FF,
-	}  EN_SHA256_MODE;
-	*/
+	
+	// session ins external pub key & get public key temporary public key
+	set_buff_from_hexstr(&PUB_KEY_64, "7CC2F04BFCB22ACD94A230EAA57D90FD65AD7CDC16695FB3A1C4A71D7A2E7481961F49DCD5F33971FBF0320BA3CEB6F6A1CB8EA2D98AEBC24B023197EB76C625");
+	ret = g3api_set_extern_public_key(&PUB_KEY_64, sizeof(ST_ECC_PUBLIC), (ST_DATA_32 *)output);
+	print_result_value("external public key", ret, output, sizeof(output));
+
+	ret = g3api_get_public_key(0, TEMP_PUBLIC_KEY, &PUB_KEY_64, sizeof(PUB_KEY_64));
+	print_result_value("get temporary public key 64", ret, &PUB_KEY_64, sizeof(PUB_KEY_64));
+
+	ret = g3api_get_public_key(0, TEMP_PUBLIC_KEY, &PUB_KEY_33, sizeof(PUB_KEY_33));
+	print_result_value("get temporary public key 33", ret, &PUB_KEY_33, sizeof(PUB_KEY_33));
+
 	// g3api sha256
 	ret = g3api_sha256(Initialize, NULL, 0, NULL);
 	print_result("sha256 init", ret);
@@ -974,14 +998,14 @@ void test_scenario_sample2()
 {
 	initialize();
 	
-	general_read_write();
+	//general_read_write();
 	//general_diversify();
 	//general_enc_dec();
 	//general_password();
 	//general_session();
 	//general_sign_verify();
 	//general_certificate();
-	//general_etc();
+	general_etc();
 	//general_tls();
 
 	//ret = g3api_get_challenge(32, rcv_buffer, &rcv_buffer_size);
