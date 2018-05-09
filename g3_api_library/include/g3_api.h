@@ -94,15 +94,15 @@ G3_API G3_API_RESULT CALLTYPE g3api_raw_snd_recv
 //###################################################	
 /**
 *   @name g3api_read_key_value
-*   @brief  read value from setup,key_sector,user data
+*   @brief  Read value from the setup area, key area and user data area
 *			It provides 3 types of read operation, plain read, masked read and encrypted read.
 *
 *   @param	key_index		: Key sector index(p1)
 *   @param	area_type		: The type of area to read(p2_lower)
 *   @param	rw_type			: Read operation mode(p2_upper) 
-*   @param	data			: Only for masked operation(rw_type -> MASKED)
+*   @param	data			: Input data only for masked operation(rw_type -> MASKED)
 *   @param	data_size		: The size of the mask
-*   @param	data_structure	: Read data, enable 3 follow structure ST_RW_DATA,ST_RW_DATA_WITH_IV,ST_RW_DATA_WITH_IV_MAC
+*   @param	data_structure	: Read data, enable 3 follow structure ST_RW_DATA, ST_RW_DATA_WITH_IV and ST_RW_DATA_WITH_IV_MAC
 *   @param	structure_size  : The size of data_structure
 
 *   @return G3_API_RESULT
@@ -123,13 +123,13 @@ G3_API G3_API_RESULT CALLTYPE g3api_read_key_value
 //###################################################	
 /**
 *   @name g3api_write_key_value
-*   @brief  write value to setup,key_sector,user data. 
+*   @brief  Writes value in setup area, key area and user data area. 
 *			It provides 3 types of write operation, plain write, masked write and encrypted write
 *
 *   @param	key_index		: Key sector index(p1)
 *   @param	area_type		: The type of area to write(p2_lower)
 *   @param	rw_type			: Write operation mode(p2_upper) 
-*   @param	data_structure	: Data to write, enable 4 follow structure ST_RW_DATA,ST_RW_DATA_WITH_IV,ST_RW_DATA_WITH_IV_MAC			  
+*   @param	data_structure	: Data to write, enable 4 follow structure ST_RW_DATA, ST_RW_DATA_WITH_IV and ST_RW_DATA_WITH_IV_MAC			  
 *   @param	structure_size	: The size of data_structure
 
 *   @return G3_API_RESULT
@@ -148,7 +148,7 @@ G3_API G3_API_RESULT CALLTYPE g3api_write_key_value
 //###################################################	
 /**
 *   @name g3api_get_challenge
-*   @brief  Generates challenge and loads to temporary memory
+*   @brief  Generates challenge and loads it to temporary memory
 *			Whenever the generated challenge is used once for an authentication, the callenge becomes invalidated,
 *			regardless of whether the authentication has been passed or not.
 *
@@ -170,11 +170,11 @@ G3_API G3_API_RESULT CALLTYPE g3api_get_challenge
 //###################################################	
 /**
 *   @name g3api_verify_passwd
-*   @brief	Verify the password of the target sector with input password and if it succeeded, obtain AC
+*   @brief	Verifies the password of the target sector using input password key and obtain AC
 *
 *   @param key_index		: Key sector index(p1)
 *   @param passwd			: Input password key
-*   @param passwd_size		: The size of of password key
+*   @param passwd_size		: The size of password key
 
 *   @return G3_API_RESULT
 */
@@ -190,10 +190,10 @@ G3_API G3_API_RESULT CALLTYPE g3api_verify_passwd
 //###################################################	
 /**
 *   @name g3api_change_password
-*   @brief	Change the password of the target sector to input password
+*   @brief	Changes the password of the target sector to input password key
 *
 *   @param key_index		: Key sector index(p1)
-*   @param passwd			: Input password
+*   @param passwd			: Input password key
 *   @param passwd_size		: The size of password key
 
 *   @return G3_API_RESULT
@@ -210,7 +210,7 @@ G3_API G3_API_RESULT CALLTYPE g3api_change_password
 //###################################################	
 /**
 *   @name g3api_init_puf
-*   @brief  Write the revision value into the target sector, the target sector should be an ECC PUF
+*   @brief  Writes the revision value to the target sector, the target sector should be an ECC PUF
 *
 *   @param key_index		: Key sector index(p1)
 *   @param initial			: The revision value (4 bytes)
@@ -228,13 +228,13 @@ G3_API G3_API_RESULT CALLTYPE g3api_init_puf
 //###################################################	
 /**
 *   @name g3api_sign
-*   @brief  Generate a signature using input data and target key.
+*   @brief  Generates a signature using input data and target key.
 *
 *   @param key_index		: Key sector index(p1)
 *   @param sign_option		: The option of the command, signature algorithm.(p2)
-*   @param msg				: Input data, it will be used to generate a signature
+*   @param msg				: Input data, used to generate a signature
 *   @param msg_size			: The size of msg
-*   @param sign_structure	: Output from the command, enable 3 follow structure ST_SIGN_ECDSA,ST_SIGN_SYMM,ST_SIGN_HMAC
+*   @param sign_structure	: Output from the command, enable 3 follow structure ST_SIGN_ECDSA,ST_SIGN_SYMM and ST_SIGN_HMAC
 *   @param structure_size	: The size of sign_structure
 
 *   @return G3_API_RESULT
@@ -254,13 +254,14 @@ G3_API G3_API_RESULT CALLTYPE g3api_sign
 //###################################################	
 /**
 *   @name g3api_verify
-*   @brief  Verify the signature. The target sector should be a public key or symmetric key
+*   @brief  Verifies the signature. The target sector should be a public key or symmetric key
+*			To obtain AC, use the dynamic_auth.
 *
 *   @param key_index		: Key sector index(p1)
 *   @param verify_option	: The option of command(p2)
 *   @param msg				: Input data, it contains data and signature
 *   @param msg_size			: The size of input data
-*   @param sign_structure	: Output from the command, enable 3 follow structure ST_SIGN_ECDSA,ST_SIGN_SYMM,ST_SIGN_HMAC
+*   @param sign_structure	: Output from the command, enable 3 follow structure ST_SIGN_ECDSA, ST_SIGN_SYMM and ST_SIGN_HMAC
 *   @param structure_size	: The size of sign_structure
 
 *   @return G3_API_RESULT
@@ -280,14 +281,14 @@ G3_API G3_API_RESULT CALLTYPE g3api_verify
 //###################################################	
 /**
 *   @name g3api_dynamic_auth
-*   @brief  Verify the signature and obtain AC. Input signature must be generated using challenge that generated in G3
+*   @brief  Verifies the signature and obtain AC. Input signature must be generated using challenge that generated in G3
 *		
 *   @param key_index		: Key sector index(p1)
-*   @param dauth_option		: The mode of the command(p2)
-*   @param pos_pub_dynamic	: A random position
+*   @param dauth_option		: The mode of the command(p2_lower)
+*   @param pos_pub_dynamic	: A random position(p2_upper)
 *   @param msg				: Input data, it contains data and signature
 *   @param msg_size			: The size of input data 
-*   @param sign_structure	: Output from the command, enable 3 follow structure ST_SIGN_ECDSA,ST_SIGN_SYMM,ST_SIGN_HMAC
+*   @param sign_structure	: Output from the command, enable 3 follow structure ST_SIGN_ECDSA, ST_SIGN_SYMM and ST_SIGN_HMAC
 *   @param structure_size	: The size of sign_sturucture
 
 *   @return G3_API_RESULT
@@ -308,13 +309,13 @@ G3_API G3_API_RESULT CALLTYPE g3api_dynamic_auth
 //###################################################	
 /**
 *   @name g3api_encryption
-*   @brief  Encrypt a given plain data using target key
+*   @brief  Encrypts a given plain data using target key.
 *
 *   @param key_index		: Key sector index(p1)
-*   @param key_type			: Key type of the target key(p2_upper)
+*   @param key_type			: The key type of the target key(p2_upper)
 *   @param block_mode		: The block cipher operation mode(p2_lower)
 *   @param iv				: Initial vector 
-*   @param data				: The plain data for encryption
+*   @param data				: The plain data to be encrypted
 *   @param data_size		: The size of plain data
 *   @param cipher			: Output from the command, cipher data
 *   @param cipher_size		: The size of cipher data
@@ -338,13 +339,13 @@ G3_API G3_API_RESULT CALLTYPE g3api_encryption
 //###################################################	
 /**
 *   @name g3api_decryption
-*   @brief  Decrypt a given cipher data using target key
+*   @brief  Decrypts a given cipher data using target key
 *
 *   @param key_index		: Key sector index(p1)
-*   @param key_type			: Key type of the target key(p2_upper)
+*   @param key_type			: The key type of the target key(p2_upper)
 *   @param block_mode		: The block cipher operation mode(p2_lower)
 *   @param iv				: Initial vector
-*   @param cipher			: The cipher data for decryption
+*   @param cipher			: The cipher data to be decrypted
 *   @param cipher_size		: The size of cipher data
 *   @param data				: Output from the command, plain data
 *   @param data_size		: The size of plain data
@@ -368,7 +369,7 @@ G3_API G3_API_RESULT CALLTYPE g3api_decryption
 //###################################################	
 /**
 *   @name g3api_encryption_ecies
-*   @brief  Encrypt a given plain data with ECIES. The target key must be a public key
+*   @brief  Encrypts a given plain data with ECIES. The target key must be a public key
 *
 *   @param key_index		: Key sector index(p1)
 *   @param rs				: R (R=rG, r:random) - ECC private key, S=x of (rKB=kBR), r: random, KB : public key of B, kB : private key of B)
@@ -404,12 +405,12 @@ G3_API G3_API_RESULT CALLTYPE g3api_decryption_ecies
 //###################################################	
 /**
 *   @name g3api_session
-*   @brief  Generates sessions and loads it to temporary memory.
+*   @brief  Generates sessions and loads the session key to temporary memory.
 *			It provides four operation modes : Symmetric key, Factory key, External Session key and External public key
 *
 *   @param key_index		: Key sector index(p1)
 *   @param en_session_mode	: Session operation mode(p2)
-*   @param indata			: Parameter to make a session key
+*   @param indata			: The parameter to be used for making a session key
 *   @param indata_size		: The size of input data
 *   @param outdata			: Output from the command
 *   @param outdata_size		: The size of output
@@ -433,8 +434,8 @@ G3_API G3_API_RESULT CALLTYPE g3api_session
 *   @name g3api_set_extern_public_key
 *   @brief  Loads input public key to temporary memory
 *
-*   @param pub_key			: Public key to load, enable 2 follow structure ST_ECC_PUBLIC,ST_ECC_PUBLIC_COMPRESS
-*   @param structure_size	: The size of the public key buffer
+*   @param pub_key			: Public key to load, enable 2 follow structure ST_ECC_PUBLIC and ST_ECC_PUBLIC_COMPRESS
+*   @param structure_size	: The size of the public key
 *   @param puk_hash			: Output from the command, hashed data
 
 *   @return G3_API_RESULT
@@ -451,12 +452,12 @@ G3_API G3_API_RESULT CALLTYPE g3api_set_extern_public_key
 //###################################################	
 /**
 *   @name g3api_diversify
-*   @brief  Diversify a symmetric key by using diversify AC. It can be executed in two mode : self mode and inherit mode
+*   @brief  Diversifies a symmetric key by using diversify AC. It can be executed in two mode : self mode and inherit mode
 *			If rw_operation bits of the target key setting is 11, diversify command requires a MAC
 *
 *   @param key_index		: Key sector index(p1)
 *   @param diversify_mode	: Selection of the mode in self mode or inherit mode(p2)
-*   @param data				: Parameter for diversifying
+*   @param data				: The parameter to be used for diversifying
 *   @param data_size		: The size of data
 
 *   @return G3_API_RESULT
@@ -496,11 +497,11 @@ G3_API G3_API_RESULT CALLTYPE g3api_get_public_key
 //###################################################	
 /**
 *   @name g3api_certification
-*   @brief  Verify a certificate, and then update a public key or store it in public key of temporary memory
+*   @brief  Verifies a certificate, and then update a public key or store it in public key of temporary memory
 *			The session can be generated by the public key of temporary memory
 *
 *   @param key_index				: Key sector index(p1)
-*   @param certification_write_mode : Provide two modes : update temporary public key or write public ke to key sector
+*   @param certification_write_mode : Provides two modes : update temporary public key or write public key to key sector
 *   @param cert						: Input a certificate to verify
 *   @param cert_size				: The size of certificate
 
@@ -519,12 +520,12 @@ G3_API G3_API_RESULT CALLTYPE g3api_certification
 //###################################################	
 /**
 *   @name g3api_issue_certification
-*   @brief  Issue a certificate and store it. Add the pair public key of private key in target sector(p1) to certificate
+*   @brief  Issues a certificate and store it. Add the pair public key of private key in target sector to certificate
 *			The length of the certificate cannot exceed 1024 bytes.
 *
 *   @param key_index			: Key sector index(p1)
 *   @param public_key_pos		: The public key position
-*   @param issue_cert_area_type	: The area type where the issued certificate will be stored
+*   @param issue_cert_area_type	: The area type of the sector to store the issued certificate
 *   @param sector_num_to_store  : The sector number to store the issued certificate
 *   @param key_id				: Factory key ID or the sector number of private key
 *   @param encrypted_key		: When using key_id as a factory key id, encrypted_key must be given
@@ -560,7 +561,7 @@ G3_API G3_API_RESULT CALLTYPE g3api_issue_certification
 *   @param Q_b_struct_size			: The size of public key ( 33 byte or 64 byte )
 *   @param st_ecdh_random			: ServerHello.random[32] || ClientHello.random[32] 
 *   @param Q_chip					: Public Key Chip ( dchipG )
-*   @param ecdh_value				: Enable 3 follow structure ST_ECDH_PRE_MASTER_SECRET | ST_ECDH_KEY_BLOCK | ST_ECDH_IV
+*   @param ecdh_value				: Enable 3 follow structure ST_ECDH_PRE_MASTER_SECRET, ST_ECDH_KEY_BLOCK and ST_ECDH_IV
 *   @param ecdh_value_struct_size	: The size of ecdh_value 
 
 *   @return G3_API_RESULT
@@ -586,7 +587,7 @@ G3_API G3_API_RESULT CALLTYPE g3api_ecdh
 *   @param seq_num							: The TLS sequence low 4 byte
 *   @param content_type						: The content type[1]
 *   @param tls_version						: The TLS version[2]
-*   @param tls_inter_header_without_size	: The structure for the TLS header without size
+*   @param tls_inter_header_without_size	: The structure to contain the TLS header without size
 
 *   @return G3_API_RESULT
 */
@@ -603,7 +604,7 @@ G3_API G3_API_RESULT CALLTYPE g3api_make_tls_inter_header_without_size
 //###################################################	
 /**
 *   @name g3api_tls_mac_encrypt
-*   @brief  Generate an encrypted TLS record using the TLS session key block stored in temporary memory
+*   @brief  Generates an encrypted TLS record using the TLS session key block stored in temporary memory
 *
 *   @param tls_inter_header_without_size	: TLS_HEADER ( TLS Sequence Num[8] || TLS type[1] || TLS Version[2] ) 
 *   @param client_iv						: Client_Write_IV[16]
@@ -662,7 +663,7 @@ G3_API G3_API_RESULT CALLTYPE g3api_tls_decrypt_verify
 *   @brief  Used for finishing the TLS session key agreement
 *
 *   @param handshake_mode		: It has two modes : client handshake and server handshake
-*   @param hash_handshake_msg	: The data for handshaking
+*   @param hash_handshake_msg	: The data to be used for handshaking
 *   @param handshake_digest		: The handshake digest
 
 *   @return G3_API_RESULT
@@ -681,9 +682,9 @@ G3_API G3_API_RESULT CALLTYPE g3api_tls_get_handshake_digest
 *   @name g3api_sha256_mode
 *   @brief  For SHA256 calculation. Sha256 command is executed in three steps : initialization, update and finalization
 *	
-*	@param sha256_mode	: SHA256 mode
+*	@param sha256_mode	: The step of SHA256 command
 *   @param data			: The data to be subjected to the sha256 operation
-*   @param data_size	: The size of input datac
+*   @param data_size	: The size of input data
 *   @param outdata		: Outputs from the command, hashed data
 
 *   @return G3_API_RESULT

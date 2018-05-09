@@ -497,6 +497,11 @@ void general_enc_dec()
 	set_buff_from_hexstr(plain_text, "A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0");
 	ret = g3api_encryption(0, SESSION_KEY, BL_CBC, &iv, plain_text, sizeof(plain_text), cipher_text, &cipher_text_size);
 	print_result_value("enc_session_key", ret, cipher_text,cipher_text_size);
+	memset(plain_text, 0, sizeof(plain_text));
+
+	// dec_session_key
+	ret = g3api_decryption(0, SESSION_KEY, BL_CBC, &iv, cipher_text, sizeof(cipher_text), plain_text, &cipher_text_size);
+	print_result_value("dec_session_key", ret, plain_text, sizeof(plain_text));
 
 	memset(cipher_text, 0, cipher_text_size);
 	memset(plain_text, 0, sizeof(plain_text));
@@ -580,6 +585,8 @@ void general_certificate()
 	set_buff_from_hexstr(&write_key, "961F49DCD5F33971FBF0320BA3CEB6F6A1CB8EA2D98AEBC24B023197EB76C625");
 	ret = g3api_write_key_value(46, KEY_AREA, PLAIN_TEXT, &write_key, sizeof(ST_KEY_VALUE));
 	print_result("write key", ret);
+
+
 	// g3api issue certificate
 	ret = g3api_issue_certification(44, 0x15E, ISCRT_DATA_AREA_0, 0, 0x2C, NULL, cert, cert_size);
 	print_result("g3api issue certification", ret);
@@ -997,7 +1004,8 @@ void test_scenario_sample()
 void test_scenario_sample2()
 {
 	initialize();
-	
+
+	//g3api_reset();
 	//general_read_write();
 	//general_diversify();
 	//general_enc_dec();
@@ -1005,7 +1013,7 @@ void test_scenario_sample2()
 	//general_session();
 	//general_sign_verify();
 	//general_certificate();
-	general_etc();
+	//general_etc();
 	//general_tls();
 
 	//ret = g3api_get_challenge(32, rcv_buffer, &rcv_buffer_size);

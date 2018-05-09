@@ -1101,8 +1101,6 @@ END:
 	
 	return nret;
 	*/
-	
-	
 }	
 
 	//END API
