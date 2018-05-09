@@ -39,6 +39,10 @@ void initialize()
 	set_buff_from_hexstr(&write_key, "0405050511223344000000000000000000000000000000000000000000000000");
 	ret = g3api_write_key_value(0, KEY_AREA, PLAIN_TEXT, &write_key, sizeof(ST_KEY_VALUE));
 	print_result("init  write key", ret);
+
+	// get Root_AC
+	ret = g3api_verify_passwd(0, passwd2, sizeof(passwd2));
+	print_result("g3api_verify_passwd", ret);
 }
 
 void general_read_write()
@@ -68,10 +72,6 @@ void general_read_write()
 	ST_IV session_iv;
 	byte session_key[32];
 	int session_key_size = 16;
-
-	// get Root_AC
-	ret = g3api_verify_passwd(0, passwd2, sizeof(passwd2));
-	print_result("g3api_verify_passwd", ret);
 
 	// write setup area sector 10
 	set_buff_from_hexstr(&write_key, "9E540000000000009E031B001B0000009E001B001B0000004E54000000000000");
@@ -209,9 +209,6 @@ void general_password()
 	const unsigned char passwd3[] = { 0x11, 0x22, 0x33, 0x45 };
 	int ret = 0;
 
-	// get Root_AC
-	ret = g3api_verify_passwd(0, passwd2, sizeof(passwd2));
-	print_result("g3api_verify_passwd", ret);
 
 	// write setup area sector 11
 	set_buff_from_hexstr(&write_key, "8E540000000000008E540000000000008E540000000000008E54000000000000");
@@ -283,9 +280,6 @@ void general_sign_verify()
 	byte session_out[32];
 	int session_out_size = 32;
 
-	// get Root_AC
-	ret = g3api_verify_passwd(0, passwd2, sizeof(passwd2));
-	print_result("g3api_verify_passwd", ret);
 
 	// write setup area sector 12
 	set_buff_from_hexstr(&write_key, "4E540000000000002E540000000000003E540000000000000E54000000000000");
@@ -393,7 +387,6 @@ void general_sign_verify()
 	print_result("g3api_verify dynamic auth", ret);
 
 }
-
 void general_enc_dec()
 {
 	ST_KEY_VALUE recv_key;
@@ -416,9 +409,6 @@ void general_enc_dec()
 	byte session_out[32];
 	int session_out_size = 32;
 
-	// get Root_AC
-	ret = g3api_verify_passwd(0, passwd2, sizeof(passwd2));
-	print_result("g3api_verify_passwd", ret);
 
 	// write setup area sector 13
 	set_buff_from_hexstr(&write_key, "4E540000000000002E540000000000003E540000000000000E54000000000000");
@@ -502,10 +492,6 @@ void general_diversify()
 	const unsigned char passwd2[] = { 0x11, 0x22, 0x33, 0x44 };
 	int ret = 0;
 
-	// get Root_AC
-	ret = g3api_verify_passwd(0, passwd2, sizeof(passwd2));
-	print_result("g3api_verify_passwd", ret);
-
 	// write setup area sector 14
 	set_buff_from_hexstr(&write_key, "4E540000000000004E540000000000000E540000000000000E54000000000000");
 	ret = g3api_write_key_value(14, SETUP_AREA, PLAIN_TEXT, &write_key, sizeof(ST_KEY_VALUE));
@@ -551,10 +537,6 @@ void general_certificate()
 
 	const unsigned char passwd2[] = { 0x11, 0x22, 0x33, 0x44 };
 	int ret = 0;
-
-	// get Root_AC
-	ret = g3api_verify_passwd(0, passwd2, sizeof(passwd2));
-	print_result("g3api_verify_passwd", ret);
 
 	// write setup area sector 15
 	set_buff_from_hexstr(&write_key, "2E540000000000003E540000000000000E540000000000000E54000000000000");
@@ -639,9 +621,6 @@ void general_session()
 
 	byte factory_data[18];
 
-	// get Root_AC
-	ret = g3api_verify_passwd(0, passwd2, sizeof(passwd2));
-	print_result("g3api_verify_passwd", ret);
 
 	// write setup area sector 16
 	set_buff_from_hexstr(&write_key, "4E540000000000004E540000000000000E540000000000000E54000000000000");
@@ -697,9 +676,6 @@ void general_etc()
 	byte msg[4];
 	ST_DATA_32 output[32];
 
-	// get Root_AC
-	ret = g3api_verify_passwd(0, passwd2, sizeof(passwd2));
-	print_result("g3api_verify_passwd", ret);
 
 	// write setup area sector 17
 	set_buff_from_hexstr(&write_key, "1E540000000000002E540000000000003E540000000000000E54000000000000");
@@ -810,10 +786,6 @@ void general_tls()
 
 	byte crypto_dec[32];
 	byte server_write_key[16];
-
-	// get Root_AC
-	ret = g3api_verify_passwd(0, passwd2, sizeof(passwd2));
-	print_result("g3api_verify_passwd", ret);
 
 	// write setup area sector 18
 	set_buff_from_hexstr(&write_key, "2E540000000000003E540000000000000E540000000000000E54000000000000");
@@ -1002,7 +974,7 @@ void test_scenario_sample2()
 {
 	initialize();
 	
-	//general_read_write();
+	general_read_write();
 	//general_diversify();
 	//general_enc_dec();
 	//general_password();

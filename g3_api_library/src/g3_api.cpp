@@ -116,12 +116,21 @@ G3_API_RESULT CALLTYPE g3api_read_key_value(const int key_index, EN_AREA_TYPE ar
 
 
 	VAR_BYTES *precvbuff = NULL;
+	int ret;
 
 	//if (*key_value_size < KEY_VALUE_SIZE){
 	//	return ERR_KEY_BUFF_SIZE;
 	//}
+	if (data)
+	{
+		if (data_size != 32)
+		{
+			ret = RET_ERR_DIFF_STRUCT_SIZE;
+			goto END;
+		}
+	}
 
-	int ret = do_normal_process(READ, key_index, MAKEWORD(area_type, rw_type), data, data_size, &precvbuff);
+	ret = do_normal_process(READ, key_index, MAKEWORD(area_type, rw_type), data, data_size, &precvbuff);
 
 	if (ret < 0) return ret;
 
