@@ -11,7 +11,6 @@ G3_API void g3api_set_fp(void *fp);
 
 //###################################################	
 /**
-*   @name g3api_get_lib_version
 *   @brief  
 *
 *
@@ -25,7 +24,6 @@ G3_API const char * CALLTYPE g3api_get_lib_version
 	
 //###################################################	
 /**
-*   @name g3api_set_user_send_recv_pf
 *   @brief  
 *
 *   @param psendrecv 
@@ -43,7 +41,6 @@ G3_API void CALLTYPE g3api_set_user_send_recv_pf
 	
 //###################################################	
 /**
-*   @name g3api_get_device_version
 *   @brief  
 *
 *
@@ -57,7 +54,6 @@ G3_API G3_API_RESULT CALLTYPE g3api_get_device_version
 	
 //###################################################	
 /**
-*   @name g3api_get_sn
 *   @brief  
 *
 *
@@ -71,7 +67,6 @@ G3_API char* CALLTYPE g3api_get_sn
 	
 //###################################################	
 /**
-*   @name g3api_raw_snd_recv
 *   @brief  
 *
 *   @param snd  
@@ -91,28 +86,30 @@ G3_API G3_API_RESULT CALLTYPE g3api_raw_snd_recv
 );
 
 	
-//###################################################	
+//###################################################
 /**
-*   @name g3api_read_key_value
 *   @brief  Read value from the setup area, key area and user data area
 *
 *   @param	key_index		: Key sector index ( p1 )
 *   @param	area_type		: The type of area to read ( p2_lower )
 *							  It can be one of the following values : 
-*								@arg SETUP_AREA, KEY_AREA, DATA_AREA_0, DATA_AREA_1 
+*								@arg SETUP_AREA
+*								@arg KEY_AREA
+*								@arg DATA_AREA_0
+*								@arg DATA_AREA_1
 *   @param	rw_type			: Read operation mode(p2_upper) 
 *							  It can be one of the following values : 
-*								@arg PLAIN_TEXT - plain read
-*								@arg CBC,CTR,SESSION_KEY_CBC,SESSION_KEY_CTR - encrypted read
-*								@arg CBC_with_MAC,CTR_with_MAC,SESSION_KEY_CBC_with_MAC,SESSION_KEY_CTR_with_MAC - encrypted read with MAC
-*								@arg MASKED - masked read
+*								@arg PLAIN_TEXT																		- plain read
+*								@arg CBC, CTR, SESSION_KEY_CBC, SESSION_KEY_CTR									    - encrypted read
+*								@arg CBC_with_MAC, CTR_with_MAC, SESSION_KEY_CBC_with_MAC, SESSION_KEY_CTR_with_MAC - encrypted read with MAC
+*								@arg MASKED																			- masked read
 *   @param	data			: Input data only for masked operation(rw_type -> MASKED)
 *   @param	data_size		: The size of the mask
 *   @param	data_structure	: Read data.
 *							  it can be one of the following structures : 
-*								@arg ST_RW_DATA				: Data[32]	              - plain read, masked read
-*								@arg ST_RW_DATA_WITH_IV		: Data[32],IV[16]         - encrypted read
-*								@arg ST_RW_DATA_WITH_IV_MAC	: Data[32],IV[16],MAC[16] - encrypted read with MAC
+*								@arg ST_RW_DATA				: Data[32]						 - plain read, masked read
+*								@arg ST_RW_DATA_WITH_IV		: Data[32] || IV[16]			 - encrypted read
+*								@arg ST_RW_DATA_WITH_IV_MAC	: Data[32] || IV[16] || MAC[16]	 - encrypted read with MAC
 *   @param	structure_size  : The size of data_structure
 *
 *   @return G3_API_RESULT
@@ -132,25 +129,27 @@ G3_API G3_API_RESULT CALLTYPE g3api_read_key_value
 	
 //###################################################	
 /**
-*   @name g3api_write_key_value
 *   @brief  Writes value in setup area, key area and user data area. 
 *
 *   @param	key_index		: Key sector index. (p1)
 *   @param	area_type		: The type of area to write. (p2_lower)
 *						      It can be one of the following values : 
-*								@arg SETUP_AREA,KEY_AREA, DATA_AREA_0, DATA_AREA_1
+*								@arg SETUP_AREA
+*								@arg KEY_AREA
+*								@arg DATA_AREA_0
+*								@arg DATA_AREA_1
 *   @param	rw_type			: Write operation mode. (p2_upper) 
 *							  It can be one of the following values :
-*								@arg PLAIN_TEXT - plain write
-*								@arg CBC,CTR,SESSION_KEY_CBC,SESSION_KEY_CTR - encrypted write
-*								@arg CBC_with_MAC,CTR_with_MAC,SESSION_KEY_CBC_with_MAC,SESSION_KEY_CTR_with_MAC - encrypted write with MAC
-*								@arg MASKED - masked write
+*								@arg PLAIN_TEXT																		 - plain write
+*								@arg CBC, CTR, SESSION_KEY_CBC, SESSION_KEY_CTR										 - encrypted write
+*								@arg CBC_with_MAC, CTR_with_MAC, SESSION_KEY_CBC_with_MAC, SESSION_KEY_CTR_with_MAC  - encrypted write with MAC
+*								@arg MASKED																			 - masked write
 *   @param	data_structure	: Data to write.
 *							  it can be one of the following structures :
-*							    @arg ST_RW_DATA				: Data[32]	              - plain write
-*								@arg ST_RW_DATA_WITH_IV		: Data[32],IV[16]         - encrypted write without MAC
-*								@arg ST_RW_dATA_wITH_MASK	: Data[32],MASK[32]		  - masked write
-*								@arg ST_RW_DATA_WITH_IV_MAC	: Data[32],IV[16],MAC[16] - encrypted write with MAC
+*							    @arg ST_RW_DATA				: Data[32]						- plain write
+*								@arg ST_RW_DATA_WITH_IV		: Data[32] || IV[16]			- encrypted write without MAC
+*								@arg ST_RW_dATA_wITH_MASK	: Data[32] || MASK[32]		    - masked write
+*								@arg ST_RW_DATA_WITH_IV_MAC	: Data[32] || IV[16] || MAC[16] - encrypted write with MAC
 *   @param	structure_size	: The size of data_structure
 *
 *   @return G3_API_RESULT
@@ -168,7 +167,6 @@ G3_API G3_API_RESULT CALLTYPE g3api_write_key_value
 	
 //###################################################	
 /**
-*   @name g3api_get_challenge
 *   @brief  Generates challenge and loads it to temporary memory
 *			Whenever the generated challenge is used once for an authentication, the callenge becomes invalidated,
 *			regardless of whether the authentication has been passed or not.
@@ -190,7 +188,6 @@ G3_API G3_API_RESULT CALLTYPE g3api_get_challenge
 	
 //###################################################	
 /**
-*   @name g3api_verify_passwd
 *   @brief	Verifies the password of the target sector using input password key and obtain AC
 *
 *   @param key_index		: Key sector index(p1)
@@ -210,7 +207,6 @@ G3_API G3_API_RESULT CALLTYPE g3api_verify_passwd
 	
 //###################################################	
 /**
-*   @name g3api_change_password
 *   @brief	Changes the password of the target sector to input password key
 *
 *   @param key_index		: Key sector index(p1)
@@ -230,7 +226,6 @@ G3_API G3_API_RESULT CALLTYPE g3api_change_password
 	
 //###################################################	
 /**
-*   @name g3api_init_puf
 *   @brief  Writes the revision value to the target sector, the target sector should be an ECC PUF
 *
 *   @param key_index		: Key sector index(p1)
@@ -248,7 +243,6 @@ G3_API G3_API_RESULT CALLTYPE g3api_init_puf
 	
 //###################################################	
 /**
-*   @name g3api_sign
 *   @brief  Generates a signature using input data and target key.
 *			The signature algorithm is determined as the target key type.
 *
@@ -262,7 +256,7 @@ G3_API G3_API_RESULT CALLTYPE g3api_init_puf
 *   @param msg_size			: The size of msg
 *   @param sign_structure	: Command outputs.
 *							  It can be one of the following structures :
-*								@arg ST_SIGN_ECDSA	: r[32], s[32]
+*								@arg ST_SIGN_ECDSA	: r[32] || s[32]
 *								@arg ST_SIGN_SYMM	: sign[16]
 *								@arg ST_SIGN_HMAC	: sign[32]
 *   @param structure_size	: The size of sign_structure
@@ -283,7 +277,6 @@ G3_API G3_API_RESULT CALLTYPE g3api_sign
 	
 //###################################################	
 /**
-*   @name g3api_verify
 *   @brief  Verifies the signature. The target sector should be a public key or symmetric key
 *			To obtain AC, use the dynamic_auth.
 *
@@ -296,7 +289,7 @@ G3_API G3_API_RESULT CALLTYPE g3api_sign
 *   @param msg_size			: The size of input data
 *   @param sign_structure	: Command outputs.
 *							  It can be one of the following structures :
-*								@arg ST_SIGN_ECDSA : r[32],s[32]
+*								@arg ST_SIGN_ECDSA : r[32] || s[32]
 *								@arg ST_SIGN_SYMM  : sign[16]
 *								@arg ST_SIGN_HMAC  : sign[32]
 *   @param structure_size	: The size of sign_structure
@@ -317,7 +310,6 @@ G3_API G3_API_RESULT CALLTYPE g3api_verify
 	
 //###################################################	
 /**
-*   @name g3api_dynamic_auth
 *   @brief  Verifies the signature and obtain AC. Input signature must be generated using challenge that generated in G3
 *		
 *   @param key_index		: Key sector index(p1)
@@ -329,7 +321,7 @@ G3_API G3_API_RESULT CALLTYPE g3api_verify
 *   @param msg_size			: The size of input data 
 *   @param sign_structure	: Command outputs.
 *							  It can be one of the following structures :
-*								@arg ST_SIGN_ECDSA : r[32],s[32]
+*								@arg ST_SIGN_ECDSA : r[32] || s[32]
 *								@arg ST_SIGN_SYMM  : sign[16]
 *								@arg ST_SIGN_HMAC  : sign[32]
 *   @param structure_size	: The size of sign_sturucture
@@ -351,14 +343,15 @@ G3_API G3_API_RESULT CALLTYPE g3api_dynamic_auth
 	
 //###################################################	
 /**
-*   @name g3api_encryption
 *   @brief  Encrypts a given plain data using target key.
 *
 *   @param key_index		: Key sector index(p1)
 *   @param key_type			: The key type of the target key(p2_upper)
-*								@arg SECTOR_KEY, SESSION_KEY
+*								@arg SECTOR_KEY
+*								@arg SESSION_KEY
 *   @param block_mode		: The block cipher operation mode(p2_lower)
-*								@arg BL_CBC, BL_CTR
+*								@arg BL_CBC
+*								@arg BL_CTR
 *   @param iv				: Initial vector 
 *   @param data				: The plain data to be encrypted
 *   @param data_size		: The size of plain data
@@ -383,14 +376,15 @@ G3_API G3_API_RESULT CALLTYPE g3api_encryption
 	
 //###################################################	
 /**
-*   @name g3api_decryption
 *   @brief  Decrypts a given cipher data using target key
 *
 *   @param key_index		: Key sector index(p1)
 *   @param key_type			: The key type of the target key(p2_upper)
-*								@arg SECTOR_KEY, SESSION_KEY
+*								@arg SECTOR_KEY
+*								@arg SESSION_KEY
 *   @param block_mode		: The block cipher operation mode(p2_lower)
-*								@arg BL_CBC, BL_CTR
+*								@arg BL_CBC
+*								@arg BL_CTR
 *   @param iv				: Initial vector
 *   @param cipher			: The cipher data to be decrypted
 *   @param cipher_size		: The size of cipher data
@@ -415,7 +409,6 @@ G3_API G3_API_RESULT CALLTYPE g3api_decryption
 	
 //###################################################	
 /**
-*   @name g3api_encryption_ecies
 *   @brief  Encrypts a given plain data with ECIES. The target key must be a public key
 *
 *   @param key_index		: Key sector index(p1)
@@ -433,7 +426,6 @@ G3_API G3_API_RESULT CALLTYPE g3api_encryption_ecies
 	
 //###################################################	
 /**
-*   @name g3api_decryption_ecies
 *   @brief  Decrypt a given cipher data with ECIES. The target key must be a private key
 *
 *   @param key_index		: Key sector index(p1)
@@ -451,7 +443,6 @@ G3_API G3_API_RESULT CALLTYPE g3api_decryption_ecies
 	
 //###################################################	
 /**
-*   @name g3api_session
 *   @brief  Generates sessions and loads the session key to temporary memory.
 *
 *   @param key_index		: Key sector index(p1)
@@ -460,12 +451,12 @@ G3_API G3_API_RESULT CALLTYPE g3api_decryption_ecies
 *								@arg SYMM_KEY, FACTORY_AES, FACTORY_SM4, EXT_SESSION_KEY_AES, EXT_SESSION_KEY_SM4, EXT_PUB_KEY
 *   @param indata			: The parameter to be used for making a session key
 *								@arg SYMM_KEY					:	Sesssion_b[16]
-*								@arg FACTORY_AES/SM4			:	Index[2],Session_b[16]
+*								@arg FACTORY_AES/SM4			:	Index[2] || Session_b[16]
 *								@arg EXT_SESSION_KEY_AES/SM4	:	Session_key[16]
 *								@arg EXT_PUB_KEY				:	ECC public key[64or33]
 *   @param indata_size		: The size of input data
 *   @param outdata			: Output from the command
-*								@arg SYMM_KEY					:	Session_chip[16],encrypt(0(zero),session_key)[16]
+*								@arg SYMM_KEY					:	Session_chip[16] || encrypt(0(zero),session_key)[16]
 *								@arg FACTORY_AES/SM4			:	Encrypt(0(zero),session_key)[16]
 *								@arg EXT_SESSION_KEY_AES/SM4	:	Encrypt(0(zero),session_key)[16]
 *								@arg EXT_PUB_KEY				:	SHA256(Input_data)
@@ -487,7 +478,6 @@ G3_API G3_API_RESULT CALLTYPE g3api_session
 	
 //###################################################	
 /**
-*   @name g3api_set_extern_public_key
 *   @brief  Loads input public key to temporary memory
 *
 *   @param pub_key			: Public key to load, enable 2 follow structure ST_ECC_PUBLIC and ST_ECC_PUBLIC_COMPRESS
@@ -507,14 +497,14 @@ G3_API G3_API_RESULT CALLTYPE g3api_set_extern_public_key
 	
 //###################################################	
 /**
-*   @name g3api_diversify
 *   @brief  Diversifies a symmetric key by using diversify AC. It can be executed in two mode : self mode and inherit mode
 *			If rw_operation bits of the target key setting is 11, diversify command requires a MAC
 *
 *   @param key_index		: Key sector index(p1)
 *   @param diversify_mode	: The mode of diversify(p2)
 *							  It can be one of the following values :
-*								@arg INHERIT, SELF
+*								@arg INHERIT_MODE
+*								@arg SELF_MODE
 *   @param data				: The parameter to be used for diversifying
 *   @param data_size		: The size of data
 
@@ -532,13 +522,13 @@ G3_API G3_API_RESULT CALLTYPE g3api_diversify
 	
 //###################################################	
 /**
-*   @name g3api_get_public_key
 *   @brief  Outputs a public key in a compress form(33bytes) or X,Y coordinate form(64 bytes)
 *
 *   @param key_index		: Key sector index(p1)
 *   @param pub_type			: The type of public key
 *							  It can be one of the following values :
-*								@arg KEY_SECTOR, TEMP_PUBLIC_KEY
+*								@arg KEY_SECTOR
+*								@arg TEMP_PUBLIC_KEY
 *   @param pub_key			: The buffer to put the public key.
 *							  It can be one of the following values :
 *								@arg ST_ECC_PUBLIC			:	puk[64]
@@ -559,14 +549,14 @@ G3_API G3_API_RESULT CALLTYPE g3api_get_public_key
 	
 //###################################################	
 /**
-*   @name g3api_certification
 *   @brief  Verifies a certificate, and then update a public key or store it in public key of temporary memory
 *			The session can be generated by the public key of temporary memory
 *
 *   @param key_index				: Key sector index(p1)
 *   @param certification_write_mode : The mode of certificate write
 *									  It can be one of the following values :
-*										@arg TO_TEMP, TO_KEY_SECTOR
+*										@arg TO_TEMP
+*										@arg TO_KEY_SECTOR
 *   @param cert						: Input a certificate to verify
 *   @param cert_size				: The size of certificate
 
@@ -584,7 +574,6 @@ G3_API G3_API_RESULT CALLTYPE g3api_certification
 	
 //###################################################	
 /**
-*   @name g3api_issue_certification
 *   @brief  Issues a certificate and store it. Add the pair public key of private key in target sector to certificate
 *			The length of the certificate cannot exceed 1024 bytes.
 *
@@ -592,11 +581,13 @@ G3_API G3_API_RESULT CALLTYPE g3api_certification
 *   @param public_key_pos		: The public key position
 *   @param issue_cert_area_type	: The area type of the sector to store the issued certificate
 *								  It can be one of the following values :
-*									@arg ISCRT_KEY_AREA, ISCRT_DATA_AREA_0, ISCRT_DATA_AREA_1
+*									@arg ISCRT_KEY_AREA
+*									@arg ISCRT_DATA_AREA_0
+*									@arg ISCRT_DATA_AREA_1
 *   @param sector_num_to_store  : The sector number to store the issued certificate
 *   @param key_id				: Factory key ID or the sector number of private key
 *   @param encrypted_key		: When using key_id as a factory key id, encrypted_key must be given
-*   @param cert					: TBS certificate
+*   @param cert					: Input TBS certificate
 *   @param cert_size			: The size of tbs certificate
 
 *   @return G3_API_RESULT
@@ -617,7 +608,6 @@ G3_API G3_API_RESULT CALLTYPE g3api_issue_certification
 	
 //###################################################	
 /**
-*   @name g3api_ecdh
 *   @brief  Used for session key agreement. 
 *
 *   @param en_ecdh_mode				: The mode of ECDH instruction
@@ -634,7 +624,7 @@ G3_API G3_API_RESULT CALLTYPE g3api_issue_certification
 *									  It depends on the ECDH mode and can be one of the following values :
 *										@arg NORMAL_ECDH			: pre_master_secret[32]
 *										@arg GEN_TLS_BLOCK			: TLS_key_block[128]
-*										@arg SET_TLS_SESSION_KEY	: client_write_IV[16], server_write_IV[16] 
+*										@arg SET_TLS_SESSION_KEY	: client_write_IV[16] || server_write_IV[16] 
 *   @param ecdh_value_struct_size	: The size of ecdh_value 
 
 *   @return G3_API_RESULT
@@ -654,14 +644,13 @@ G3_API G3_API_RESULT CALLTYPE g3api_ecdh
 	
 //###################################################	
 /**
-*   @name g3api_make_tls_inter_header_without_size
 *   @brief  Generate tls header without size
 *
 *   @param seq_num							: The TLS sequence low 4 byte
 *   @param content_type						: The content type[1]
 *   @param tls_version						: The TLS version[2]
 *   @param tls_inter_header_without_size	: The structure to contain the TLS header without size
-*												@arg ST_TLS_INTER_HEADER_WITHOUT_SIZE : TLS Sequence Num[8], TLS type[1], TLS Version[2]
+*												@arg ST_TLS_INTER_HEADER_WITHOUT_SIZE : TLS Sequence Num[8] || TLS type[1] || TLS Version[2]
 *   @return G3_API_RESULT
 */
 //###################################################
@@ -676,10 +665,9 @@ G3_API G3_API_RESULT CALLTYPE g3api_make_tls_inter_header_without_size
 	
 //###################################################	
 /**
-*   @name g3api_tls_mac_encrypt
 *   @brief  Generates an encrypted TLS record using the TLS session key block stored in temporary memory
 *
-*   @param tls_inter_header_without_size	: TLS_HEADER : TLS Sequence Num[8], TLS type[1], TLS Version[2] 
+*   @param tls_inter_header_without_size	: TLS_HEADER : TLS Sequence Num[8] || TLS type[1] || TLS Version[2] 
 *   @param client_iv						: Client_Write_IV[16]
 *   @param header_random					: The first input data must contain 16 bytes of random IV to prevent attacks
 *   @param msg								: The plain text
@@ -704,10 +692,9 @@ G3_API G3_API_RESULT CALLTYPE g3api_tls_mac_encrypt
 	
 //###################################################	
 /**
-*   @name g3api_tls_decrypt_verify
 *   @brief  Generate a decrypted TLS fragment from an input encrypted TLS record using the TLS session key block stored in temporary memory
 *
-*   @param tls_inter_header_without_size	: TLS_HEADER : TLS Sequence Num[8], TLS type[1], TLS Version[2] 
+*   @param tls_inter_header_without_size	: TLS_HEADER : TLS Sequence Num[8] || TLS type[1] || TLS Version[2] 
 *   @param server_iv						: Server_Write_IV[16]
 *   @param crypto							: The cipher text
 *   @param crypto_size						: The size of the cipher text
@@ -732,7 +719,6 @@ G3_API G3_API_RESULT CALLTYPE g3api_tls_decrypt_verify
 	
 //###################################################	
 /**
-*   @name g3api_tls_get_handshake_digest
 *   @brief  Used for finishing the TLS session key agreement
 *
 *   @param handshake_mode		: The mode of handshake instruction
@@ -752,7 +738,6 @@ G3_API G3_API_RESULT CALLTYPE g3api_tls_get_handshake_digest
 
 //###################################################	
 /**
-*   @name g3api_sha256_mode
 *   @brief  For SHA256 calculation. Sha256 command is executed in three steps : initialization, update and finalization
 *	
 *	@param sha256_mode	: The step of SHA256 command
@@ -774,7 +759,6 @@ G3_API G3_API_RESULT CALLTYPE g3api_sha256
 
 //###################################################	
 /**
-*   @name g3api_reset
 *   @brief  Reset the G3, and then initialize authentication results and a session
 *
 
@@ -788,7 +772,6 @@ G3_API G3_API_RESULT CALLTYPE g3api_reset
 	
 //###################################################	
 /**
-*   @name g3api_test
 *   @brief  
 *
 *   @param in 
@@ -806,7 +789,6 @@ G3_API G3_API_RESULT CALLTYPE g3api_test
 	
 //###################################################	
 /**
-*   @name g3api_test2
 *   @brief  
 *
 *   @param test 
