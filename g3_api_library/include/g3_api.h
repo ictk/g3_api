@@ -629,11 +629,12 @@ G3_API G3_API_RESULT CALLTYPE g3api_issue_certification
 *										@arg ST_ECC_PUBLIC_COMPRESS	:	puk[33]
 *   @param Q_b_struct_size			: The size of public key
 *   @param st_ecdh_random			: ServerHello.random[32] || ClientHello.random[32] 
-*   @param Q_chip					: Command outputs
-*										@arg NORMAL_ECDH			: Public key chip(dchipG)[64], pre_master_secret[32]
-*										@arg GEN_TLS_BLOCK			: Public key chip(dchipG)[64], TLS_key_block[128]
-*										@arg SET_TLS_SESSION_KEY	: Public key chip(dchipG)[64], client_write_IV[16], server_write_IV[16] 
-*   @param ecdh_value				: Enable 3 follow structure ST_ECDH_PRE_MASTER_SECRET, ST_ECDH_KEY_BLOCK and ST_ECDH_IV
+*   @param Q_chip					: Command outputs, public key chip(dchipG)[64]
+*   @param ecdh_value				: Command outputs.
+*									  It depends on the ECDH mode and can be one of the following values :
+*										@arg NORMAL_ECDH			: pre_master_secret[32]
+*										@arg GEN_TLS_BLOCK			: TLS_key_block[128]
+*										@arg SET_TLS_SESSION_KEY	: client_write_IV[16], server_write_IV[16] 
 *   @param ecdh_value_struct_size	: The size of ecdh_value 
 
 *   @return G3_API_RESULT
