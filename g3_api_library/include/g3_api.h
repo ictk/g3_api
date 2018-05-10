@@ -95,7 +95,7 @@ G3_API G3_API_RESULT CALLTYPE g3api_raw_snd_recv
 /**
 *   @name g3api_read_key_value
 *   @brief  Read value from the setup area, key area and user data area
-*			It provides 3 types of read operation, plain read, masked read and encrypted read.
+*			It provides 3 types of read operation : plain read, masked read and encrypted read.
 *
 *   @param	key_index		: Key sector index(p1)
 *   @param	area_type		: The type of area to read(p2_lower)
@@ -124,7 +124,7 @@ G3_API G3_API_RESULT CALLTYPE g3api_read_key_value
 /**
 *   @name g3api_write_key_value
 *   @brief  Writes value in setup area, key area and user data area. 
-*			It provides 3 types of write operation, plain write, masked write and encrypted write
+*			It provides 3 types of write operation : plain write, masked write and encrypted write
 *
 *   @param	key_index		: Key sector index(p1)
 *   @param	area_type		: The type of area to write(p2_lower)
@@ -229,10 +229,11 @@ G3_API G3_API_RESULT CALLTYPE g3api_init_puf
 /**
 *   @name g3api_sign
 *   @brief  Generates a signature using input data and target key.
+*			The signature algorithm is determined as the target key type.
 *
 *   @param key_index		: Key sector index(p1)
 *   @param sign_option		: The option of the command, signature algorithm.(p2)
-*   @param msg				: Input data, used to generate a signature
+*   @param msg				: Input data to be used for generating a signature
 *   @param msg_size			: The size of msg
 *   @param sign_structure	: Output from the command, enable 3 follow structure ST_SIGN_ECDSA,ST_SIGN_SYMM and ST_SIGN_HMAC
 *   @param structure_size	: The size of sign_structure
@@ -552,9 +553,9 @@ G3_API G3_API_RESULT CALLTYPE g3api_issue_certification
 /**
 *   @name g3api_ecdh
 *   @brief  Used for session key agreement. 
-*			Normal_ECDH mode outputs public key chip[64] || pre master secret[32]
-*			Generate TLS KEY BLOCK mode outputs public key chip[64] || TLS key block[128]
-*			Set TLS session key to temporary memory mode outputs public key chip[64] || client write iv[16] || server write iv[16]
+*			Normal_ECDH mode output public key chip[64] || pre master secret[32]
+*			Generate TLS KEY BLOCK mode output public key chip[64] || TLS key block[128]
+*			Set TLS session key to temporary memory mode output public key chip[64] || client write iv[16] || server write iv[16]
 *
 *   @param en_ecdh_mode				: Provides 3 levels of key agreement functions : ECDH / Gen TLS Key Block / Set TLS Session key to temporary memory
 *   @param Q_b						: Public key - enable 2 follow structure ST_ECC_PUBLIC, ST_ECC_PUBLIC_COMPRESS
