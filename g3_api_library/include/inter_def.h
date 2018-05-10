@@ -30,6 +30,22 @@ typedef struct _tagWRITE_PACKET{
 }WRITE_PACKET, *LPWRITE_PACKET;
 
 
+// 신원석(neo1seok) 2018-05-10
+typedef struct _tagHEADER_WRITE_PURE_PACKET{
+	byte  length;
+	byte  ins;
+	byte  p1;
+	word  p2;;
+}HEADER_WRITE_PURE_PACKET, *LPHEADER_WRITE_PURE_PACKET;
+
+
+typedef struct _tagWRITE_PURE_PACKET{
+	HEADER_WRITE_PURE_PACKET header;
+	byte data[2];;//CRC 를 위해 2바이트 할당
+}WRITE_PURE_PACKET, *LPWRITE_PURE_PACKET;
+// 신원석(neo1seok) 2018-05-10 : HEADER_WRITE_PURE_PACKET 추가
+
+
 typedef struct _tagHEADER_WRITE_IEB100_PACKET{
 	byte  rom_inst;
 	dword  body_size_big_end;//dummy+res_size+rom_type+data_size

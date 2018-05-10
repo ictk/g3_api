@@ -107,6 +107,44 @@ void g3api_free_var_bytes(const VAR_BYTES* var_bytes){
 	free((void*)var_bytes);
 }
 
+G3_API_RESULT CALLTYPE g3api_snd_recv_with_puredata(const unsigned char * puresnd, int snd_size, unsigned char * recv, int* recv_size){
+	api_view("g3api_read_key_value");
+
+
+	VAR_BYTES *precvbuff = NULL;
+	int ret;
+
+	LPWRITE_PURE_PACKET lpwrite_pure_packet = (LPWRITE_PURE_PACKET)puresnd;
+
+	//puresnd
+
+	ret = do_normal_process(lpwrite_pure_packet->header.ins, 
+		lpwrite_pure_packet->header.p1, 
+		lpwrite_pure_packet->header.p2, lpwrite_pure_packet->data ,
+		snd_size - sizeof(HEADER_WRITE_PURE_PACKET)
+		, &precvbuff);
+
+	if (ret < 0) return ret;
+
+	if (*recv_size > precvbuff->size){
+	
+		ret = RET_ERR_RECV_BUFF_SIZE;
+		goto END;
+	}
+	*recv_size = precvbuff->size;
+
+	memcpy(recv, precvbuff->buffer, precvbuff->size);
+
+	//*key_value_size = precvbuff->size;
+
+END:
+	if (precvbuff) free(precvbuff);
+	return ret;
+
+}
+
+
+
 G3_API_RESULT CALLTYPE g3api_read_key_value(const int key_index, EN_AREA_TYPE area_type, EN_RW_INST_OPTION rw_type,const void* data,int data_size,void* data_structure, int structure_size)
 //G3_API_RESULT g3api_read_key_value(const int key_index, EN_AREA_TYPE area_type, EN_RW_INST_OPTION rw_type, ST_KEY_VALUE* key_value, ST_IV* iv, ST_MAC* mac)
 {

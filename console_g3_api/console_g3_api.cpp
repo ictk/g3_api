@@ -155,16 +155,16 @@ int main(int argc, char* argv[])
 	VECBYTE vecbyte;
 
 
-	//unsigned char recvbuff[1024];
+	unsigned char recvbuff[1024];
 	
-	//int recvbuff_size = 1024;
-	//ret = g3api_get_challenge(32, recvbuff, &recvbuff_size);
+	int recvbuff_size = 1024;
+	ret = g3api_get_challenge(32, recvbuff, &recvbuff_size);
 
 	//general_read_write();
 	//general_sign_verify();
 
-
-	test_scenario_sample2();
+	//test_scenario_sample();
+	//test_scenario_sample2();
 
 
 

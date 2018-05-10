@@ -85,6 +85,32 @@ G3_API G3_API_RESULT CALLTYPE g3api_raw_snd_recv
 		OUT int* recv_size
 );
 
+
+
+// 신원석(neo1seok) 2018-05-10
+//###################################################	
+/**
+*   @brief
+*
+*   @param snd
+*   @param snd_size
+*   @param recv
+*   @param recv_size
+*
+*   @return G3_API_RESULT
+*/
+//###################################################
+G3_API G3_API_RESULT CALLTYPE g3api_snd_recv_with_puredata
+(
+IN const byte* pure_snd,
+IN int snd_size,
+OUT byte* recv,
+OUT int* recv_size
+);
+
+// 신원석(neo1seok) 2018-05-10 : HEADER_WRITE_PURE_PACKET 추가
+
+
 	
 //###################################################
 /**
