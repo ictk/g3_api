@@ -67,6 +67,7 @@ void general_read_write()
 	ST_RW_DATA_WITH_IV_MAC read_mac;
 
 	ST_DATA_64 write_mask;
+	ST_RW_DATA_WITH_MASK write_with_mask;
 	byte session_mac[64];
 	byte signature[16];
 	ST_IV session_iv;
@@ -149,8 +150,8 @@ void general_read_write()
 	print_result("write key with mac", ret);
 
 	// write key area sector 24 mask
-	set_buff_from_hexstr(&write_mask, "0000000000000000000000000000000000000000000000000000000000000000A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0");
-	ret = g3api_write_key_value(24, KEY_AREA, MASKED, &write_mask, sizeof(ST_DATA_64));
+	set_buff_from_hexstr(&write_with_mask, "0000000000000000000000000000000000000000000000000000000000000000A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0");
+	ret = g3api_write_key_value(24, KEY_AREA, MASKED, &write_with_mask, sizeof(ST_RW_DATA_WITH_MASK));
 	print_result("write key 24 mask", ret);
 
 	// read setup area sector 10
@@ -1006,7 +1007,7 @@ void test_scenario_sample2()
 	initialize();
 
 	//g3api_reset();
-	//general_read_write();
+	general_read_write();
 	//general_diversify();
 	//general_enc_dec();
 	//general_password();

@@ -338,6 +338,11 @@ typedef struct _tagST_RW_DATA_WITH_IV_MAC{
 	byte mac[16];;
 }ST_RW_DATA_WITH_IV_MAC, *LPST_RW_DATA_WITH_IV_MAC;
 
+typedef struct _tagST_RW_DATA_WITH_MASK{
+	byte data[32];
+	byte mask[32];
+}ST_RW_DATA_WITH_MASK, *LPST_RW_DATA_WITH_MASK;
+
 typedef struct _tagST_ECIES{
 	byte r[64];
 	byte s[32];;
