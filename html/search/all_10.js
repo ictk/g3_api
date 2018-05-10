@@ -1,0 +1,27 @@
+var searchData=
+[
+  ['r',['r',['../struct__tag_s_t___s_i_g_n___e_c_d_s_a.html#ac20671acfa750f6c092e461fc3c15ace',1,'_tagST_SIGN_ECDSA::r()'],['../struct__tag_s_t___e_c_i_e_s.html#a0729707eeedf73994ea6934efbf728b7',1,'_tagST_ECIES::r()']]],
+  ['read',['READ',['../inter__def_8h.html#ada74e7db007a68e763f20c17f2985356',1,'inter_def.h']]],
+  ['recv',['RECV',['../g3__define_8h.html#ac996baf033ba291835d48bdfe0e70786a586011d90be069a5203e7bdbcb760302',1,'g3_define.h']]],
+  ['res_5fsize',['res_size',['../struct__tag_h_e_a_d_e_r___w_r_i_t_e___i_e_b100___p_a_c_k_e_t.html#a39dfef3c6a2af073e4ab4f8196ec0035',1,'_tagHEADER_WRITE_IEB100_PACKET']]],
+  ['reset',['RESET',['../inter__def_8h.html#ab702106cf3b3e96750b6845ded4e0299',1,'inter_def.h']]],
+  ['result_5fsetup_5farea',['result_setup_area',['../struct__tag_s_t___s_e_t___u_p___v_a_l_u_e.html#a79156cae363ebdc3efc8e87001ddabf9',1,'_tagST_SET_UP_VALUE']]],
+  ['result_5fwrite_5fvalue',['result_write_value',['../struct__tag_s_t___s_e_t___u_p___v_a_l_u_e.html#ad31555101020b53b62fa91b97ed81807',1,'_tagST_SET_UP_VALUE']]],
+  ['ret_5ferr_5fdiff_5fstruct_5fsize',['RET_ERR_DIFF_STRUCT_SIZE',['../g3__define_8h.html#a8b1d61ae56d72dd957828c9590c27dc3',1,'g3_define.h']]],
+  ['ret_5ferr_5finterchip_5fabnormal_5finput_5fdetection',['RET_ERR_INTERCHIP_ABNORMAL_INPUT_DETECTION',['../g3__define_8h.html#abe3ace2fc92e081bfad1ec066221d46e',1,'g3_define.h']]],
+  ['ret_5ferr_5finterchip_5fafter_5fwake_5fup',['RET_ERR_INTERCHIP_AFTER_WAKE_UP',['../g3__define_8h.html#a2eed9863b65d5f9539c47b22a0924dbd',1,'g3_define.h']]],
+  ['ret_5ferr_5finterchip_5fcommunications_5ferror',['RET_ERR_INTERCHIP_COMMUNICATIONS_ERROR',['../g3__define_8h.html#a0e4683809bbfd428ab2b92df3eb77670',1,'g3_define.h']]],
+  ['ret_5ferr_5finterchip_5fexecution_5ferror',['RET_ERR_INTERCHIP_EXECUTION_ERROR',['../g3__define_8h.html#a8c4b32a2e21fa56618d7b958e27fa87b',1,'g3_define.h']]],
+  ['ret_5ferr_5finterchip_5fparse_5ferror',['RET_ERR_INTERCHIP_PARSE_ERROR',['../g3__define_8h.html#a8557ef146a44260971cc7fad06017184',1,'g3_define.h']]],
+  ['ret_5ferr_5finterchip_5fverify_5ferror',['RET_ERR_INTERCHIP_VERIFY_ERROR',['../g3__define_8h.html#a9841ef71f4126fa0077458a5f7b162d0',1,'g3_define.h']]],
+  ['ret_5ferr_5fkey_5fbuff_5fsize',['RET_ERR_KEY_BUFF_SIZE',['../g3__define_8h.html#a1429605548d37f054329c68c28bc1177',1,'g3_define.h']]],
+  ['ret_5ferr_5frecv_5falloc_5ferror',['RET_ERR_RECV_ALLOC_ERROR',['../g3__define_8h.html#afb1ead39d427883c874aab5231913ceb',1,'g3_define.h']]],
+  ['ret_5ferr_5frecv_5fbuff_5fsize',['RET_ERR_RECV_BUFF_SIZE',['../g3__define_8h.html#af524e4e5e2ebf5bb81a4835423dba9d3',1,'g3_define.h']]],
+  ['ret_5ferr_5frecv_5fcrc_5ferror',['RET_ERR_RECV_CRC_ERROR',['../g3__define_8h.html#ad46922913710d3e8d2a61916f54b2eb8',1,'g3_define.h']]],
+  ['ret_5ferr_5fret_5fsize',['RET_ERR_RET_SIZE',['../g3__define_8h.html#ad4fe9a8e92512cb5009c85302d5f0f84',1,'g3_define.h']]],
+  ['ret_5ferr_5fsign_5fmode_5fparse_5ferr',['RET_ERR_SIGN_MODE_PARSE_ERR',['../g3__define_8h.html#ac91f39f268b62e526e740b3155a6d952',1,'g3_define.h']]],
+  ['ret_5fsuccess',['RET_SUCCESS',['../g3__define_8h.html#aa0dec624244ce7f5492ec5de65797fa6',1,'g3_define.h']]],
+  ['rom_5finst',['rom_inst',['../struct__tag_h_e_a_d_e_r___w_r_i_t_e___i_e_b100___p_a_c_k_e_t.html#afd9cdce4b7aedb5644ea975c2ae63436',1,'_tagHEADER_WRITE_IEB100_PACKET']]],
+  ['root',['root',['../struct__tag_s_t___s_e_t_u_p___c_o_r_e.html#aafc95f83b7a66406aafd9b1ea2c6508e',1,'_tagST_SETUP_CORE']]],
+  ['rw',['rw',['../struct__tag_s_t___k_e_y___s_e_c_t_o_r.html#a6602a63a3e41ff88b5b58f3d2f1d195c',1,'_tagST_KEY_SECTOR']]]
+];
