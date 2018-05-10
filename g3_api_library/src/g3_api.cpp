@@ -108,7 +108,7 @@ void g3api_free_var_bytes(const VAR_BYTES* var_bytes){
 }
 
 G3_API_RESULT CALLTYPE g3api_snd_recv_with_puredata(const unsigned char * puresnd, int snd_size, unsigned char * recv, int* recv_size){
-	api_view("g3api_read_key_value");
+	api_view("g3api_snd_recv_with_puredata");
 
 
 	VAR_BYTES *precvbuff = NULL;

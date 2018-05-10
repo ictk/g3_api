@@ -32,7 +32,6 @@ typedef struct _tagWRITE_PACKET{
 
 // ½Å¿ø¼®(neo1seok) 2018-05-10
 typedef struct _tagHEADER_WRITE_PURE_PACKET{
-	byte  length;
 	byte  ins;
 	byte  p1;
 	word  p2;;

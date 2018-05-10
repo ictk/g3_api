@@ -158,7 +158,11 @@ int main(int argc, char* argv[])
 	unsigned char recvbuff[1024];
 	
 	int recvbuff_size = 1024;
-	ret = g3api_get_challenge(32, recvbuff, &recvbuff_size);
+	//ret = g3api_get_challenge(32, recvbuff, &recvbuff_size);
+
+	const unsigned char puredata[] = { 0x84, 0x20, 0x00, 0x00, };
+	recvbuff_size = 1024;
+	g3api_snd_recv_with_puredata(puredata, sizeof(puredata), recvbuff, &recvbuff_size);
 
 	//general_read_write();
 	//general_sign_verify();
