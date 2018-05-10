@@ -260,7 +260,11 @@ G3_API G3_API_RESULT CALLTYPE g3api_init_puf
 *								@arg SIGN_SYMM, SIGN_SESSION_SYMM				  - The target key type must be AES128 or SM4
 *   @param msg				: Input data to be used for generating a signature
 *   @param msg_size			: The size of msg
-*   @param sign_structure	: Output from the command, enable 3 follow structure ST_SIGN_ECDSA,ST_SIGN_SYMM and ST_SIGN_HMAC
+*   @param sign_structure	: Command outputs.
+*							  It can be one of the following structures :
+*								@arg ST_SIGN_ECDSA	: r[32], s[32]
+*								@arg ST_SIGN_SYMM	: sign[16]
+*								@arg ST_SIGN_HMAC	: sign[32]
 *   @param structure_size	: The size of sign_structure
 
 *   @return G3_API_RESULT
