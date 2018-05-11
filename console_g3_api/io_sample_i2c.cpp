@@ -163,6 +163,13 @@ void end_sample_i2c()
 int wake_up_and_convert_mode_i2c()
 {
 	NEO_TITLE(wake_up_and_convert_mode_i2c);
+	
+	unsigned char snd_buff[] = {0x00};
+	i2c = wiringPiI2CSetup (0);
+	  send(i2c,snd_buff,1);
+	  delay(20);
+	  
+	return 0;
 	wake_up(GPIO_WAKE_UP_PIN,1,10);	
 	
 	return ictk_convert_to_inst_mode(_file_i2c);

@@ -5,6 +5,7 @@
 #include <g3_api.h>
 #include "sample_def.h"
 extern FILE * _fp;
+//extern "C" void print_value(const char * title, const void *buff,int size);
 
 void print_result(const char * title,int ret)
 {

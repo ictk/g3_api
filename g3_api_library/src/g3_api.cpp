@@ -126,7 +126,7 @@ G3_API_RESULT CALLTYPE g3api_snd_recv_with_puredata(const unsigned char * puresn
 
 	if (ret < 0) return ret;
 
-	if (*recv_size > precvbuff->size){
+	if (*recv_size < precvbuff->size){
 	
 		ret = RET_ERR_RECV_BUFF_SIZE;
 		goto END;

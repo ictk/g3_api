@@ -4,6 +4,11 @@
 #include "neoDebug.h"
 #include <g3_api.h>
 #include "sample_def.h"
+#ifndef min
+#define min(a,b)    (((a) < (b)) ? (a) : (b))
+#endif
+
+
 
 
 VAR_BYTES* alloc_var_bytes_i2c(int size);

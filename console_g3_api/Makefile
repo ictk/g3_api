@@ -7,7 +7,7 @@ LD = g++
 WINDRES = windres
 OUTDIR = ../bin/gnu
 OBJDIR = obj/gnu
-LIB = -L../lib/gnu -lg3_api ../lib/gnu/libneolib_c_base.a -lwiringPi -ldl
+LIB = -L../lib/gnu -lg3_api_lib ../lib/gnu/libneolib_c_base.a -lwiringPi -ldl
 #LIB = -lIPSF-100d -ldl -L/home/ictk/project/IPSF-100/IPSF-100-SOFTFORUM/lib/gnu/ 
 
 #------------------------------------------------------------------------------#
@@ -27,7 +27,7 @@ LIBDIR =
 
 
 INC_RELEASE = $(INC)
-CFLAGS_RELEASE = $(CFLAGS) -D_USE_UTF8_ -DNEOUSEMBCS -DNEODEBUG -DNEO_STATIC -DLSA_EXPORTS_NOUSE  $(TEMPDEF)
+CFLAGS_RELEASE = $(CFLAGS) -D_USE_UTF8_ -D__USE_CDC__ -DNEOUSEMBCS -DNEODEBUG -DNEO_STATIC -DLSA_EXPORTS_NOUSE  $(TEMPDEF)
 RESINC_RELEASE = $(RESINC)
 RCFLAGS_RELEASE = $(RCFLAGS)
 LIBDIR_RELEASE = $(LIBDIR)
@@ -42,7 +42,8 @@ OUT_RELEASE = $(OUTDIR)/console_g3_api
 OBJ_RELEASE = 	$(OBJDIR_RELEASE)/console_g3_api.o \
 				$(OBJDIR_RELEASE)/util.o \
 				$(OBJDIR_RELEASE)/scenario_sample.o \
-				$(OBJDIR_RELEASE)/io_sample_i2c.o 
+				$(OBJDIR_RELEASE)/io_sample_i2c.o \
+                                $(OBJDIR_RELEASE)/io_sample_cdc.o 
 
 					
 	
