@@ -10,7 +10,7 @@
 #include "neoDebug.h"
 #include <g3_api.h>
 #include "sample_def.h"
-
+#include "util.h"
 //#include<windows.h>
 
 
@@ -28,16 +28,11 @@ using namespace  neocolib;
 //
 //}
 
-VAR_BYTES* alloc_var_bytes_i2c(int size);
-void print_result(const char * title, int ret);
-void print_value(const char * title, const void *buff, int size);
-void swap_bytes(void* value, int size);
-
 
 
 void test_load();
-void get_functions_ieb100cdc(LPSAMPLE_FUNCTIONS lpsamplefunction);
-void get_functions_i2c(LPSAMPLE_FUNCTIONS lpsamplefunction);
+extern "C" void get_functions_ieb100cdc(LPSAMPLE_FUNCTIONS lpsamplefunction);
+extern "C" void get_functions_i2c(LPSAMPLE_FUNCTIONS lpsamplefunction);
 
 void initialize();
 void general_read_write();

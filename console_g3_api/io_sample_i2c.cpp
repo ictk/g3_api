@@ -12,19 +12,16 @@
 #include "g3_api.h"
 #include "sample_def.h"
 #include "neoDebug.h"
+#include "util.h"
+
 #include <errno.h>
 #define GPIO_WAKE_UP_PIN 4
 
 int _file_i2c = 0;
-int init_sample_i2c(void *param);
-int wake_up_and_convert_mode_i2c();
-void end_sample_i2c();
-
-VAR_BYTES* alloc_var_bytes_i2c(int size);
-void print_result(const char * title, int ret);
-void print_value(const char * title, const void *buff, int size);
-void swap_bytes(void* value, int size);
-
+extern "C" int init_sample_i2c(void *param);
+extern "C" int wake_up_and_convert_mode_i2c();
+extern "C" void end_sample_i2c();
+extern "C" void get_functions_i2c(LPSAMPLE_FUNCTIONS lpsamplefunction);
 
 SAMPLE_FUNCTIONS  _samplefunction_i2c = {
 	init_sample_i2c,
@@ -145,6 +142,7 @@ int init_sample_i2c(void *param)
 	wiringPiSetupGpio(); // Initializes wiringPi using the Broadcom GPIO pin numbers
 	
 	_file_i2c = wiringPiI2CSetup (100);
+	printf("wiringPiI2CSetup %d\n",_file_i2c);
 	NEO_DWORD(_file_i2c);
 	g3api_set_user_send_recv_pf(send_n_recv_4_i2c, &_file_i2c);
 	
@@ -162,14 +160,27 @@ void end_sample_i2c()
 
 int wake_up_and_convert_mode_i2c()
 {
-	NEO_TITLE(wake_up_and_convert_mode_i2c);
-	
 	unsigned char snd_buff[] = {0x00};
-	i2c = wiringPiI2CSetup (0);
-	  send(i2c,snd_buff,1);
-	  delay(20);
-	  
-	return 0;
+	unsigned char recv_buff[4] = {0x00,};
+	unsigned char cmp_recv_buff[4] = {0x04,0x11,0x33,0x43};
+	int size_recv = 4;
+	
+	
+	NEO_TITLE(wake_up_and_convert_mode_i2c);
+	printf("wake_up_and_convert_mode_i2c\n");
+	
+  
+  
+	int i2c = wiringPiI2CSetup (0);
+  write(i2c,snd_buff,1);
+  delay(20);
+  
+  int ret = read(i2c, recv_buff, size_recv);
+	printf("read result: %d", ret);
+	print_value("Wake-up Response",recv_buff, size_recv);
+
+  
+  return 0;
 	wake_up(GPIO_WAKE_UP_PIN,1,10);	
 	
 	return ictk_convert_to_inst_mode(_file_i2c);
