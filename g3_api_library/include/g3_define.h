@@ -21,7 +21,14 @@
 #elif __linux__
 
 #define CALLTYPE
-#define G3_API 
+
+#ifdef __cplusplus 
+#define G3_API extern "C" 
+#else
+#define G3_API
+#endif 
+
+
 
 
 #else

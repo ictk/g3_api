@@ -2,7 +2,7 @@
 #include<stdio.h>
 //#include <openssl/hmac.h>
 #include <g3_api.h>
-
+#include "util.h"
 
 
 extern "C" int CALLTYPE send_n_recv(const unsigned char*snd, int snd_size, unsigned char*recv, int* recv_size, void*etcparam);

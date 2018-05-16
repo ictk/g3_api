@@ -4,7 +4,11 @@
 #include "neoDebug.h"
 #include <g3_api.h>
 #include "sample_def.h"
+#include "util.h"
+
+
 extern FILE * _fp;
+
 
 void print_result(const char * title,int ret)
 {

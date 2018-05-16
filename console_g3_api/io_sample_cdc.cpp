@@ -4,12 +4,13 @@
 #include "neoDebug.h"
 #include <g3_api.h>
 #include "sample_def.h"
+#include "util.h"
+#ifndef min
+#define min(a,b)    (((a) < (b)) ? (a) : (b))
+#endif
 
 
-VAR_BYTES* alloc_var_bytes_i2c(int size);
-void print_result(const char * title, int ret);
-void print_value(const char * title, const  void *buff, int size);
-void swap_bytes(void* value, int size);
+
 
 extern FILE * _fp;
 
@@ -37,10 +38,10 @@ typedef struct _tagINTER_PARAMS{
 INTER_PARAMS _inter_params = { 0, };
 
 
-int init_sample_ieb100cdc(void *param);
-int wake_up_and_convert_mode_ieb100cdc();
-void end_sample_ieb100cdc();
-
+extern "C" int init_sample_ieb100cdc(void *param);
+extern "C" int wake_up_and_convert_mode_ieb100cdc();
+extern "C" void end_sample_ieb100cdc();
+extern "C" void get_functions_ieb100cdc(LPSAMPLE_FUNCTIONS lpsamplefunction);
 
 SAMPLE_FUNCTIONS  _samplefunction= {
 	init_sample_ieb100cdc,

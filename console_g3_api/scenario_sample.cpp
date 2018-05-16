@@ -4,9 +4,8 @@
 #include "neoDebug.h"
 #include <g3_api.h>
 //#include <openssl/hmac.h>
+#include "util.h"
 
-void print_result(const char * title, int ret);
-void print_value(const char * title, const void *buff, int size);
 void print_result_value(const char * title, int ret, const void *buff, int size);
 void set_buff_from_hexstr(void *pbuff,const char *hexstr);
 
