@@ -178,7 +178,6 @@ map<int, int> & get_map_size(){
 
 int return_from_recv(VAR_BYTES *precvbuff)
 {
-	/*
 	int nret = precvbuff->buffer[0];
 	//if (precvbuff->size == 4){
 	//	int err_ret = 0;
@@ -191,13 +190,6 @@ int return_from_recv(VAR_BYTES *precvbuff)
 		return precvbuff->buffer[0];
 	}
 	return 0;
-	*/
-	int nret = precvbuff->buffer[1];
-	
-	if (precvbuff->size == 1){
-		return precvbuff->buffer[0];
-	}
-	return nret;
 
 }
 
