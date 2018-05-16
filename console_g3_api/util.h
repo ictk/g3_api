@@ -11,7 +11,6 @@ extern "C" {
 VAR_BYTES* alloc_var_bytes_i2c(int size);
 void print_result(const char * title, int ret);
 void print_value(const char * title, const void *buff, int size);
-void print_result_value(const char * title, int ret, const void *buff, int size);
 void swap_bytes(void* value, int size);
 #ifdef __cplusplus 
 }
@@ -19,3 +18,4 @@ void swap_bytes(void* value, int size);
 
 
 #endif /*__UTIL_H*/
+
