@@ -50,7 +50,7 @@ FILE * _fp = stdout;
 
 #ifdef __USE_CDC__
 #define GET_FUCNTION get_functions_ieb100cdc
-#elif  __USE_FD4222__
+#elif  __USE_FT4222__
 
 #define GET_FUCNTION get_functions_ft4222
 #else
