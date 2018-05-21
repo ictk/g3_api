@@ -140,6 +140,7 @@ int init_sample_i2c(void *param)
 	NEO_TITLE(init_sample_i2c);
 	wiringPiSetup(); // Initializes wiringPi using wiringPi's simlified number system.
 	wiringPiSetupGpio(); // Initializes wiringPi using the Broadcom GPIO pin numbers
+	wake_up_and_convert_mode_i2c();
 	
 	_file_i2c = wiringPiI2CSetup (100);
 	printf("wiringPiI2CSetup %d\n",_file_i2c);

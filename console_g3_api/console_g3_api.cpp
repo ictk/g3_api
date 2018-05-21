@@ -33,6 +33,7 @@ using namespace  neocolib;
 void test_load();
 extern "C" void get_functions_ieb100cdc(LPSAMPLE_FUNCTIONS lpsamplefunction);
 extern "C" void get_functions_i2c(LPSAMPLE_FUNCTIONS lpsamplefunction);
+extern "C" void get_functions_fd4222(LPSAMPLE_FUNCTIONS lpsamplefunction);
 
 void initialize();
 void general_read_write();
@@ -49,6 +50,8 @@ FILE * _fp = stdout;
 
 #ifdef __USE_CDC__
 #define GET_FUCNTION get_functions_ieb100cdc
+#elif  __USE_FD4222__
+#define GET_FUCNTION get_functions_fd4222
 #else
 #define GET_FUCNTION get_functions_i2c
 #endif
@@ -153,7 +156,9 @@ int main(int argc, char* argv[])
 	unsigned char recvbuff[1024];
 	
 	int recvbuff_size = 1024;
-	//ret = g3api_get_challenge(32, recvbuff, &recvbuff_size);
+	ret = g3api_get_challenge(32, recvbuff, &recvbuff_size);
+	
+	exit(0);
 
 	const unsigned char puredata[] = { 0x84, 0x20, 0x00, 0x00, };
 	recvbuff_size = 1024;

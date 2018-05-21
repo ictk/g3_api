@@ -9,7 +9,10 @@
 
 extern FILE * _fp;
 
-
+void cur_sleep(int wakeupTime){
+	
+	NCL::Sleep(wakeupTime);
+}
 void print_result(const char * title,int ret)
 {
 	fprintf(_fp,"\n%s ret:0x%x \n", title, ret);

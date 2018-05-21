@@ -12,6 +12,7 @@ VAR_BYTES* alloc_var_bytes_i2c(int size);
 void print_result(const char * title, int ret);
 void print_value(const char * title, const void *buff, int size);
 void swap_bytes(void* value, int size);
+void cur_sleep(int wakeupTime);
 #ifdef __cplusplus 
 }
 #endif 
