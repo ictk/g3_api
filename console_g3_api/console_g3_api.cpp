@@ -33,7 +33,7 @@ using namespace  neocolib;
 void test_load();
 extern "C" void get_functions_ieb100cdc(LPSAMPLE_FUNCTIONS lpsamplefunction);
 extern "C" void get_functions_i2c(LPSAMPLE_FUNCTIONS lpsamplefunction);
-extern "C" void get_functions_fd4222(LPSAMPLE_FUNCTIONS lpsamplefunction);
+extern "C" void get_functions_ft4222(LPSAMPLE_FUNCTIONS lpsamplefunction);
 
 void initialize();
 void general_read_write();
