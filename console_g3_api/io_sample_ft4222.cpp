@@ -115,7 +115,7 @@ int Connect(LPDEVINO lpdevinfo)
 	//FT4222_GPIO_SetInputTrigger(ftHandle, GPIO_PORT2, (GPIO_Trigger)(GPIO_TRIGGER_LEVEL_HIGH | GPIO_TRIGGER_LEVEL_LOW | GPIO_TRIGGER_RISING | GPIO_TRIGGER_FALLING));
 	//FT4222_GPIO_SetInputTrigger(ftHandle, GPIO_PORT3, (GPIO_Trigger)(GPIO_TRIGGER_LEVEL_HIGH | GPIO_TRIGGER_LEVEL_LOW | GPIO_TRIGGER_RISING | GPIO_TRIGGER_FALLING));
 
-	if (FT4222_I2CMaster_Init(a_devInfo->ftHandle, 100) != FT_OK)
+	if (FT4222_I2CMaster_Init(a_devInfo->ftHandle, 400) != FT_OK)
 	{
 	
 		ret = -1;
@@ -605,7 +605,7 @@ void end_sample_ft4222()
 int wake_up_and_convert_mode_ft4222()
 {
 
-	Wakeup(_devinfo.b_devInfo, 100);
+	Wakeup(_devinfo.b_devInfo, 1);
 	
 	return 0;
 
