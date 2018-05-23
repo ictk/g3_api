@@ -133,7 +133,7 @@ void tls_setup()
 	print_result("write data1 area sector 3 ca cert to user data1 ", ret);
 
 	// write data1 area sector 4 
-	set_buff_from_hexstr(&write_key, "09060355040613024B52310D300B0603313131353037353334345A303A310B30");
+	set_buff_from_hexstr(&write_key, "37313131373037353334345A170D3237313131353037353334345A303A310B30");
 	ret = g3api_write_key_value(4, DATA_AREA_1, PLAIN_TEXT, &write_key, sizeof(ST_KEY_VALUE));
 	print_result("write data1 area sector 4 ca cert to user data1 ", ret);
 
@@ -148,12 +148,12 @@ void tls_setup()
 	print_result("write data1 area sector 6 ca cert to user data1 ", ret);
 
 	// write data1 area sector 7 
-	set_buff_from_hexstr(&write_key, "2873CDBB49E442F85EFEA4DE55C51ED093EE7E1AD8C3E4025E80F9C4F866B260");
+	set_buff_from_hexstr(&write_key, "CE3D020106082A8648CE3D03010703420004D57CBAB7682AE97681C72FAB34AF");
 	ret = g3api_write_key_value(7, DATA_AREA_1, PLAIN_TEXT, &write_key, sizeof(ST_KEY_VALUE));
 	print_result("write data1 area sector 7 ca cert to user data1 ", ret);
 
 	// write data1 area sector 8 
-	set_buff_from_hexstr(&write_key, "00D5C8E31C838070D9C0A18FF75AA0EC93EE7E1AD8C3E4025E80F9C4F866B260");
+	set_buff_from_hexstr(&write_key, "2873CDBB49E442F85EFEA4DE55C51ED093EE7E1AD8C3E4025E80F9C4F866B260");
 	ret = g3api_write_key_value(8, DATA_AREA_1, PLAIN_TEXT, &write_key, sizeof(ST_KEY_VALUE));
 	print_result("write data1 area sector 8 ca cert to user data1 ", ret);
 
