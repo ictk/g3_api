@@ -45,6 +45,7 @@ void general_certificate();
 void general_session();
 void general_tls();
 void general_etc();
+void tls_setup();
 
 FILE * _fp = stdout;
 
@@ -142,6 +143,7 @@ int main(int argc, char* argv[])
 
 	}
 	;
+	tls_setup();
 
 	
 	//return 0;
