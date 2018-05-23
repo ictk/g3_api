@@ -45,10 +45,10 @@ INC = -Iinclude -I../include
 CDEFINE=-D_USE_UTF8_ -DNEOUSEMBCS -DNEODEBUG -DNEO_STATIC -DLSA_EXPORTS_NOUSE
 #example -DBBBB -DCCCCCC
 
-CFLAGS=-Wall -O2 -fPIC -Wl,-Bsymbolic -std=gnu++11
+CFLAGS=-Wall -O2 -fPIC -Wl,-Bsymbolic -std=gnu++11  -g -ggdb
 #example -Wall -O2 -fPIC -Wl,-Bsymbolic -std=gnu++11
 
-LDFLAGS = -shared -fPIC  -L../lib/gnu -ldl
+LDFLAGS = -shared -fPIC  -L../lib/gnu -ldl  -g -ggdb
 #example -shared -fPIC  -L../lib/gnu -ldl
 
 CFLAG_ALL = $(INC) $(CDEFINE) $(CFLAGS)

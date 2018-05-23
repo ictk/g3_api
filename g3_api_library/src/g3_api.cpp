@@ -568,13 +568,14 @@ G3_API_RESULT CALLTYPE g3api_set_extern_public_key(IN const void* pub_key, IN in
 {
 
 	api_view("g3api_set_extern_public_key");
+	
 	VAR_BYTES *precvbuff = NULL;
 	int nret = do_normal_process(SESSION, 1, EXT_PUB_KEY, pub_key, structure_size, &precvbuff);
 
-
+	
 	if (nret < 0) goto END;
 
-	if (precvbuff->size != sizeof(ST_DATA_32)){
+	if (!precvbuff || precvbuff->size != sizeof(ST_DATA_32)){
 		nret = RET_ERR_RECV_BUFF_SIZE;
 		goto END;
 	}
