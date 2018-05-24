@@ -2,9 +2,10 @@
 #include "CSerialRS232.h"
 #include "neoCoLib.h"
 #include "neoDebug.h"
-#include <g3_api.h>
-#include "sample_def.h"
+#include "g3_api.h"
+#include "g3_io_lib.h"
 #include "util.h"
+#include "stdio.h"
 #ifndef min
 #define min(a,b)    (((a) < (b)) ? (a) : (b))
 #endif
@@ -41,16 +42,16 @@ INTER_PARAMS _inter_params = { 0, };
 extern "C" int init_sample_ieb100cdc(void *param);
 extern "C" int wake_up_and_convert_mode_ieb100cdc();
 extern "C" void end_sample_ieb100cdc();
-extern "C" void get_functions_ieb100cdc(LPSAMPLE_FUNCTIONS lpsamplefunction);
+extern "C" void get_functions_ieb100cdc(LPPF_G3_IO_LIB_FUNCTIONS lpsamplefunction);
 
-SAMPLE_FUNCTIONS  _samplefunction= {
+PF_G3_IO_LIB_FUNCTIONS  _samplefunction= {
 	init_sample_ieb100cdc,
 	wake_up_and_convert_mode_ieb100cdc,
 	end_sample_ieb100cdc
 
 };
 
-void get_functions_ieb100cdc(LPSAMPLE_FUNCTIONS lpsamplefunction)
+void get_functions_ieb100cdc(LPPF_G3_IO_LIB_FUNCTIONS lpsamplefunction)
 {
 	*lpsamplefunction = _samplefunction;
 
@@ -123,7 +124,7 @@ extern "C"  int CALLTYPE send_n_recv(const unsigned char*snd, int snd_size, unsi
 		if (ressize == 1) break;
 
 		if (time_count * unit_delay > 300){
-			fprintf(_fp,"first byte :%d\n", time_count);
+			fprintf(_fp,"first unsigned char :%d\n", time_count);
 		}
 
 		if (time_count * unit_delay > 100000){
@@ -145,7 +146,7 @@ extern "C"  int CALLTYPE send_n_recv(const unsigned char*snd, int snd_size, unsi
 	}
 
 	fprintf(_fp,"total ressize :%d\n", vec_recv_byte.size());
-	int real_recv_size = min((byte)first_byte, 255);
+	int real_recv_size = min((unsigned char)first_byte, 255);
 
 	fprintf(_fp, "real_recv_size : %d\n", real_recv_size);
 

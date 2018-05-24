@@ -9,8 +9,8 @@
 #include "neoCoLib.h"
 #include "neoDebug.h"
 #include <g3_api.h>
-#include "sample_def.h"
-#include "util.h"
+#include "g3_io_lib.h"
+//#include "util.h"
 //#include<windows.h>
 
 
@@ -31,9 +31,9 @@ using namespace  neocolib;
 
 
 void test_load();
-extern "C" void get_functions_ieb100cdc(LPSAMPLE_FUNCTIONS lpsamplefunction);
-extern "C" void get_functions_i2c(LPSAMPLE_FUNCTIONS lpsamplefunction);
-extern "C" void get_functions_ft4222(LPSAMPLE_FUNCTIONS lpsamplefunction);
+//extern "C" void get_functions_ieb100cdc(LPPF_G3_IO_LIB_FUNCTIONS lpsamplefunction);
+//extern "C" void get_functions_i2c(LPPF_G3_IO_LIB_FUNCTIONS lpsamplefunction);
+//extern "C" void get_functions_ft4222(LPPF_G3_IO_LIB_FUNCTIONS lpsamplefunction);
 
 void initialize();
 void general_read_write();
@@ -48,15 +48,15 @@ void general_etc();
 void tls_setup();
 
 FILE * _fp = stdout;
-
-#ifdef __USE_CDC__
-#define GET_FUCNTION get_functions_ieb100cdc
-#elif  __USE_FT4222__
-
-#define GET_FUCNTION get_functions_ft4222
-#else
-#define GET_FUCNTION get_functions_i2c
-#endif
+//
+//#ifdef __USE_CDC__
+//#define GET_FUCNTION get_functions_ieb100cdc
+//#elif  __USE_FT4222__
+//
+//#define GET_FUCNTION get_functions_ft4222
+//#elif __USE_I2CDEV__
+//#define GET_FUCNTION get_functions_i2c
+//#endif
 
 
 
@@ -124,13 +124,15 @@ int main(int argc, char* argv[])
 	printf("%s", pchar);
 	printf("\nserila port name : (%s) \n",argv[1]);
 	//init_fp();
-	SAMPLE_FUNCTIONS samplefunction;
-	GET_FUCNTION(&samplefunction);
+	PF_G3_IO_LIB_FUNCTIONS samplefunction;
+	//get_functions(G3_IO_IEVB100_FT4222, &samplefunction);
+	get_functions(G3_IO_IEB100_CDC, &samplefunction);
+	//GET_FUCNTION(&samplefunction);
 
 
-	PF_INIT_SAMPLE init_sample = samplefunction.init_sample;
+	PF_INIT_G3_IO_LIB init_sample = samplefunction.init_sample;
 	PF_WAKE_UP_AND_CONVERT_MODE wake_up_and_convert_mode = samplefunction.wake_up_and_convert_mode;
-	PF_END_SAMPLE end_sample = samplefunction.end_sample;
+	PF_END_G3_IO_LIB end_sample = samplefunction.end_sample;
 
 
 
@@ -143,7 +145,7 @@ int main(int argc, char* argv[])
 
 	}
 	;
-	tls_setup();
+	//tls_setup();
 
 	
 	//return 0;

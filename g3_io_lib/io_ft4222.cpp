@@ -8,9 +8,8 @@
 
 #include <stdlib.h>
 #include <memory.h>
-
 #include "g3_api.h"
-#include "sample_def.h"
+#include "g3_io_lib.h"
 //#include "neoCoLib.h"
 
 #include "util.h"
@@ -24,9 +23,9 @@
 extern "C" int init_sample_ft4222(void *param);
 extern "C" int wake_up_and_convert_mode_ft4222();
 extern "C" void end_sample_ft4222();
-extern "C" void get_functions_ft4222(LPSAMPLE_FUNCTIONS lpsamplefunction);
+extern "C" void get_functions_ft4222(LPPF_G3_IO_LIB_FUNCTIONS lpsamplefunction);
 
-SAMPLE_FUNCTIONS  _samplefunction_ft4222 = {
+PF_G3_IO_LIB_FUNCTIONS  _samplefunction_ft4222 = {
 	init_sample_ft4222,
 	wake_up_and_convert_mode_ft4222,
 	end_sample_ft4222
@@ -536,13 +535,27 @@ extern "C" int send_n_recv_4_ft4222(const unsigned char*snd, int snd_size, unsig
 
 	bytesToRead = *recv_size;
 	//Sleep(10);
-	cur_sleep(10);
+	cur_sleep(1);
 
-	ft4222Status = FT4222_I2CMaster_Read(lpdevinfo->a_devInfo->ftHandle,
-		slaveAddr,
-		recv,
-		bytesToRead,
-		&bytesRead);
+	for (int i = 0; i < 20; i++) {
+
+		ft4222Status = FT4222_I2CMaster_Read(lpdevinfo->a_devInfo->ftHandle,
+			slaveAddr,
+			recv,
+			bytesToRead,
+			&bytesRead);
+		
+		if (FT4222_OK == ft4222Status && recv[0] != 0xff){
+			break;
+		}
+
+		cur_sleep(10);
+			
+		//if (recv[0] == 0xff &&   
+		//cur_sleep(10);
+
+
+	}
 	if (FT4222_OK != ft4222Status)
 	{
 		printf("FT4222_I2CMaster_Read failed (error %d)\n",
@@ -550,6 +563,7 @@ extern "C" int send_n_recv_4_ft4222(const unsigned char*snd, int snd_size, unsig
 		success = -1;
 		goto exit;
 	}
+
 	*recv_size = bytesRead;
 	print_value("recv", recv, 255);
 
@@ -564,7 +578,7 @@ exit:
 }
 
 
-void get_functions_ft4222(LPSAMPLE_FUNCTIONS lpsamplefunction)
+void get_functions_ft4222(LPPF_G3_IO_LIB_FUNCTIONS lpsamplefunction)
 {
 	*lpsamplefunction = _samplefunction_ft4222;
 

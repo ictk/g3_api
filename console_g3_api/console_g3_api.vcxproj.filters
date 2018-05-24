@@ -35,19 +35,10 @@
     <ClCompile Include="test.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="io_sample_cdc.cpp">
+    <ClCompile Include="tls_setup.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="util.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="scenario_sample.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="io_sample_ft4222.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="tls_setup.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>

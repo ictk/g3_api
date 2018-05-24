@@ -41,7 +41,7 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>../\g3_api_library\include;..\include;D:\PROJECT\toolrnd\BASE\include;./;$(IncludePath)</IncludePath>
+    <IncludePath>../\g3_api_library\include;..\include;D:\PROJECT\toolrnd\BASE\include;./;../g3_io_lib;$(IncludePath)</IncludePath>
     <LibraryPath>$(OutDir);../lib/win32;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -61,7 +61,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>neoCoreStaticLibd.lib;libeay32.lib;g3_api_library.lib;LibFT4222.lib;ftd2xx.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>neoCoreStaticLibd.lib;libeay32.lib;g3_api_library.lib;LibFT4222.lib;ftd2xx.lib;g3_io_lib.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(SolutionDir)/lib</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
@@ -91,13 +91,10 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="console_g3_api.cpp" />
-    <ClCompile Include="io_sample_cdc.cpp" />
-    <ClCompile Include="io_sample_ft4222.cpp" />
     <ClCompile Include="tls_setup.cpp" />
-    <ClCompile Include="util.cpp" />
     <ClCompile Include="stdafx.cpp" />
     <ClCompile Include="test.cpp" />
-    <ClCompile Include="scenario_sample.cpp" />
+    <ClCompile Include="util.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

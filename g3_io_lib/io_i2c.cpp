@@ -1,5 +1,15 @@
 
 
+#include "g3_io_lib.h"
+
+#ifndef WIN32
+void get_functions_i2c(LPPF_G3_IO_LIB_FUNCTIONS lpsamplefunction)
+{
+	
+
+}
+
+
 #include <unistd.h>				//Needed for I2C port
 //#include <fcntl.h>				//Needed for I2C port
 //#include <sys/ioctl.h>			//Needed for I2C port
@@ -9,8 +19,9 @@
 #include <wiringPiI2C.h>
 #include <stdlib.h>
 #include <memory.h>
+
+
 #include "g3_api.h"
-#include "sample_def.h"
 #include "neoDebug.h"
 #include "util.h"
 
@@ -21,9 +32,9 @@ int _file_i2c = 0;
 extern "C" int init_sample_i2c(void *param);
 extern "C" int wake_up_and_convert_mode_i2c();
 extern "C" void end_sample_i2c();
-extern "C" void get_functions_i2c(LPSAMPLE_FUNCTIONS lpsamplefunction);
+extern "C" void get_functions_i2c(LPPF_G3_IO_LIB_FUNCTIONS lpsamplefunction);
 
-SAMPLE_FUNCTIONS  _samplefunction_i2c = {
+PF_G3_IO_LIB_FUNCTIONS  _samplefunction_i2c = {
 	init_sample_i2c,
 	wake_up_and_convert_mode_i2c,
 	end_sample_i2c
@@ -109,17 +120,25 @@ extern "C" int send_n_recv_4_i2c(const unsigned char*snd, int snd_size, unsigned
 		printf("Failed to write to the i2c bus. %d \n",ret);
 		return -1;
 	}
-	delay(100);
+	delay(1);
 	int length = * recv_size;			//<<< Number of bytes to read
-	ret = read(file_i2c, recv, length);
-	
-	
-	if (ret != length)		//read() returns the number of bytes actually read, if it doesn't match then an error occurred (e.g. no response from the device)
-	{
-		//ERROR HANDLING: i2c transaction failed
-		printf("Failed to read from the i2c bus ret:0x%x. err:0x%x\n",ret,errno);
-		return -1;
+
+	for(int i = 0 ; i<20;i++) {
+
+		ret = read(file_i2c, recv, length);
+		//printf("read :%d\n",ret);
+		if (ret == length)		//read() returns the number of bytes actually read, if it doesn't match then an error occurred (e.g. no response from the device)
+		{
+			break;
+		}
+		//printf("trying to read :%d\n",i);
+		delay(100);
+
 	}
+	if (ret <0){
+		printf("Failed to read from the i2c bus ret:0x%x. err:0x%x\n",ret,errno);
+	}
+
 	print_value("RECV",recv, length);
 	*recv_size = ret;
 	return 0;
@@ -128,7 +147,7 @@ extern "C" int send_n_recv_4_i2c(const unsigned char*snd, int snd_size, unsigned
 }
 
 
-void get_functions_i2c(LPSAMPLE_FUNCTIONS lpsamplefunction)
+void get_functions_i2c(LPPF_G3_IO_LIB_FUNCTIONS lpsamplefunction)
 {
 	*lpsamplefunction = _samplefunction_i2c;
 
@@ -189,3 +208,4 @@ int wake_up_and_convert_mode_i2c()
 	
 
 }
+#endif

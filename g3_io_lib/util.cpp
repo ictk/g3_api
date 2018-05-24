@@ -5,9 +5,9 @@
 
 #include "g3_io_lib.h"
 #include "util.h"
+#include "stdio.h"
 
-
-extern FILE * _fp;
+FILE * _fp = stderr;
 
 void cur_sleep(int wakeupTime){
 	

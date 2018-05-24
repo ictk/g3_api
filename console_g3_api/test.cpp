@@ -5,7 +5,7 @@
 #include "util.h"
 
 
-extern "C" int CALLTYPE send_n_recv(const unsigned char*snd, int snd_size, unsigned char*recv, int* recv_size, void*etcparam);
+//extern "C" int CALLTYPE send_n_recv(const unsigned char*snd, int snd_size, unsigned char*recv, int* recv_size, void*etcparam);
 void print_value(const char * title, const void *buff, int size);
 
 
@@ -35,7 +35,7 @@ int test_byload(){
 
 	const char *pchar = pfg3api_get_lib_version();
 
-	pfg3api_set_user_send_recv_pf(send_n_recv, NULL);
+	//pfg3api_set_user_send_recv_pf(send_n_recv, NULL);
 	pfg3api_test7(recvbuff, recvbuff_size);
 
 	printf("%s\n", pchar);
