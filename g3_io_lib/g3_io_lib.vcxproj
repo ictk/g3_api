@@ -68,7 +68,7 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>../include;./;../g3_api_library/include;$(IncludePath)</IncludePath>
+    <IncludePath>../include;./;../g3_api_library/include;./include;$(IncludePath)</IncludePath>
     <LibraryPath>../lib/win32;$(SolutionDir)/lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">

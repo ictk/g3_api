@@ -537,7 +537,7 @@ extern "C" int send_n_recv_4_ft4222(const unsigned char*snd, int snd_size, unsig
 	//Sleep(10);
 	cur_sleep(1);
 
-	for (int i = 0; i < 20; i++) {
+	for (int i = 0; i < 200; i++) {
 
 		ft4222Status = FT4222_I2CMaster_Read(lpdevinfo->a_devInfo->ftHandle,
 			slaveAddr,
