@@ -3,11 +3,6 @@
 #include "g3_io_lib.h"
 
 #ifndef WIN32
-void get_functions_i2c(LPPF_G3_IO_LIB_FUNCTIONS lpsamplefunction)
-{
-	
-
-}
 
 
 #include <unistd.h>				//Needed for I2C port
@@ -145,6 +140,7 @@ extern "C" int send_n_recv_4_i2c(const unsigned char*snd, int snd_size, unsigned
 	
 	
 }
+
 
 
 void get_functions_i2c(LPPF_G3_IO_LIB_FUNCTIONS lpsamplefunction)

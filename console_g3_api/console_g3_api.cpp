@@ -126,7 +126,7 @@ int main(int argc, char* argv[])
 	//init_fp();
 	PF_G3_IO_LIB_FUNCTIONS samplefunction;
 	//get_functions(G3_IO_IEVB100_FT4222, &samplefunction);
-	get_functions(G3_IO_IEB100_CDC, &samplefunction);
+	get_functions(G3_IO_IEVB100_FT4222, &samplefunction);
 	//GET_FUCNTION(&samplefunction);
 
 

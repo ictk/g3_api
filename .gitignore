@@ -66,6 +66,10 @@ TemporaryGeneratedFile_*.cs
 *.sdf
 *.class
 *.pyc
+*.txt
+obj_*/
+g3_api_in_linux.sln
+lib/
 out.txt
 neolog*.*
 workspace.xml
