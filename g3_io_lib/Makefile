@@ -39,7 +39,7 @@ OUT_EXE = $(OUT_DIR)/$(TITLE)
 #------------------------------------------------------------------------#
 # flag definition
 #------------------------------------------------------------------------#
-INC = -I./ -I../g3_api_library/include
+INC = -I./ -I./include -I../g3_api_library/include
 #example : -IAAA -IBBB
 
 CDEFINE=-D_DEFNEODEF_ -DNEODEBUG 
@@ -110,7 +110,7 @@ after_release:
 before_install: 
 	test -d $(DST_DIR_LIB) || mkdir -p $(DST_DIR_LIB)
 	test -d $(DST_DIR_INC) || mkdir -p $(DST_DIR_INC)
-	cp -p g3_io_lib.h  $(DST_DIR_INC)
+	cp -p include/g3_io_lib.h  $(DST_DIR_INC)
 	
 
 	
