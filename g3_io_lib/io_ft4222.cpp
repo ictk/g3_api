@@ -23,9 +23,9 @@
 extern "C" int init_sample_ft4222(void *param);
 extern "C" int wake_up_and_convert_mode_ft4222();
 extern "C" void end_sample_ft4222();
-extern "C" void get_functions_ft4222(LPPF_G3_IO_LIB_FUNCTIONS lpsamplefunction);
+extern "C" void get_functions_ft4222(LPST_G3_IO_LIB_FUNCTIONS lpsamplefunction);
 
-PF_G3_IO_LIB_FUNCTIONS  _samplefunction_ft4222 = {
+ST_G3_IO_LIB_FUNCTIONS  _samplefunction_ft4222 = {
 	init_sample_ft4222,
 	wake_up_and_convert_mode_ft4222,
 	end_sample_ft4222
@@ -578,7 +578,7 @@ exit:
 }
 
 
-void get_functions_ft4222(LPPF_G3_IO_LIB_FUNCTIONS lpsamplefunction)
+void get_functions_ft4222(LPST_G3_IO_LIB_FUNCTIONS lpsamplefunction)
 {
 	*lpsamplefunction = _samplefunction_ft4222;
 

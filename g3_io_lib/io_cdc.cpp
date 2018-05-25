@@ -42,16 +42,16 @@ INTER_PARAMS _inter_params = { 0, };
 extern "C" int init_sample_ieb100cdc(void *param);
 extern "C" int wake_up_and_convert_mode_ieb100cdc();
 extern "C" void end_sample_ieb100cdc();
-extern "C" void get_functions_ieb100cdc(LPPF_G3_IO_LIB_FUNCTIONS lpsamplefunction);
+extern "C" void get_functions_ieb100cdc(LPST_G3_IO_LIB_FUNCTIONS lpsamplefunction);
 
-PF_G3_IO_LIB_FUNCTIONS  _samplefunction= {
+ST_G3_IO_LIB_FUNCTIONS  _samplefunction= {
 	init_sample_ieb100cdc,
 	wake_up_and_convert_mode_ieb100cdc,
 	end_sample_ieb100cdc
 
 };
 
-void get_functions_ieb100cdc(LPPF_G3_IO_LIB_FUNCTIONS lpsamplefunction)
+void get_functions_ieb100cdc(LPST_G3_IO_LIB_FUNCTIONS lpsamplefunction)
 {
 	*lpsamplefunction = _samplefunction;
 

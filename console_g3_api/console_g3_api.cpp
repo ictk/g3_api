@@ -31,9 +31,9 @@ using namespace  neocolib;
 
 
 void test_load();
-//extern "C" void get_functions_ieb100cdc(LPPF_G3_IO_LIB_FUNCTIONS lpsamplefunction);
-//extern "C" void get_functions_i2c(LPPF_G3_IO_LIB_FUNCTIONS lpsamplefunction);
-//extern "C" void get_functions_ft4222(LPPF_G3_IO_LIB_FUNCTIONS lpsamplefunction);
+//extern "C" void get_functions_ieb100cdc(LPST_G3_IO_LIB_FUNCTIONS lpsamplefunction);
+//extern "C" void get_functions_i2c(LPST_G3_IO_LIB_FUNCTIONS lpsamplefunction);
+//extern "C" void get_functions_ft4222(LPST_G3_IO_LIB_FUNCTIONS lpsamplefunction);
 
 void initialize();
 void general_read_write();
@@ -124,7 +124,7 @@ int main(int argc, char* argv[])
 	printf("%s", pchar);
 	printf("\nserila port name : (%s) \n",argv[1]);
 	//init_fp();
-	PF_G3_IO_LIB_FUNCTIONS samplefunction;
+	ST_G3_IO_LIB_FUNCTIONS samplefunction;
 	//get_functions(G3_IO_IEVB100_FT4222, &samplefunction);
 	get_functions(G3_IO_IEVB100_FT4222, &samplefunction);
 	//GET_FUCNTION(&samplefunction);

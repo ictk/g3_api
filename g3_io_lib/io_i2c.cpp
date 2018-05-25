@@ -27,9 +27,9 @@ int _file_i2c = 0;
 extern "C" int init_sample_i2c(void *param);
 extern "C" int wake_up_and_convert_mode_i2c();
 extern "C" void end_sample_i2c();
-extern "C" void get_functions_i2c(LPPF_G3_IO_LIB_FUNCTIONS lpsamplefunction);
+extern "C" void get_functions_i2c(LPST_G3_IO_LIB_FUNCTIONS lpsamplefunction);
 
-PF_G3_IO_LIB_FUNCTIONS  _samplefunction_i2c = {
+ST_G3_IO_LIB_FUNCTIONS  _samplefunction_i2c = {
 	init_sample_i2c,
 	wake_up_and_convert_mode_i2c,
 	end_sample_i2c
@@ -143,7 +143,7 @@ extern "C" int send_n_recv_4_i2c(const unsigned char*snd, int snd_size, unsigned
 
 
 
-void get_functions_i2c(LPPF_G3_IO_LIB_FUNCTIONS lpsamplefunction)
+void get_functions_i2c(LPST_G3_IO_LIB_FUNCTIONS lpsamplefunction)
 {
 	*lpsamplefunction = _samplefunction_i2c;
 

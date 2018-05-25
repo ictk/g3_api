@@ -7,13 +7,13 @@
 // 내보낸 변수의 예제입니다.
 G3_IO_LIB_API int ng3_io_lib=0;
 
-extern "C" void get_functions_ieb100cdc(LPPF_G3_IO_LIB_FUNCTIONS lpsamplefunction);
-extern "C" void get_functions_i2c(LPPF_G3_IO_LIB_FUNCTIONS lpsamplefunction);
-extern "C" void get_functions_ft4222(LPPF_G3_IO_LIB_FUNCTIONS lpsamplefunction);
+extern "C" void get_functions_ieb100cdc(LPST_G3_IO_LIB_FUNCTIONS lpsamplefunction);
+extern "C" void get_functions_i2c(LPST_G3_IO_LIB_FUNCTIONS lpsamplefunction);
+extern "C" void get_functions_ft4222(LPST_G3_IO_LIB_FUNCTIONS lpsamplefunction);
 
 
 // 내보낸 함수의 예제입니다.
-G3_IO_LIB_API void get_functions(EN_G3_IO_LIB_TYPE en_g3_io_lib_type,LPPF_G3_IO_LIB_FUNCTIONS lpsamplefunction)
+G3_IO_LIB_API void get_functions(EN_G3_IO_LIB_TYPE en_g3_io_lib_type,LPST_G3_IO_LIB_FUNCTIONS lpsamplefunction)
 {
 	switch (en_g3_io_lib_type){
 	case G3_IO_IEB100_CDC:
