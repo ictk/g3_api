@@ -245,7 +245,7 @@ G3_API_RESULT do_normal_process(char inst, char p1, short p2, const void * data,
 	}
 
 
-	if (recv_size-3 == 1){
+	if (recv_size-3 == 1 || recv_size-3 == 2){
 		nRet =  buff[1];
 		nRet |= (nRet == 0 || nRet == 1) ? 0 : ERR_INTERCHIP;
 		goto END;
