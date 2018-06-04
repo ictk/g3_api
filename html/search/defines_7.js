@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['makeword',['MAKEWORD',['../inter__def_8h.html#a874a801e01fadb67908116c709143b01',1,'inter_def.h']]],
-  ['min',['min',['../inter__def_8h.html#ac6afabdc09a49a433ee19d8a9486056d',1,'inter_def.h']]]
+  ['hi_5fbyte',['HI_BYTE',['../comdef_8h.html#a3648361de4bfc342a0a5d704b634a03a',1,'comdef.h']]],
+  ['hi_5fword',['HI_WORD',['../comdef_8h.html#a1b97e31e27113ee96f5d004497c81e7d',1,'comdef.h']]]
 ];

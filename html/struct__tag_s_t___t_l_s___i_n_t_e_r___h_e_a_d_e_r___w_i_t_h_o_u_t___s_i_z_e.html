@@ -9,6 +9,13 @@
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="navtreedata.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<script type="text/javascript">
+  $(document).ready(initResizable);
+</script>
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
@@ -42,6 +49,21 @@ $(function() {
 });
 </script>
 <div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+$(document).ready(function(){initNavTree('struct__tag_s_t___t_l_s___i_n_t_e_r___h_e_a_d_e_r___w_i_t_h_o_u_t___s_i_z_e.html','');});
+</script>
+<div id="doc-content">
 <!-- window showing the filter options -->
 <div id="MSearchSelectWindow"
      onmouseover="return searchBox.OnSearchSelectShow()"
@@ -56,11 +78,9 @@ $(function() {
 </iframe>
 </div>
 
-</div><!-- top -->
 <div class="header">
   <div class="summary">
-<a href="#pub-attribs">Public Attributes</a> &#124;
-<a href="struct__tag_s_t___t_l_s___i_n_t_e_r___h_e_a_d_e_r___w_i_t_h_o_u_t___s_i_z_e-members.html">List of all members</a>  </div>
+<a href="#pub-attribs">Data Fields</a>  </div>
   <div class="headertitle">
 <div class="title">_tagST_TLS_INTER_HEADER_WITHOUT_SIZE Struct Reference</div>  </div>
 </div><!--header-->
@@ -69,93 +89,86 @@ $(function() {
 <p><code>#include &lt;<a class="el" href="g3__define_8h_source.html">g3_define.h</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
-Public Attributes</h2></td></tr>
-<tr class="memitem:ac56e51c2224cc2776097df5e4a4e242b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="g3__define_8h.html#a855ebb1284efb85f8be57d819efa519a">dword</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct__tag_s_t___t_l_s___i_n_t_e_r___h_e_a_d_e_r___w_i_t_h_o_u_t___s_i_z_e.html#ac56e51c2224cc2776097df5e4a4e242b">hi_be_sequence</a></td></tr>
-<tr class="separator:ac56e51c2224cc2776097df5e4a4e242b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a273625b65a7f274200c7db93cf961cba"><td class="memItemLeft" align="right" valign="top"><a class="el" href="g3__define_8h.html#a855ebb1284efb85f8be57d819efa519a">dword</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct__tag_s_t___t_l_s___i_n_t_e_r___h_e_a_d_e_r___w_i_t_h_o_u_t___s_i_z_e.html#a273625b65a7f274200c7db93cf961cba">lo_be_sequence</a></td></tr>
-<tr class="separator:a273625b65a7f274200c7db93cf961cba"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a75cc50293de2166438ae427eb8bc74c5"><td class="memItemLeft" align="right" valign="top"><a class="el" href="g3__define_8h.html#a0c8186d9b9b7880309c27230bbb5e69d">byte</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct__tag_s_t___t_l_s___i_n_t_e_r___h_e_a_d_e_r___w_i_t_h_o_u_t___s_i_z_e.html#a75cc50293de2166438ae427eb8bc74c5">content_type</a></td></tr>
-<tr class="separator:a75cc50293de2166438ae427eb8bc74c5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a79ab9faa4acdbefe8b6ddf61c096853a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="g3__define_8h.html#a285e72252c100e2508e4e933a0738f2b">word</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct__tag_s_t___t_l_s___i_n_t_e_r___h_e_a_d_e_r___w_i_t_h_o_u_t___s_i_z_e.html#a79ab9faa4acdbefe8b6ddf61c096853a">tls_be_ver</a></td></tr>
-<tr class="separator:a79ab9faa4acdbefe8b6ddf61c096853a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+Data Fields</h2></td></tr>
+<tr class="memitem:a9e1208fb55a98fa79398be87bafecea1"><td class="memItemLeft" align="right" valign="top"><a class="el" href="g3__define_8h.html#a855ebb1284efb85f8be57d819efa519a">dword</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct__tag_s_t___t_l_s___i_n_t_e_r___h_e_a_d_e_r___w_i_t_h_o_u_t___s_i_z_e.html#a9e1208fb55a98fa79398be87bafecea1">hi_be_sequence</a></td></tr>
+<tr class="separator:a9e1208fb55a98fa79398be87bafecea1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1a0323f934ca37a662ef56884a237211"><td class="memItemLeft" align="right" valign="top"><a class="el" href="g3__define_8h.html#a855ebb1284efb85f8be57d819efa519a">dword</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct__tag_s_t___t_l_s___i_n_t_e_r___h_e_a_d_e_r___w_i_t_h_o_u_t___s_i_z_e.html#a1a0323f934ca37a662ef56884a237211">lo_be_sequence</a></td></tr>
+<tr class="separator:a1a0323f934ca37a662ef56884a237211"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2664603396e12ad8f9ab14929929ccab"><td class="memItemLeft" align="right" valign="top"><a class="el" href="g3__define_8h.html#a0c8186d9b9b7880309c27230bbb5e69d">byte</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct__tag_s_t___t_l_s___i_n_t_e_r___h_e_a_d_e_r___w_i_t_h_o_u_t___s_i_z_e.html#a2664603396e12ad8f9ab14929929ccab">content_type</a></td></tr>
+<tr class="separator:a2664603396e12ad8f9ab14929929ccab"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5caca94a9427f5860dd437e45a5d2f3f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="g3__define_8h.html#a285e72252c100e2508e4e933a0738f2b">word</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct__tag_s_t___t_l_s___i_n_t_e_r___h_e_a_d_e_r___w_i_t_h_o_u_t___s_i_z_e.html#a5caca94a9427f5860dd437e45a5d2f3f">tls_be_ver</a></td></tr>
+<tr class="separator:a5caca94a9427f5860dd437e45a5d2f3f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock">
-<p class="definition">Definition at line <a class="el" href="g3__define_8h_source.html#l00416">416</a> of file <a class="el" href="g3__define_8h_source.html">g3_define.h</a>.</p>
-</div><h2 class="groupheader">Member Data Documentation</h2>
-<a id="a75cc50293de2166438ae427eb8bc74c5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a75cc50293de2166438ae427eb8bc74c5">&#9670;&nbsp;</a></span>content_type</h2>
+<h2 class="groupheader">Field Documentation</h2>
+<a id="a2664603396e12ad8f9ab14929929ccab"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2664603396e12ad8f9ab14929929ccab">&#9670;&nbsp;</a></span>content_type</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="g3__define_8h.html#a0c8186d9b9b7880309c27230bbb5e69d">byte</a> _tagST_TLS_INTER_HEADER_WITHOUT_SIZE::content_type</td>
+          <td class="memname"><a class="el" href="g3__define_8h.html#a0c8186d9b9b7880309c27230bbb5e69d">byte</a> content_type</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="g3__define_8h_source.html#l00419">419</a> of file <a class="el" href="g3__define_8h_source.html">g3_define.h</a>.</p>
-
 </div>
 </div>
-<a id="ac56e51c2224cc2776097df5e4a4e242b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac56e51c2224cc2776097df5e4a4e242b">&#9670;&nbsp;</a></span>hi_be_sequence</h2>
+<a id="a9e1208fb55a98fa79398be87bafecea1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9e1208fb55a98fa79398be87bafecea1">&#9670;&nbsp;</a></span>hi_be_sequence</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="g3__define_8h.html#a855ebb1284efb85f8be57d819efa519a">dword</a> _tagST_TLS_INTER_HEADER_WITHOUT_SIZE::hi_be_sequence</td>
+          <td class="memname"><a class="el" href="g3__define_8h.html#a855ebb1284efb85f8be57d819efa519a">dword</a> hi_be_sequence</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="g3__define_8h_source.html#l00417">417</a> of file <a class="el" href="g3__define_8h_source.html">g3_define.h</a>.</p>
-
 </div>
 </div>
-<a id="a273625b65a7f274200c7db93cf961cba"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a273625b65a7f274200c7db93cf961cba">&#9670;&nbsp;</a></span>lo_be_sequence</h2>
+<a id="a1a0323f934ca37a662ef56884a237211"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1a0323f934ca37a662ef56884a237211">&#9670;&nbsp;</a></span>lo_be_sequence</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="g3__define_8h.html#a855ebb1284efb85f8be57d819efa519a">dword</a> _tagST_TLS_INTER_HEADER_WITHOUT_SIZE::lo_be_sequence</td>
+          <td class="memname"><a class="el" href="g3__define_8h.html#a855ebb1284efb85f8be57d819efa519a">dword</a> lo_be_sequence</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="g3__define_8h_source.html#l00418">418</a> of file <a class="el" href="g3__define_8h_source.html">g3_define.h</a>.</p>
-
 </div>
 </div>
-<a id="a79ab9faa4acdbefe8b6ddf61c096853a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a79ab9faa4acdbefe8b6ddf61c096853a">&#9670;&nbsp;</a></span>tls_be_ver</h2>
+<a id="a5caca94a9427f5860dd437e45a5d2f3f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5caca94a9427f5860dd437e45a5d2f3f">&#9670;&nbsp;</a></span>tls_be_ver</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="g3__define_8h.html#a285e72252c100e2508e4e933a0738f2b">word</a> _tagST_TLS_INTER_HEADER_WITHOUT_SIZE::tls_be_ver</td>
+          <td class="memname"><a class="el" href="g3__define_8h.html#a285e72252c100e2508e4e933a0738f2b">word</a> tls_be_ver</td>
         </tr>
       </table>
 </div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="g3__define_8h_source.html#l00420">420</a> of file <a class="el" href="g3__define_8h_source.html">g3_define.h</a>.</p>
 
 </div>
 </div>
 <hr/>The documentation for this struct was generated from the following file:<ul>
-<li>C:/Users/seungcheol/Desktop/git_api/g3_api_ver_v100/g3_api_library/include/<a class="el" href="g3__define_8h_source.html">g3_define.h</a></li>
+<li>g3_api_library/include/<a class="el" href="g3__define_8h_source.html">g3_define.h</a></li>
 </ul>
 </div><!-- contents -->
+</div><!-- doc-content -->
 <!-- start footer part -->
-<hr class="footer"/><address class="footer"><small>
-Generated by &#160;<a href="http://www.doxygen.org/index.html">
-<img class="footer" src="doxygen.png" alt="doxygen"/>
-</a> 1.8.14
-</small></address>
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="struct__tag_s_t___t_l_s___i_n_t_e_r___h_e_a_d_e_r___w_i_t_h_o_u_t___s_i_z_e.html">_tagST_TLS_INTER_HEADER_WITHOUT_SIZE</a></li>
+    <li class="footer">Generated by
+    <a href="http://www.doxygen.org/index.html">
+    <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.14 </li>
+  </ul>
+</div>
 </body>
 </html>

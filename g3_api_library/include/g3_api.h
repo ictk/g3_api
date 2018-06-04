@@ -24,10 +24,10 @@ G3_API const char * CALLTYPE g3api_get_lib_version
 	
 //###################################################	
 /**
-*   @brief  
+*   @brief  Sets user send and receive function
 *
-*   @param psendrecv 
-*   @param etcparam 
+*   @param psendrecv	: Pointer to send and receive function  
+*   @param etcparam		: etcparam
 *
 *   @return void
 */
@@ -67,12 +67,12 @@ G3_API char* CALLTYPE g3api_get_sn
 	
 //###################################################	
 /**
-*   @brief  
+*   @brief Transmits raw data and receive response
 *
-*   @param snd  
-*   @param snd_size 
-*   @param recv 
-*   @param recv_size 
+*   @param snd			: Pointer to send data buffer
+*   @param snd_size		: Size of send data
+*   @param recv			: Pointer to receive data buffer
+*   @param recv_size	: Size of receive data
 *
 *   @return G3_API_RESULT
 */
@@ -90,12 +90,12 @@ G3_API G3_API_RESULT CALLTYPE g3api_raw_snd_recv
 // ½Å¿ø¼®(neo1seok) 2018-05-10
 //###################################################	
 /**
-*   @brief
+*   @brief	Transmits pure data and receive response
 *
-*   @param snd
-*   @param snd_size
-*   @param recv
-*   @param recv_size
+*   @param snd			: Pointer to send data buffer
+*   @param snd_size		: Size of send data
+*   @param recv			: Pointer to receive data buffer
+*   @param recv_size	: Size of receive data
 *
 *   @return G3_API_RESULT
 */
@@ -194,7 +194,7 @@ G3_API G3_API_RESULT CALLTYPE g3api_write_key_value
 //###################################################	
 /**
 *   @brief  Generates challenge and loads it to temporary memory
-*			Whenever the generated challenge is used once for an authentication, the callenge becomes invalidated,
+*	@note	Whenever the generated challenge is used once for an authentication, the callenge becomes invalidated,
 *			regardless of whether the authentication has been passed or not.
 *
 *   @param	chall_size		: The size of challenge to get
@@ -270,7 +270,7 @@ G3_API G3_API_RESULT CALLTYPE g3api_init_puf
 //###################################################	
 /**
 *   @brief  Generates a signature using input data and target key.
-*			The signature algorithm is determined as the target key type.
+*	@note	The signature algorithm is determined as the target key type.
 *
 *   @param key_index		: Key sector index. (p1)
 *   @param sign_option		: Signature algorithm.(p2)
@@ -303,7 +303,8 @@ G3_API G3_API_RESULT CALLTYPE g3api_sign
 	
 //###################################################	
 /**
-*   @brief  Verifies the signature. The target sector should be a public key or symmetric key
+*   @brief  Verifies the signature. 
+*	@note	The target sector should be a public key or symmetric key
 *			To obtain AC, use the dynamic_auth.
 *
 *   @param key_index		: Key sector index(p1)
@@ -336,7 +337,8 @@ G3_API G3_API_RESULT CALLTYPE g3api_verify
 	
 //###################################################	
 /**
-*   @brief  Verifies the signature and obtain AC. Input signature must be generated using challenge that generated in G3
+*   @brief  Verifies the signature and obtain AC. 
+*	@note	Input signature must be generated using challenge that generated in G3
 *		
 *   @param key_index		: Key sector index(p1)
 *   @param dauth_option		: The mode of the command(p2_lower)
@@ -523,7 +525,8 @@ G3_API G3_API_RESULT CALLTYPE g3api_set_extern_public_key
 	
 //###################################################	
 /**
-*   @brief  Diversifies a symmetric key by using diversify AC. It can be executed in two mode : self mode and inherit mode
+*   @brief  Diversifies a symmetric key by using diversify AC. 
+*	@note	It can be executed in two mode : self mode and inherit mode
 *			If rw_operation bits of the target key setting is 11, diversify command requires a MAC
 *
 *   @param key_index		: Key sector index(p1)

@@ -5,10 +5,17 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.14"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>My Project: File Members</title>
+<title>My Project: Globals</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="navtreedata.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<script type="text/javascript">
+  $(document).ready(initResizable);
+</script>
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
@@ -43,6 +50,20 @@ $(function() {
 </script>
 <div id="main-nav"></div>
 </div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+$(document).ready(function(){initNavTree('globals_i.html','');});
+</script>
+<div id="doc-content">
 <!-- window showing the filter options -->
 <div id="MSearchSelectWindow"
      onmouseover="return searchBox.OnSearchSelectShow()"
@@ -58,23 +79,84 @@ $(function() {
 </div>
 
 <div class="contents">
-<div class="textblock">Here is a list of all file members with links to the files they belong to:</div>
+<div class="textblock">Here is a list of all functions, variables, defines, enums, and typedefs with links to the files they belong to:</div>
 
 <h3><a id="index_i"></a>- i -</h3><ul>
+<li>I2C_MasterFlag
+: <a class="el" href="console__g3__api_2_lib_f_t4222_8h.html#acd387147e8d084ef9804b82980aa90e1">LibFT4222.h</a>
+</li>
+<li>I2CM_ADDRESS_NACK
+: <a class="el" href="console__g3__api_2_lib_f_t4222_8h.html#accec7c95cecc51fea07a44290ed1a7d3">LibFT4222.h</a>
+</li>
+<li>I2CM_ARB_LOST
+: <a class="el" href="g3__io__lib_2_lib_f_t4222_8h.html#a95fa40718e5b9e8e0accae9520c80f12">LibFT4222.h</a>
+</li>
+<li>I2CM_BUS_BUSY
+: <a class="el" href="console__g3__api_2_lib_f_t4222_8h.html#a8ae79cc28b2890f2979e6c024664c099">LibFT4222.h</a>
+</li>
+<li>I2CM_CONTROLLER_BUSY
+: <a class="el" href="console__g3__api_2_lib_f_t4222_8h.html#a00ca5c5c86874b8f4939a44d650fd064">LibFT4222.h</a>
+</li>
+<li>I2CM_DATA_NACK
+: <a class="el" href="console__g3__api_2_lib_f_t4222_8h.html#ae0fbd727bba6b65c4ddcbd246740a343">LibFT4222.h</a>
+</li>
+<li>I2CM_IDLE
+: <a class="el" href="g3__io__lib_2_lib_f_t4222_8h.html#a77215a4138c90c0e27ce2d49d11cb6df">LibFT4222.h</a>
+</li>
+<li>ictk_convert_to_inst_mode()
+: <a class="el" href="io__i2c_8cpp.html#aa19b544b5e4070a3fdc7590f868dd0ac">io_i2c.cpp</a>
+</li>
 <li>IN
 : <a class="el" href="g3__define_8h.html#ac2bbd6d630a06a980d9a92ddb9a49928">g3_define.h</a>
 </li>
 <li>INHERIT
 : <a class="el" href="g3__define_8h.html#a30537b5c57ce34a9bfe739059d9013b9aa9daac6f2407de4e6f22ee8dbd4913c0">g3_define.h</a>
 </li>
+<li>init_fp()
+: <a class="el" href="console__g3__api_8cpp.html#a0a2bfd75dc610279568786896f8dd22d">console_g3_api.cpp</a>
+</li>
 <li>INIT_PRIV_KEY
-: <a class="el" href="inter__def_8h.html#afc8dd766e8c9729c4edc065c35ed641f">inter_def.h</a>
+: <a class="el" href="include_2inter__def_8h.html#afc8dd766e8c9729c4edc065c35ed641f">inter_def.h</a>
+</li>
+<li>init_sample_ft4222()
+: <a class="el" href="io__ft4222_8cpp.html#aef775db2845be42e8d35a8b1aa55ebf7">io_ft4222.cpp</a>
+</li>
+<li>init_sample_i2c()
+: <a class="el" href="io__i2c_8cpp.html#aa46f3a75c44c3d151b48f64c7e008f0d">io_i2c.cpp</a>
+</li>
+<li>init_sample_ieb100cdc()
+: <a class="el" href="io__cdc_8cpp.html#a9ace83e299a57ad121a555b120bb50d9">io_cdc.cpp</a>
+</li>
+<li>initialize()
+: <a class="el" href="scenario__sample_8cpp.html#a25a40b6614565f755233080a384c35f1">scenario_sample.cpp</a>
 </li>
 <li>Initialize
 : <a class="el" href="g3__define_8h.html#a96c36b1c1aa57ebe095ed2f6ffc72fb5aec5ffdce78f3f4afd0eb1a361bd1f4fe">g3_define.h</a>
 </li>
+<li>initialize()
+: <a class="el" href="console__g3__api_8cpp.html#a25a40b6614565f755233080a384c35f1">console_g3_api.cpp</a>
+</li>
 <li>INOUT
 : <a class="el" href="g3__define_8h.html#a62766f3ea8784d1db62df989f8f33d2d">g3_define.h</a>
+</li>
+<li>int16
+: <a class="el" href="console__g3__api_2_lib_f_t4222_8h.html#aa0d0fdc87fd135ef2bedb030901cdb9c">LibFT4222.h</a>
+</li>
+<li>int32
+: <a class="el" href="g3__io__lib_2_lib_f_t4222_8h.html#ab7903878916593daecbeb95b98115ab0">LibFT4222.h</a>
+</li>
+<li>int64
+: <a class="el" href="console__g3__api_2_lib_f_t4222_8h.html#a7cde0074dfd288f2d70c0e035dacb28a">LibFT4222.h</a>
+, <a class="el" href="comdef_8h.html#aecfc3c54bd29ad5964e1c1c3ccbf89df">comdef.h</a>
+</li>
+<li>int8
+: <a class="el" href="console__g3__api_2_lib_f_t4222_8h.html#aa79c2d3de4fcd200458c406f40b2ae64">LibFT4222.h</a>
+</li>
+<li>INTER_PARAMS
+: <a class="el" href="io__cdc_8cpp.html#a9f12354b66b14890854e3fc2881b4f01">io_cdc.cpp</a>
+</li>
+<li>is_use_ieb_100
+: <a class="el" href="g3__api_8cpp.html#af6d201135e225c27eaa11a9d04ec50b9">g3_api.cpp</a>
 </li>
 <li>ISCRT_DATA_AREA_0
 : <a class="el" href="g3__define_8h.html#a5f6fea1e0bbf1e1647f47f65548682f8a4772b69692ee0d4a1423eb5422979a61">g3_define.h</a>
@@ -85,16 +167,25 @@ $(function() {
 <li>ISCRT_KEY_AREA
 : <a class="el" href="g3__define_8h.html#a5f6fea1e0bbf1e1647f47f65548682f8aa9acbbf438bd2a0b9505d8d1c7e79851">g3_define.h</a>
 </li>
+<li>ISINVALIDATE
+: <a class="el" href="comdef_8h.html#ac3ea686005b90ed34bafed1e96c424cd">comdef.h</a>
+</li>
 <li>ISSUE_CERT
-: <a class="el" href="inter__def_8h.html#a989b153a977582672e69404f9cbd9edd">inter_def.h</a>
+: <a class="el" href="include_2inter__def_8h.html#a989b153a977582672e69404f9cbd9edd">inter_def.h</a>
+</li>
+<li>iv
+: <a class="el" href="value__define_8h.html#ac1edff36269fb22c0f6ba58c1c118006">value_define.h</a>
 </li>
 </ul>
 </div><!-- contents -->
+</div><!-- doc-content -->
 <!-- start footer part -->
-<hr class="footer"/><address class="footer"><small>
-Generated by &#160;<a href="http://www.doxygen.org/index.html">
-<img class="footer" src="doxygen.png" alt="doxygen"/>
-</a> 1.8.14
-</small></address>
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="footer">Generated by
+    <a href="http://www.doxygen.org/index.html">
+    <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.14 </li>
+  </ul>
+</div>
 </body>
 </html>

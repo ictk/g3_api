@@ -1,7 +1,8 @@
 var searchData=
 [
-  ['in',['IN',['../g3__define_8h.html#ac2bbd6d630a06a980d9a92ddb9a49928',1,'g3_define.h']]],
-  ['init_5fpriv_5fkey',['INIT_PRIV_KEY',['../inter__def_8h.html#afc8dd766e8c9729c4edc065c35ed641f',1,'inter_def.h']]],
-  ['inout',['INOUT',['../g3__define_8h.html#a62766f3ea8784d1db62df989f8f33d2d',1,'g3_define.h']]],
-  ['issue_5fcert',['ISSUE_CERT',['../inter__def_8h.html#a989b153a977582672e69404f9cbd9edd',1,'inter_def.h']]]
+  ['ecdh',['ECDH',['../include_2inter__def_8h.html#a254a3c19a2a76bec2370aa34a97cef06',1,'inter_def.h']]],
+  ['encrypt',['ENCRYPT',['../include_2inter__def_8h.html#a1cb0c60ca582db30ae87362ca43e8c19',1,'inter_def.h']]],
+  ['err_5fgeneral',['ERR_GENERAL',['../g3__define_8h.html#a26fe5872acf12016f4524ada4cc8a83d',1,'g3_define.h']]],
+  ['err_5finterchip',['ERR_INTERCHIP',['../g3__define_8h.html#a7c9fc2851d2140e4b448db42610762bd',1,'g3_define.h']]],
+  ['extern_5fapi',['EXTERN_API',['../comdef_8h.html#a0de55ea1d451c42632022d1383a89d5b',1,'comdef.h']]]
 ];

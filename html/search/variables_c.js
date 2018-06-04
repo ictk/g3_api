@@ -1,10 +1,19 @@
 var searchData=
 [
-  ['r',['r',['../struct__tag_s_t___s_i_g_n___e_c_d_s_a.html#ac20671acfa750f6c092e461fc3c15ace',1,'_tagST_SIGN_ECDSA::r()'],['../struct__tag_s_t___e_c_i_e_s.html#a0729707eeedf73994ea6934efbf728b7',1,'_tagST_ECIES::r()']]],
-  ['res_5fsize',['res_size',['../struct__tag_h_e_a_d_e_r___w_r_i_t_e___i_e_b100___p_a_c_k_e_t.html#a39dfef3c6a2af073e4ab4f8196ec0035',1,'_tagHEADER_WRITE_IEB100_PACKET']]],
-  ['result_5fsetup_5farea',['result_setup_area',['../struct__tag_s_t___s_e_t___u_p___v_a_l_u_e.html#a79156cae363ebdc3efc8e87001ddabf9',1,'_tagST_SET_UP_VALUE']]],
-  ['result_5fwrite_5fvalue',['result_write_value',['../struct__tag_s_t___s_e_t___u_p___v_a_l_u_e.html#ad31555101020b53b62fa91b97ed81807',1,'_tagST_SET_UP_VALUE']]],
-  ['rom_5finst',['rom_inst',['../struct__tag_h_e_a_d_e_r___w_r_i_t_e___i_e_b100___p_a_c_k_e_t.html#afd9cdce4b7aedb5644ea975c2ae63436',1,'_tagHEADER_WRITE_IEB100_PACKET']]],
-  ['root',['root',['../struct__tag_s_t___s_e_t_u_p___c_o_r_e.html#aafc95f83b7a66406aafd9b1ea2c6508e',1,'_tagST_SETUP_CORE']]],
-  ['rw',['rw',['../struct__tag_s_t___k_e_y___s_e_c_t_o_r.html#a6602a63a3e41ff88b5b58f3d2f1d195c',1,'_tagST_KEY_SECTOR']]]
+  ['m_5flpbuff',['m_lpBuff',['../classneocolib_1_1_c_mem.html#a5967e550929998a6800b6f8e1145125c',1,'neocolib::CMem']]],
+  ['m_5fpfnfree',['m_pfnFree',['../classneocolib_1_1_c_mem.html#abf8c3908098cd1a1be02c5a7b9da0350',1,'neocolib::CMem']]],
+  ['mac',['mac',['../struct__tag_s_t___r_w___d_a_t_a___w_i_t_h___i_v___m_a_c.html#ab62a0e35653be1dbef8cc8fafe745042',1,'_tagST_RW_DATA_WITH_IV_MAC']]],
+  ['manage_5fhashed_5fmsg',['manage_hashed_msg',['../value__define_8h.html#a7c4700e79a03ce8af261b35447b3d039',1,'value_define.h']]],
+  ['manage_5fpriv',['manage_priv',['../value__define_8h.html#a2c77336df2b1b213f4ed489bf2752b4a',1,'value_define.h']]],
+  ['manage_5fpub',['manage_pub',['../value__define_8h.html#a2e5c48d93f48fbfa6bb12b75bad48ee4',1,'value_define.h']]],
+  ['manage_5fsign_5frs',['manage_sign_rs',['../value__define_8h.html#a09f6ef0ab74f598077cf54755fe54f70',1,'value_define.h']]],
+  ['manufacturer',['Manufacturer',['../structft__program__data.html#aad033036c7a601ef9e7d4f9cb431cb8f',1,'ft_program_data']]],
+  ['manufacturerid',['ManufacturerId',['../structft__program__data.html#ac8aaa748df02e033942d56539b3f0977',1,'ft_program_data']]],
+  ['mask',['mask',['../struct__tag_s_t___r_w___d_a_t_a___w_i_t_h___m_a_s_k.html#a5bc906284e832120fd1c614b0d816187',1,'_tagST_RW_DATA_WITH_MASK']]],
+  ['maxpower',['MaxPower',['../structft__program__data.html#a1cdd40cb94ba5c3698dcc5ea9e50d74b',1,'ft_program_data::MaxPower()'],['../structft__eeprom__header.html#a1cdd40cb94ba5c3698dcc5ea9e50d74b',1,'ft_eeprom_header::MaxPower()']]],
+  ['mode',['mode',['../struct__tag_i_n_t_e_r___p_a_r_a_m_s.html#a1ea5d0cb93f22f7d0fdf804bd68c3326',1,'_tagINTER_PARAMS']]],
+  ['msg_5f01',['msg_01',['../value__define_8h.html#ac15025134e5e98b5d884279be0aefcb8',1,'value_define.h']]],
+  ['msg_5fbe_5fsize',['msg_be_size',['../struct__tag_s_t___t_l_s___i_n_t_e_r___h_e_a_d_e_r.html#a34b5cacff1138d97ee3b89beb79b9e60',1,'_tagST_TLS_INTER_HEADER::msg_be_size()'],['../struct__tag_t_l_s___i_n_t_e_r___h_e_a_d_e_r.html#a34b5cacff1138d97ee3b89beb79b9e60',1,'_tagTLS_INTER_HEADER::msg_be_size()']]],
+  ['msg_5ffrom_5fsha256',['msg_from_sha256',['../value__define_8h.html#a545ba9a9080f58683684c570654c1c7f',1,'value_define.h']]],
+  ['msg_5forg',['msg_org',['../value__define_8h.html#a552f39f05250f4fba4dab9ccfb970478',1,'value_define.h']]]
 ];

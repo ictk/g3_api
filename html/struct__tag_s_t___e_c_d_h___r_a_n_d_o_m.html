@@ -9,6 +9,13 @@
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="navtreedata.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<script type="text/javascript">
+  $(document).ready(initResizable);
+</script>
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
@@ -42,6 +49,21 @@ $(function() {
 });
 </script>
 <div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+$(document).ready(function(){initNavTree('struct__tag_s_t___e_c_d_h___r_a_n_d_o_m.html','');});
+</script>
+<div id="doc-content">
 <!-- window showing the filter options -->
 <div id="MSearchSelectWindow"
      onmouseover="return searchBox.OnSearchSelectShow()"
@@ -56,11 +78,9 @@ $(function() {
 </iframe>
 </div>
 
-</div><!-- top -->
 <div class="header">
   <div class="summary">
-<a href="#pub-attribs">Public Attributes</a> &#124;
-<a href="struct__tag_s_t___e_c_d_h___r_a_n_d_o_m-members.html">List of all members</a>  </div>
+<a href="#pub-attribs">Data Fields</a>  </div>
   <div class="headertitle">
 <div class="title">_tagST_ECDH_RANDOM Struct Reference</div>  </div>
 </div><!--header-->
@@ -69,57 +89,54 @@ $(function() {
 <p><code>#include &lt;<a class="el" href="g3__define_8h_source.html">g3_define.h</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
-Public Attributes</h2></td></tr>
-<tr class="memitem:a611df0555c4902203bd59bddc58ac4b2"><td class="memItemLeft" align="right" valign="top"><a class="el" href="g3__define_8h.html#a0c8186d9b9b7880309c27230bbb5e69d">byte</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct__tag_s_t___e_c_d_h___r_a_n_d_o_m.html#a611df0555c4902203bd59bddc58ac4b2">server</a> [32]</td></tr>
-<tr class="separator:a611df0555c4902203bd59bddc58ac4b2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acc220e7cb7efec10f185eda49f9234b3"><td class="memItemLeft" align="right" valign="top"><a class="el" href="g3__define_8h.html#a0c8186d9b9b7880309c27230bbb5e69d">byte</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct__tag_s_t___e_c_d_h___r_a_n_d_o_m.html#acc220e7cb7efec10f185eda49f9234b3">client</a> [32]</td></tr>
-<tr class="separator:acc220e7cb7efec10f185eda49f9234b3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+Data Fields</h2></td></tr>
+<tr class="memitem:a036353389803dabd59445e7bd9e7e262"><td class="memItemLeft" align="right" valign="top"><a class="el" href="g3__define_8h.html#a0c8186d9b9b7880309c27230bbb5e69d">byte</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct__tag_s_t___e_c_d_h___r_a_n_d_o_m.html#a036353389803dabd59445e7bd9e7e262">server</a> [32]</td></tr>
+<tr class="separator:a036353389803dabd59445e7bd9e7e262"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8d3cc7716554983080fe2f4c4aa81f43"><td class="memItemLeft" align="right" valign="top"><a class="el" href="g3__define_8h.html#a0c8186d9b9b7880309c27230bbb5e69d">byte</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct__tag_s_t___e_c_d_h___r_a_n_d_o_m.html#a8d3cc7716554983080fe2f4c4aa81f43">client</a> [32]</td></tr>
+<tr class="separator:a8d3cc7716554983080fe2f4c4aa81f43"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock">
-<p class="definition">Definition at line <a class="el" href="g3__define_8h_source.html#l00395">395</a> of file <a class="el" href="g3__define_8h_source.html">g3_define.h</a>.</p>
-</div><h2 class="groupheader">Member Data Documentation</h2>
-<a id="acc220e7cb7efec10f185eda49f9234b3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#acc220e7cb7efec10f185eda49f9234b3">&#9670;&nbsp;</a></span>client</h2>
+<h2 class="groupheader">Field Documentation</h2>
+<a id="a8d3cc7716554983080fe2f4c4aa81f43"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8d3cc7716554983080fe2f4c4aa81f43">&#9670;&nbsp;</a></span>client</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="g3__define_8h.html#a0c8186d9b9b7880309c27230bbb5e69d">byte</a> _tagST_ECDH_RANDOM::client[32]</td>
+          <td class="memname"><a class="el" href="g3__define_8h.html#a0c8186d9b9b7880309c27230bbb5e69d">byte</a> client[32]</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="g3__define_8h_source.html#l00397">397</a> of file <a class="el" href="g3__define_8h_source.html">g3_define.h</a>.</p>
-
 </div>
 </div>
-<a id="a611df0555c4902203bd59bddc58ac4b2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a611df0555c4902203bd59bddc58ac4b2">&#9670;&nbsp;</a></span>server</h2>
+<a id="a036353389803dabd59445e7bd9e7e262"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a036353389803dabd59445e7bd9e7e262">&#9670;&nbsp;</a></span>server</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="g3__define_8h.html#a0c8186d9b9b7880309c27230bbb5e69d">byte</a> _tagST_ECDH_RANDOM::server[32]</td>
+          <td class="memname"><a class="el" href="g3__define_8h.html#a0c8186d9b9b7880309c27230bbb5e69d">byte</a> server[32]</td>
         </tr>
       </table>
 </div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="g3__define_8h_source.html#l00396">396</a> of file <a class="el" href="g3__define_8h_source.html">g3_define.h</a>.</p>
 
 </div>
 </div>
 <hr/>The documentation for this struct was generated from the following file:<ul>
-<li>C:/Users/seungcheol/Desktop/git_api/g3_api_ver_v100/g3_api_library/include/<a class="el" href="g3__define_8h_source.html">g3_define.h</a></li>
+<li>g3_api_library/include/<a class="el" href="g3__define_8h_source.html">g3_define.h</a></li>
 </ul>
 </div><!-- contents -->
+</div><!-- doc-content -->
 <!-- start footer part -->
-<hr class="footer"/><address class="footer"><small>
-Generated by &#160;<a href="http://www.doxygen.org/index.html">
-<img class="footer" src="doxygen.png" alt="doxygen"/>
-</a> 1.8.14
-</small></address>
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="struct__tag_s_t___e_c_d_h___r_a_n_d_o_m.html">_tagST_ECDH_RANDOM</a></li>
+    <li class="footer">Generated by
+    <a href="http://www.doxygen.org/index.html">
+    <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.14 </li>
+  </ul>
+</div>
 </body>
 </html>

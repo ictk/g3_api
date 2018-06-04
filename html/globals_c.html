@@ -5,10 +5,17 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.14"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>My Project: File Members</title>
+<title>My Project: Globals</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="navtreedata.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<script type="text/javascript">
+  $(document).ready(initResizable);
+</script>
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
@@ -43,6 +50,20 @@ $(function() {
 </script>
 <div id="main-nav"></div>
 </div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+$(document).ready(function(){initNavTree('globals_c.html','');});
+</script>
+<div id="doc-content">
 <!-- window showing the filter options -->
 <div id="MSearchSelectWindow"
      onmouseover="return searchBox.OnSearchSelectShow()"
@@ -58,9 +79,16 @@ $(function() {
 </div>
 
 <div class="contents">
-<div class="textblock">Here is a list of all file members with links to the files they belong to:</div>
+<div class="textblock">Here is a list of all functions, variables, defines, enums, and typedefs with links to the files they belong to:</div>
 
 <h3><a id="index_c"></a>- c -</h3><ul>
+<li>calcCRC()
+: <a class="el" href="g3__api__depend__function_8cpp.html#ae343f3517033170494aa2b4f396945d3">g3_api_depend_function.cpp</a>
+, <a class="el" href="g3__etc__util_8cpp.html#ae343f3517033170494aa2b4f396945d3">g3_etc_util.cpp</a>
+</li>
+<li>calcCRCByTable()
+: <a class="el" href="g3__etc__util_8cpp.html#ab05d357a65e0612c2b0dce829719275f">g3_etc_util.cpp</a>
+</li>
 <li>CBC
 : <a class="el" href="g3__define_8h.html#a6b1f3805950b3b6840c920f1256e60f2a4ace9ef28707cb98c2ccaaff518b3a49">g3_define.h</a>
 </li>
@@ -70,17 +98,177 @@ $(function() {
 <li>CCM
 : <a class="el" href="g3__define_8h.html#a6b1f3805950b3b6840c920f1256e60f2a4742ab5add31bcbe14b900f9db45a012">g3_define.h</a>
 </li>
+<li>cert
+: <a class="el" href="value__define_8h.html#a8b1b4edbc12b40a2f4cc88ebbd41abcc">value_define.h</a>
+</li>
 <li>CERT
-: <a class="el" href="inter__def_8h.html#a0bde1e3cf5a0c9e99e1cb6c135562c84">inter_def.h</a>
+: <a class="el" href="include_2inter__def_8h.html#a0bde1e3cf5a0c9e99e1cb6c135562c84">inter_def.h</a>
+</li>
+<li>cert_priv_key
+: <a class="el" href="value__define_8h.html#af5593e343f8db151f6ad6a3573cc7865">value_define.h</a>
+</li>
+<li>cert_pub_key
+: <a class="el" href="value__define_8h.html#a3ed1f858e2029b6cd032029f17ac3b68">value_define.h</a>
+</li>
+<li>cert_without_sign
+: <a class="el" href="value__define_8h.html#a1739f14cd88909ab7e6a547e2057cbb1">value_define.h</a>
+</li>
+<li>cert_wrong
+: <a class="el" href="value__define_8h.html#ae9f3cd931350f5301b4b6bde8349fcec">value_define.h</a>
 </li>
 <li>CHANGE_CIPHER_SPEC
 : <a class="el" href="g3__define_8h.html#a2a4ee0dd27e1e99245a5f604cf73c12ea4ba5b5ec083856acccc568fff147a664">g3_define.h</a>
 </li>
 <li>CHANGE_PWD
-: <a class="el" href="inter__def_8h.html#a0e25918e8a568adba82ce246628a36ef">inter_def.h</a>
+: <a class="el" href="include_2inter__def_8h.html#a0e25918e8a568adba82ce246628a36ef">inter_def.h</a>
+</li>
+<li>check_dynamic_auth_struct()
+: <a class="el" href="g3__api__depend__function_8cpp.html#a957911bb6ab7385982caca1a81837670">g3_api_depend_function.cpp</a>
+, <a class="el" href="g3__api_8cpp.html#a957911bb6ab7385982caca1a81837670">g3_api.cpp</a>
+</li>
+<li>check_sign_struct()
+: <a class="el" href="g3__api_8cpp.html#a8b8a381d1568c19064deb7beb7d793e8">g3_api.cpp</a>
+, <a class="el" href="g3__api__depend__function_8cpp.html#a8b8a381d1568c19064deb7beb7d793e8">g3_api_depend_function.cpp</a>
+</li>
+<li>check_vefify_struct()
+: <a class="el" href="g3__api_8cpp.html#aa0255e44ddf9b4ed9c3fafa33de2cd5f">g3_api.cpp</a>
+, <a class="el" href="g3__api__depend__function_8cpp.html#aa0255e44ddf9b4ed9c3fafa33de2cd5f">g3_api_depend_function.cpp</a>
+</li>
+<li>cipher_aes_cbc
+: <a class="el" href="value__define_8h.html#a9e009a131491a7648774d4a4fca63676">value_define.h</a>
+</li>
+<li>client_rand
+: <a class="el" href="value__define_8h.html#aecb1db2b37091f7e61f48d3f706aead8">value_define.h</a>
+</li>
+<li>CLK_DIV_128
+: <a class="el" href="console__g3__api_2_lib_f_t4222_8h.html#a1bcee2db7da0fabb61e581ad3516bd5ea3159bffdd4c7493a5ede28264777cc3d">LibFT4222.h</a>
+</li>
+<li>CLK_DIV_16
+: <a class="el" href="console__g3__api_2_lib_f_t4222_8h.html#a1bcee2db7da0fabb61e581ad3516bd5eadd113e5758800e05fe98c665cbb23e22">LibFT4222.h</a>
+</li>
+<li>CLK_DIV_2
+: <a class="el" href="console__g3__api_2_lib_f_t4222_8h.html#a1bcee2db7da0fabb61e581ad3516bd5eab715ae5967806700f0a2861b90b9584b">LibFT4222.h</a>
+</li>
+<li>CLK_DIV_256
+: <a class="el" href="console__g3__api_2_lib_f_t4222_8h.html#a1bcee2db7da0fabb61e581ad3516bd5eae643fa7568b0e5801d46d53bba0ce7f2">LibFT4222.h</a>
+</li>
+<li>CLK_DIV_32
+: <a class="el" href="g3__io__lib_2_lib_f_t4222_8h.html#a1bcee2db7da0fabb61e581ad3516bd5ea31bc3e8239176a6d66b7dbb6bda47099">LibFT4222.h</a>
+</li>
+<li>CLK_DIV_4
+: <a class="el" href="console__g3__api_2_lib_f_t4222_8h.html#a1bcee2db7da0fabb61e581ad3516bd5ea61dd2df6c0b387640c0710f14ab788ef">LibFT4222.h</a>
+</li>
+<li>CLK_DIV_512
+: <a class="el" href="console__g3__api_2_lib_f_t4222_8h.html#a1bcee2db7da0fabb61e581ad3516bd5ea10ac67a0fcffbb5239f96dbc8658a195">LibFT4222.h</a>
+</li>
+<li>CLK_DIV_64
+: <a class="el" href="console__g3__api_2_lib_f_t4222_8h.html#a1bcee2db7da0fabb61e581ad3516bd5eade63d785c5f914cc0f1e4864536157f3">LibFT4222.h</a>
+</li>
+<li>CLK_DIV_8
+: <a class="el" href="console__g3__api_2_lib_f_t4222_8h.html#a1bcee2db7da0fabb61e581ad3516bd5ea48803f6987ff40f1df5b1f0470ae8272">LibFT4222.h</a>
+</li>
+<li>CLK_IDLE_HIGH
+: <a class="el" href="console__g3__api_2_lib_f_t4222_8h.html#a141118f90a1446498bf8de1bae04fe87a4930964e33ede641cdcbd64a06eb0d89">LibFT4222.h</a>
+</li>
+<li>CLK_IDLE_LOW
+: <a class="el" href="console__g3__api_2_lib_f_t4222_8h.html#a141118f90a1446498bf8de1bae04fe87afdb053e9ccbba657fd7b5b494567d26c">LibFT4222.h</a>
+</li>
+<li>CLK_LEADING
+: <a class="el" href="console__g3__api_2_lib_f_t4222_8h.html#aa149ddfedbd8c4339dca1374b7389c0aa328865df57b12bf08ae5cbb5734fb55e">LibFT4222.h</a>
+</li>
+<li>CLK_NONE
+: <a class="el" href="console__g3__api_2_lib_f_t4222_8h.html#a1bcee2db7da0fabb61e581ad3516bd5ea2631e77d1370bcf93844fdd021b81095">LibFT4222.h</a>
+</li>
+<li>CLK_TRAILING
+: <a class="el" href="console__g3__api_2_lib_f_t4222_8h.html#aa149ddfedbd8c4339dca1374b7389c0aa430ffa746c0fb5519ed75d02c8f45a84">LibFT4222.h</a>
+</li>
+<li>CMNTCHAR
+: <a class="el" href="neo_co_lib_8h.html#a42411bb128fefd44a9e556fff01ed4e7">neoCoLib.h</a>
+</li>
+<li>CND
+: <a class="el" href="neo_co_lib_8h.html#a49e674f48d629fbfb8e671beacae4dfb">neoCoLib.h</a>
 </li>
 <li>CONDITION
 : <a class="el" href="g3__define_8h.html#a150409f11dc4972d1ea9a64b55f3c45ea441b7fedf77d6e6bb9c33b609fb7bbf0">g3_define.h</a>
+</li>
+<li>Connect()
+: <a class="el" href="io__ft4222_8cpp.html#a5c8e3e65268990e146cd65dbd555a7db">io_ft4222.cpp</a>
+</li>
+<li>convert_data()
+: <a class="el" href="g3__api__depend__function_8cpp.html#aa1f627a09981eb54ace60e647f1ed1a7">g3_api_depend_function.cpp</a>
+</li>
+<li>convert_data_ieb100()
+: <a class="el" href="g3__api_8cpp.html#a0261c6f94f0f56e767db9c73eb8cc9b8">g3_api.cpp</a>
+</li>
+<li>convert_up()
+: <a class="el" href="io__cdc_8cpp.html#aec7736084faf727a9556ca924d481562">io_cdc.cpp</a>
+</li>
+<li>create_var_bytes()
+: <a class="el" href="g3__api_8cpp.html#a38db8aa1e4f57208a740aa9052a96c8c">g3_api.cpp</a>
+, <a class="el" href="g3__api__depend__function_8cpp.html#a38db8aa1e4f57208a740aa9052a96c8c">g3_api_depend_function.cpp</a>
+</li>
+<li>CRYPTO_ERROR_BUFFER_SHORT
+: <a class="el" href="test_8cpp.html#af5810ee1d19f811849f50a46d2c4ec87">test.cpp</a>
+</li>
+<li>CRYPTO_ERROR_DEVICE
+: <a class="el" href="test_8cpp.html#a75c80bc0997499161cc931e69b16b50b">test.cpp</a>
+</li>
+<li>CRYPTO_ERROR_EXPORT_FAIL
+: <a class="el" href="test_8cpp.html#abca079daf42bb54c0c5c7d353cd2105d">test.cpp</a>
+</li>
+<li>CRYPTO_ERROR_GEN_PUB_KEY_FAIL
+: <a class="el" href="test_8cpp.html#ab8d1cd548b52c7893cdc61ee91613ad6">test.cpp</a>
+</li>
+<li>CRYPTO_ERROR_GET_COMP_PUB_KEY_FAIL
+: <a class="el" href="test_8cpp.html#a2b978433dddf8cbbebd3dea6f387f956">test.cpp</a>
+</li>
+<li>CRYPTO_ERROR_GET_PUB_KEY_FAIL
+: <a class="el" href="test_8cpp.html#ac43de95130cbe241516eceff13c9cbc6">test.cpp</a>
+</li>
+<li>CRYPTO_ERROR_IMPORT_FAIL
+: <a class="el" href="test_8cpp.html#acb367a3e81d95fc57ebe4077c2b6e225">test.cpp</a>
+</li>
+<li>CRYPTO_ERROR_INVALID_ARGS
+: <a class="el" href="test_8cpp.html#aa08029afacef9fdc3760b4157a95476f">test.cpp</a>
+</li>
+<li>CRYPTO_ERROR_INVALID_LENGTH
+: <a class="el" href="test_8cpp.html#a93f14dba744c99f2b5d811f75b355515">test.cpp</a>
+</li>
+<li>CRYPTO_ERROR_INVALID_MODE
+: <a class="el" href="test_8cpp.html#a086b35e6324c34c76836fc1b7edbf8e5">test.cpp</a>
+</li>
+<li>CRYPTO_ERROR_KEYGEN_FAIL
+: <a class="el" href="test_8cpp.html#a1c9d0d15c1f5d7495f2f6dcfb9c7c20b">test.cpp</a>
+</li>
+<li>CRYPTO_ERROR_MEMORY
+: <a class="el" href="test_8cpp.html#a5969ca882f85028b7ac83f8637f4015c">test.cpp</a>
+</li>
+<li>CRYPTO_ERROR_NONE
+: <a class="el" href="test_8cpp.html#a86cc5b210eee0a1136886b4e845174bd">test.cpp</a>
+</li>
+<li>CRYPTO_ERROR_NOT_SUPPORT
+: <a class="el" href="test_8cpp.html#a82bbe00ce71423cfacc981a39650afe4">test.cpp</a>
+</li>
+<li>CRYPTO_ERROR_RANDOM_FAIL
+: <a class="el" href="test_8cpp.html#ad95ea6abb562766a4d8a88fe5ef37d2d">test.cpp</a>
+</li>
+<li>CRYPTO_ERROR_SIGN_FAIL
+: <a class="el" href="test_8cpp.html#a0f9e733904232053340eeef4a8043fcf">test.cpp</a>
+</li>
+<li>CRYPTO_ERROR_T
+: <a class="el" href="test_8cpp.html#a6d5c4f0e8a48b5ad7538cf0c6956c47e">test.cpp</a>
+</li>
+<li>CRYPTO_ERROR_UNKNOWN
+: <a class="el" href="test_8cpp.html#a24356a276db84a2d85b8e8a88c80209d">test.cpp</a>
+</li>
+<li>CRYPTO_ERROR_VERIFY_ERROR
+: <a class="el" href="test_8cpp.html#a402957888f14170330f35f447ca14815">test.cpp</a>
+</li>
+<li>CRYPTO_ERROR_VERIFY_FAIL
+: <a class="el" href="test_8cpp.html#a14259a74d2d986716aedfc952b8279bd">test.cpp</a>
+</li>
+<li>CRYPTO_SHA256_HASH_LEN
+: <a class="el" href="test_8cpp.html#a6ab66e96e28ef5198d35a4bab673a6e3">test.cpp</a>
 </li>
 <li>CTR
 : <a class="el" href="g3__define_8h.html#a6b1f3805950b3b6840c920f1256e60f2a7ab14ded2636fb92a2e0ca9238249f01">g3_define.h</a>
@@ -88,13 +276,22 @@ $(function() {
 <li>CTR_with_MAC
 : <a class="el" href="g3__define_8h.html#a6b1f3805950b3b6840c920f1256e60f2a054f340bc0b3152c1ff99ef9033ad4db">g3_define.h</a>
 </li>
+<li>cur_sleep()
+: <a class="el" href="g3__io__lib_2util_8cpp.html#a3bff8efae07662c3232c383832c55fbf">util.cpp</a>
+, <a class="el" href="console__g3__api_2util_8h.html#a3bff8efae07662c3232c383832c55fbf">util.h</a>
+, <a class="el" href="console__g3__api_2util_8cpp.html#a3bff8efae07662c3232c383832c55fbf">util.cpp</a>
+, <a class="el" href="g3__io__lib_2util_8h.html#a3bff8efae07662c3232c383832c55fbf">util.h</a>
+</li>
 </ul>
 </div><!-- contents -->
+</div><!-- doc-content -->
 <!-- start footer part -->
-<hr class="footer"/><address class="footer"><small>
-Generated by &#160;<a href="http://www.doxygen.org/index.html">
-<img class="footer" src="doxygen.png" alt="doxygen"/>
-</a> 1.8.14
-</small></address>
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="footer">Generated by
+    <a href="http://www.doxygen.org/index.html">
+    <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.14 </li>
+  </ul>
+</div>
 </body>
 </html>

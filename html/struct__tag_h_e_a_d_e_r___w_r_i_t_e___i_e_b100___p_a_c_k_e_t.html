@@ -9,6 +9,13 @@
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="navtreedata.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<script type="text/javascript">
+  $(document).ready(initResizable);
+</script>
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
@@ -42,6 +49,21 @@ $(function() {
 });
 </script>
 <div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+$(document).ready(function(){initNavTree('struct__tag_h_e_a_d_e_r___w_r_i_t_e___i_e_b100___p_a_c_k_e_t.html','');});
+</script>
+<div id="doc-content">
 <!-- window showing the filter options -->
 <div id="MSearchSelectWindow"
      onmouseover="return searchBox.OnSearchSelectShow()"
@@ -56,106 +78,162 @@ $(function() {
 </iframe>
 </div>
 
-</div><!-- top -->
 <div class="header">
   <div class="summary">
-<a href="#pub-attribs">Public Attributes</a> &#124;
-<a href="struct__tag_h_e_a_d_e_r___w_r_i_t_e___i_e_b100___p_a_c_k_e_t-members.html">List of all members</a>  </div>
+<a href="#pub-attribs">Data Fields</a>  </div>
   <div class="headertitle">
 <div class="title">_tagHEADER_WRITE_IEB100_PACKET Struct Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
 
-<p><code>#include &lt;<a class="el" href="inter__def_8h_source.html">inter_def.h</a>&gt;</code></p>
+<p><code>#include &lt;<a class="el" href="include_2inter__def_8h_source.html">inter_def.h</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
-Public Attributes</h2></td></tr>
-<tr class="memitem:afd9cdce4b7aedb5644ea975c2ae63436"><td class="memItemLeft" align="right" valign="top"><a class="el" href="g3__define_8h.html#a0c8186d9b9b7880309c27230bbb5e69d">byte</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct__tag_h_e_a_d_e_r___w_r_i_t_e___i_e_b100___p_a_c_k_e_t.html#afd9cdce4b7aedb5644ea975c2ae63436">rom_inst</a></td></tr>
-<tr class="separator:afd9cdce4b7aedb5644ea975c2ae63436"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0a04fb033890a2e4375c9d482c03cd92"><td class="memItemLeft" align="right" valign="top"><a class="el" href="g3__define_8h.html#a855ebb1284efb85f8be57d819efa519a">dword</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct__tag_h_e_a_d_e_r___w_r_i_t_e___i_e_b100___p_a_c_k_e_t.html#a0a04fb033890a2e4375c9d482c03cd92">body_size_big_end</a></td></tr>
-<tr class="separator:a0a04fb033890a2e4375c9d482c03cd92"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa6152a7e1af826909253070bc381dcda"><td class="memItemLeft" align="right" valign="top"><a class="el" href="g3__define_8h.html#a855ebb1284efb85f8be57d819efa519a">dword</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct__tag_h_e_a_d_e_r___w_r_i_t_e___i_e_b100___p_a_c_k_e_t.html#aa6152a7e1af826909253070bc381dcda">dummy</a></td></tr>
-<tr class="separator:aa6152a7e1af826909253070bc381dcda"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a39dfef3c6a2af073e4ab4f8196ec0035"><td class="memItemLeft" align="right" valign="top"><a class="el" href="g3__define_8h.html#a0c8186d9b9b7880309c27230bbb5e69d">byte</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct__tag_h_e_a_d_e_r___w_r_i_t_e___i_e_b100___p_a_c_k_e_t.html#a39dfef3c6a2af073e4ab4f8196ec0035">res_size</a></td></tr>
-<tr class="separator:a39dfef3c6a2af073e4ab4f8196ec0035"><td class="memSeparator" colspan="2">&#160;</td></tr>
+Data Fields</h2></td></tr>
+<tr class="memitem:a5dc708df2b5b11645f2aa25fa0058eb3"><td class="memItemLeft" align="right" valign="top"><a class="el" href="g3__define_8h.html#a0c8186d9b9b7880309c27230bbb5e69d">byte</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct__tag_h_e_a_d_e_r___w_r_i_t_e___i_e_b100___p_a_c_k_e_t.html#a5dc708df2b5b11645f2aa25fa0058eb3">rom_inst</a></td></tr>
+<tr class="separator:a5dc708df2b5b11645f2aa25fa0058eb3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae1b037f7d611899e6b4bebb10f6edbf1"><td class="memItemLeft" align="right" valign="top"><a class="el" href="g3__define_8h.html#a855ebb1284efb85f8be57d819efa519a">dword</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct__tag_h_e_a_d_e_r___w_r_i_t_e___i_e_b100___p_a_c_k_e_t.html#ae1b037f7d611899e6b4bebb10f6edbf1">body_size_big_end</a></td></tr>
+<tr class="separator:ae1b037f7d611899e6b4bebb10f6edbf1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1ed217c9ec30087c64e731925c3a9f54"><td class="memItemLeft" align="right" valign="top"><a class="el" href="g3__define_8h.html#a855ebb1284efb85f8be57d819efa519a">dword</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct__tag_h_e_a_d_e_r___w_r_i_t_e___i_e_b100___p_a_c_k_e_t.html#a1ed217c9ec30087c64e731925c3a9f54">dummy</a></td></tr>
+<tr class="separator:a1ed217c9ec30087c64e731925c3a9f54"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a95cc742dbace06a239ac3a762d6b0d68"><td class="memItemLeft" align="right" valign="top"><a class="el" href="g3__define_8h.html#a0c8186d9b9b7880309c27230bbb5e69d">byte</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct__tag_h_e_a_d_e_r___w_r_i_t_e___i_e_b100___p_a_c_k_e_t.html#a95cc742dbace06a239ac3a762d6b0d68">res_size</a></td></tr>
+<tr class="separator:a95cc742dbace06a239ac3a762d6b0d68"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7fbd4516be00633ca3f538f620b1dbb1"><td class="memItemLeft" align="right" valign="top">unsigned char&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct__tag_h_e_a_d_e_r___w_r_i_t_e___i_e_b100___p_a_c_k_e_t.html#a7fbd4516be00633ca3f538f620b1dbb1">rom_inst</a></td></tr>
+<tr class="separator:a7fbd4516be00633ca3f538f620b1dbb1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6e55a82a0bf4292cdb27f06a4f947dfd"><td class="memItemLeft" align="right" valign="top">unsigned long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct__tag_h_e_a_d_e_r___w_r_i_t_e___i_e_b100___p_a_c_k_e_t.html#a6e55a82a0bf4292cdb27f06a4f947dfd">body_size_big_end</a></td></tr>
+<tr class="separator:a6e55a82a0bf4292cdb27f06a4f947dfd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a57fba4deaf7850de331448d94784a3d1"><td class="memItemLeft" align="right" valign="top">unsigned long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct__tag_h_e_a_d_e_r___w_r_i_t_e___i_e_b100___p_a_c_k_e_t.html#a57fba4deaf7850de331448d94784a3d1">dummy</a></td></tr>
+<tr class="separator:a57fba4deaf7850de331448d94784a3d1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0f988378cfd2fc651f08e788d74078a2"><td class="memItemLeft" align="right" valign="top">unsigned char&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct__tag_h_e_a_d_e_r___w_r_i_t_e___i_e_b100___p_a_c_k_e_t.html#a0f988378cfd2fc651f08e788d74078a2">res_size</a></td></tr>
+<tr class="separator:a0f988378cfd2fc651f08e788d74078a2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock">
-<p class="definition">Definition at line <a class="el" href="inter__def_8h_source.html#l00033">33</a> of file <a class="el" href="inter__def_8h_source.html">inter_def.h</a>.</p>
-</div><h2 class="groupheader">Member Data Documentation</h2>
-<a id="a0a04fb033890a2e4375c9d482c03cd92"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0a04fb033890a2e4375c9d482c03cd92">&#9670;&nbsp;</a></span>body_size_big_end</h2>
+<h2 class="groupheader">Field Documentation</h2>
+<a id="a6e55a82a0bf4292cdb27f06a4f947dfd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6e55a82a0bf4292cdb27f06a4f947dfd">&#9670;&nbsp;</a></span>body_size_big_end <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="g3__define_8h.html#a855ebb1284efb85f8be57d819efa519a">dword</a> _tagHEADER_WRITE_IEB100_PACKET::body_size_big_end</td>
+          <td class="memname">unsigned long body_size_big_end</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="inter__def_8h_source.html#l00035">35</a> of file <a class="el" href="inter__def_8h_source.html">inter_def.h</a>.</p>
-
 </div>
 </div>
-<a id="aa6152a7e1af826909253070bc381dcda"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa6152a7e1af826909253070bc381dcda">&#9670;&nbsp;</a></span>dummy</h2>
+<a id="ae1b037f7d611899e6b4bebb10f6edbf1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae1b037f7d611899e6b4bebb10f6edbf1">&#9670;&nbsp;</a></span>body_size_big_end <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="g3__define_8h.html#a855ebb1284efb85f8be57d819efa519a">dword</a> _tagHEADER_WRITE_IEB100_PACKET::dummy</td>
+          <td class="memname"><a class="el" href="g3__define_8h.html#a855ebb1284efb85f8be57d819efa519a">dword</a> body_size_big_end</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="inter__def_8h_source.html#l00036">36</a> of file <a class="el" href="inter__def_8h_source.html">inter_def.h</a>.</p>
-
 </div>
 </div>
-<a id="a39dfef3c6a2af073e4ab4f8196ec0035"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a39dfef3c6a2af073e4ab4f8196ec0035">&#9670;&nbsp;</a></span>res_size</h2>
+<a id="a57fba4deaf7850de331448d94784a3d1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a57fba4deaf7850de331448d94784a3d1">&#9670;&nbsp;</a></span>dummy <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="g3__define_8h.html#a0c8186d9b9b7880309c27230bbb5e69d">byte</a> _tagHEADER_WRITE_IEB100_PACKET::res_size</td>
+          <td class="memname">unsigned long dummy</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="inter__def_8h_source.html#l00037">37</a> of file <a class="el" href="inter__def_8h_source.html">inter_def.h</a>.</p>
-
 </div>
 </div>
-<a id="afd9cdce4b7aedb5644ea975c2ae63436"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#afd9cdce4b7aedb5644ea975c2ae63436">&#9670;&nbsp;</a></span>rom_inst</h2>
+<a id="a1ed217c9ec30087c64e731925c3a9f54"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1ed217c9ec30087c64e731925c3a9f54">&#9670;&nbsp;</a></span>dummy <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="g3__define_8h.html#a0c8186d9b9b7880309c27230bbb5e69d">byte</a> _tagHEADER_WRITE_IEB100_PACKET::rom_inst</td>
+          <td class="memname"><a class="el" href="g3__define_8h.html#a855ebb1284efb85f8be57d819efa519a">dword</a> dummy</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="inter__def_8h_source.html#l00034">34</a> of file <a class="el" href="inter__def_8h_source.html">inter_def.h</a>.</p>
+</div>
+</div>
+<a id="a0f988378cfd2fc651f08e788d74078a2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0f988378cfd2fc651f08e788d74078a2">&#9670;&nbsp;</a></span>res_size <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">unsigned char res_size</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
 
 </div>
 </div>
-<hr/>The documentation for this struct was generated from the following file:<ul>
-<li>C:/Users/seungcheol/Desktop/git_api/g3_api_ver_v100/g3_api_library/include/<a class="el" href="inter__def_8h_source.html">inter_def.h</a></li>
+<a id="a95cc742dbace06a239ac3a762d6b0d68"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a95cc742dbace06a239ac3a762d6b0d68">&#9670;&nbsp;</a></span>res_size <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="g3__define_8h.html#a0c8186d9b9b7880309c27230bbb5e69d">byte</a> res_size</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a7fbd4516be00633ca3f538f620b1dbb1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7fbd4516be00633ca3f538f620b1dbb1">&#9670;&nbsp;</a></span>rom_inst <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">unsigned char rom_inst</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a5dc708df2b5b11645f2aa25fa0058eb3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5dc708df2b5b11645f2aa25fa0058eb3">&#9670;&nbsp;</a></span>rom_inst <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="g3__define_8h.html#a0c8186d9b9b7880309c27230bbb5e69d">byte</a> rom_inst</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<hr/>The documentation for this struct was generated from the following files:<ul>
+<li>g3_api_library/include/<a class="el" href="include_2inter__def_8h_source.html">inter_def.h</a></li>
+<li>g3_io_lib/<a class="el" href="io__cdc_8cpp.html">io_cdc.cpp</a></li>
 </ul>
 </div><!-- contents -->
+</div><!-- doc-content -->
 <!-- start footer part -->
-<hr class="footer"/><address class="footer"><small>
-Generated by &#160;<a href="http://www.doxygen.org/index.html">
-<img class="footer" src="doxygen.png" alt="doxygen"/>
-</a> 1.8.14
-</small></address>
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="struct__tag_h_e_a_d_e_r___w_r_i_t_e___i_e_b100___p_a_c_k_e_t.html">_tagHEADER_WRITE_IEB100_PACKET</a></li>
+    <li class="footer">Generated by
+    <a href="http://www.doxygen.org/index.html">
+    <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.14 </li>
+  </ul>
+</div>
 </body>
 </html>

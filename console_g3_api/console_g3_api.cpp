@@ -145,7 +145,7 @@ int main(int argc, char* argv[])
 
 	}
 	;
-	//tls_setup();
+	tls_setup();
 
 	
 	//return 0;
@@ -167,7 +167,7 @@ int main(int argc, char* argv[])
 
 	const unsigned char puredata[] = { 0x84, 0x20, 0x00, 0x00, };
 	recvbuff_size = 1024;
-	g3api_snd_recv_with_puredata(puredata, sizeof(puredata), recvbuff, &recvbuff_size);
+	//g3api_snd_recv_with_puredata(puredata, sizeof(puredata), recvbuff, &recvbuff_size);
 
 	//general_read_write();
 	//general_sign_verify();

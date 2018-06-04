@@ -5,10 +5,17 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.14"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>My Project: File Members</title>
+<title>My Project: Globals</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="navtreedata.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<script type="text/javascript">
+  $(document).ready(initResizable);
+</script>
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
@@ -43,6 +50,20 @@ $(function() {
 </script>
 <div id="main-nav"></div>
 </div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+$(document).ready(function(){initNavTree('globals_func.html','');});
+</script>
+<div id="doc-content">
 <!-- window showing the filter options -->
 <div id="MSearchSelectWindow"
      onmouseover="return searchBox.OnSearchSelectShow()"
@@ -60,126 +81,29 @@ $(function() {
 <div class="contents">
 &#160;
 
-<h3><a id="index_f"></a>- f -</h3><ul>
-<li>fng3_api_library()
-: <a class="el" href="g3__api__library_8h.html#a7e06b225ea8054503fc106caa7b07047">g3_api_library.h</a>
+<h3><a id="index_a"></a>- a -</h3><ul>
+<li>alloc_var_bytes()
+: <a class="el" href="g3__api_8cpp.html#a8c5e0c93f125a7316ed149b44d1c5642">g3_api.cpp</a>
+, <a class="el" href="g3__api__depend__function_8cpp.html#a8c5e0c93f125a7316ed149b44d1c5642">g3_api_depend_function.cpp</a>
 </li>
-</ul>
-
-
-<h3><a id="index_g"></a>- g -</h3><ul>
-<li>g3api_certification()
-: <a class="el" href="g3__api_8h.html#a61ecc119214e5e615e5715fb557cb7cb">g3_api.h</a>
+<li>api_view()
+: <a class="el" href="g3__api__depend__function_8cpp.html#a21d392f1ee051f290a9e83f4f79a5739">g3_api_depend_function.cpp</a>
+, <a class="el" href="g3__api_8cpp.html#a21d392f1ee051f290a9e83f4f79a5739">g3_api.cpp</a>
 </li>
-<li>g3api_change_password()
-: <a class="el" href="g3__api_8h.html#a81476243cfe0c5b4f691e93435df7a4e">g3_api.h</a>
-</li>
-<li>g3api_decryption()
-: <a class="el" href="g3__api_8h.html#a89b686291723b90ed2195a5c07e34a18">g3_api.h</a>
-</li>
-<li>g3api_decryption_ecies()
-: <a class="el" href="g3__api_8h.html#a7436bc56eb2d4ca4eafdb8ce1529f159">g3_api.h</a>
-</li>
-<li>g3api_diversify()
-: <a class="el" href="g3__api_8h.html#a84fc91c39ede2b2f0bd94cf9b55d4f77">g3_api.h</a>
-</li>
-<li>g3api_dynamic_auth()
-: <a class="el" href="g3__api_8h.html#a0f732973e1250bb95bd8ad731204dd95">g3_api.h</a>
-</li>
-<li>g3api_ecdh()
-: <a class="el" href="g3__api_8h.html#a1e9a3d2f4af8d440eb2cd17b68473e1f">g3_api.h</a>
-</li>
-<li>g3api_encryption()
-: <a class="el" href="g3__api_8h.html#a5ec49d4ba2bb4c45ffd3893183c85cc1">g3_api.h</a>
-</li>
-<li>g3api_encryption_ecies()
-: <a class="el" href="g3__api_8h.html#a49ab86db5fe5c958c80aac0b089e37ee">g3_api.h</a>
-</li>
-<li>g3api_get_challenge()
-: <a class="el" href="g3__api_8h.html#ab4dae684be853e14738bc393c1f0c06a">g3_api.h</a>
-</li>
-<li>g3api_get_device_version()
-: <a class="el" href="g3__api_8h.html#ac7e128a8bab8dc29e18f85979559fd3f">g3_api.h</a>
-</li>
-<li>g3api_get_lib_version()
-: <a class="el" href="g3__api_8h.html#a54f95e4800504e1c753cdd2af5bbca6a">g3_api.h</a>
-</li>
-<li>g3api_get_public_key()
-: <a class="el" href="g3__api_8h.html#a7ca755fd508edb569384e47b9201e01e">g3_api.h</a>
-</li>
-<li>g3api_get_sn()
-: <a class="el" href="g3__api_8h.html#afd5d25b175426fb726dcb18c2d513107">g3_api.h</a>
-</li>
-<li>g3api_init_puf()
-: <a class="el" href="g3__api_8h.html#ad88c4ce4756ad1830fc9ce9a10f48c47">g3_api.h</a>
-</li>
-<li>g3api_issue_certification()
-: <a class="el" href="g3__api_8h.html#a57ce6167638547011ed169906a16b764">g3_api.h</a>
-</li>
-<li>g3api_make_tls_inter_header_without_size()
-: <a class="el" href="g3__api_8h.html#a54114dd16e4d8f353bce313383aa3a62">g3_api.h</a>
-</li>
-<li>g3api_raw_snd_recv()
-: <a class="el" href="g3__api_8h.html#a1abbfafd2380e13e3b908a411df55551">g3_api.h</a>
-</li>
-<li>g3api_read_key_value()
-: <a class="el" href="g3__api_8h.html#a355455692b78ca1bc95e5a651c6bb18f">g3_api.h</a>
-</li>
-<li>g3api_reset()
-: <a class="el" href="g3__api_8h.html#af429190d01b2a13e21e55ccd8c0b89be">g3_api.h</a>
-</li>
-<li>g3api_session()
-: <a class="el" href="g3__api_8h.html#a949fff034b434935d617cbc26dc22122">g3_api.h</a>
-</li>
-<li>g3api_set_extern_public_key()
-: <a class="el" href="g3__api_8h.html#aa5a94d516b88d6075c6fb15c78713944">g3_api.h</a>
-</li>
-<li>g3api_set_fp()
-: <a class="el" href="g3__api_8h.html#a3b1a1825fdc9abb60a340f71d0fa7d18">g3_api.h</a>
-</li>
-<li>g3api_set_user_send_recv_pf()
-: <a class="el" href="g3__api_8h.html#abdba15d2f5e35753d64ecaf28c697ca7">g3_api.h</a>
-</li>
-<li>g3api_sha256()
-: <a class="el" href="g3__api_8h.html#a1f64e30b3c7d016553ff70e002831daf">g3_api.h</a>
-</li>
-<li>g3api_sign()
-: <a class="el" href="g3__api_8h.html#a896caef37f304c874af7c0bd00e8def3">g3_api.h</a>
-</li>
-<li>g3api_test()
-: <a class="el" href="g3__api_8h.html#a6a831bd6ffb752093937571651095cbf">g3_api.h</a>
-</li>
-<li>g3api_test2()
-: <a class="el" href="g3__api_8h.html#aa9bde773db84105769f8da4a6af079c7">g3_api.h</a>
-</li>
-<li>g3api_tls_decrypt_verify()
-: <a class="el" href="g3__api_8h.html#a39be46e62b539a212771d1c3082f2ed8">g3_api.h</a>
-</li>
-<li>g3api_tls_get_handshake_digest()
-: <a class="el" href="g3__api_8h.html#a6b28183dff6a4be68884fb2460975eac">g3_api.h</a>
-</li>
-<li>g3api_tls_mac_encrypt()
-: <a class="el" href="g3__api_8h.html#af283718f6333e80ab8b5df29f1af1aa0">g3_api.h</a>
-</li>
-<li>g3api_verify()
-: <a class="el" href="g3__api_8h.html#a94a2a82d38bd36436f9dbb037e4a4b0b">g3_api.h</a>
-</li>
-<li>g3api_verify_passwd()
-: <a class="el" href="g3__api_8h.html#ac706828efd25bcd1759676fdee302d99">g3_api.h</a>
-</li>
-<li>g3api_write_key_value()
-: <a class="el" href="g3__api_8h.html#ade384ce9cf7b04379e280f2b1fd8d82e">g3_api.h</a>
-</li>
-<li>GetSoftwareVersion()
-: <a class="el" href="g3__api_8h.html#aef97d46716b5790db8adf74473654fcd">g3_api.h</a>
+<li>append_var_bytes()
+: <a class="el" href="g3__api__depend__function_8cpp.html#ab85dd6625844f9a38a2c96975173fc50">g3_api_depend_function.cpp</a>
+, <a class="el" href="g3__api_8cpp.html#ab85dd6625844f9a38a2c96975173fc50">g3_api.cpp</a>
 </li>
 </ul>
 </div><!-- contents -->
+</div><!-- doc-content -->
 <!-- start footer part -->
-<hr class="footer"/><address class="footer"><small>
-Generated by &#160;<a href="http://www.doxygen.org/index.html">
-<img class="footer" src="doxygen.png" alt="doxygen"/>
-</a> 1.8.14
-</small></address>
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="footer">Generated by
+    <a href="http://www.doxygen.org/index.html">
+    <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.14 </li>
+  </ul>
+</div>
 </body>
 </html>

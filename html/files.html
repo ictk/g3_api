@@ -9,6 +9,13 @@
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="navtreedata.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<script type="text/javascript">
+  $(document).ready(initResizable);
+</script>
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
@@ -43,6 +50,20 @@ $(function() {
 </script>
 <div id="main-nav"></div>
 </div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+$(document).ready(function(){initNavTree('files.html','');});
+</script>
+<div id="doc-content">
 <!-- window showing the filter options -->
 <div id="MSearchSelectWindow"
      onmouseover="return searchBox.OnSearchSelectShow()"
@@ -63,27 +84,71 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 <div class="textblock">Here is a list of all files with brief descriptions:</div><div class="directory">
-<div class="levels">[detail level <span onclick="javascript:toggleLevel(1);">1</span><span onclick="javascript:toggleLevel(2);">2</span><span onclick="javascript:toggleLevel(3);">3</span><span onclick="javascript:toggleLevel(4);">4</span><span onclick="javascript:toggleLevel(5);">5</span><span onclick="javascript:toggleLevel(6);">6</span><span onclick="javascript:toggleLevel(7);">7</span><span onclick="javascript:toggleLevel(8);">8</span><span onclick="javascript:toggleLevel(9);">9</span>]</div><table class="directory">
-<tr id="row_0_" class="even"><td class="entry"><span style="width:0px;display:inline-block;">&#160;</span><span id="arr_0_" class="arrow" onclick="toggleFolder('0_')">&#9660;</span><span id="img_0_" class="iconfopen" onclick="toggleFolder('0_')">&#160;</span><a class="el" href="dir_e6bb53534ac0e427887cf7a94c0c004e.html" target="_self">C:</a></td><td class="desc"></td></tr>
-<tr id="row_0_0_"><td class="entry"><span style="width:16px;display:inline-block;">&#160;</span><span id="arr_0_0_" class="arrow" onclick="toggleFolder('0_0_')">&#9660;</span><span id="img_0_0_" class="iconfopen" onclick="toggleFolder('0_0_')">&#160;</span><a class="el" href="dir_8ceffd4ee35c3518d4e8bdc7e638efe8.html" target="_self">Users</a></td><td class="desc"></td></tr>
-<tr id="row_0_0_0_" class="even"><td class="entry"><span style="width:32px;display:inline-block;">&#160;</span><span id="arr_0_0_0_" class="arrow" onclick="toggleFolder('0_0_0_')">&#9660;</span><span id="img_0_0_0_" class="iconfopen" onclick="toggleFolder('0_0_0_')">&#160;</span><a class="el" href="dir_a694c359627dd4bb98d97f6b164f798e.html" target="_self">seungcheol</a></td><td class="desc"></td></tr>
-<tr id="row_0_0_0_0_"><td class="entry"><span style="width:48px;display:inline-block;">&#160;</span><span id="arr_0_0_0_0_" class="arrow" onclick="toggleFolder('0_0_0_0_')">&#9660;</span><span id="img_0_0_0_0_" class="iconfopen" onclick="toggleFolder('0_0_0_0_')">&#160;</span><a class="el" href="dir_f0bf8b8aef9db9072a46d0472e732001.html" target="_self">Desktop</a></td><td class="desc"></td></tr>
-<tr id="row_0_0_0_0_0_" class="even"><td class="entry"><span style="width:64px;display:inline-block;">&#160;</span><span id="arr_0_0_0_0_0_" class="arrow" onclick="toggleFolder('0_0_0_0_0_')">&#9660;</span><span id="img_0_0_0_0_0_" class="iconfopen" onclick="toggleFolder('0_0_0_0_0_')">&#160;</span><a class="el" href="dir_1e3ee04f9dd377d522495d549d3c787a.html" target="_self">git_api</a></td><td class="desc"></td></tr>
-<tr id="row_0_0_0_0_0_0_"><td class="entry"><span style="width:80px;display:inline-block;">&#160;</span><span id="arr_0_0_0_0_0_0_" class="arrow" onclick="toggleFolder('0_0_0_0_0_0_')">&#9660;</span><span id="img_0_0_0_0_0_0_" class="iconfopen" onclick="toggleFolder('0_0_0_0_0_0_')">&#160;</span><a class="el" href="dir_25f39e275c9973710f3463e454f667fd.html" target="_self">g3_api_ver_v100</a></td><td class="desc"></td></tr>
-<tr id="row_0_0_0_0_0_0_0_" class="even"><td class="entry"><span style="width:96px;display:inline-block;">&#160;</span><span id="arr_0_0_0_0_0_0_0_" class="arrow" onclick="toggleFolder('0_0_0_0_0_0_0_')">&#9660;</span><span id="img_0_0_0_0_0_0_0_" class="iconfopen" onclick="toggleFolder('0_0_0_0_0_0_0_')">&#160;</span><a class="el" href="dir_4a5bf6cb18154014e368310503582e4e.html" target="_self">g3_api_library</a></td><td class="desc"></td></tr>
-<tr id="row_0_0_0_0_0_0_0_0_"><td class="entry"><span style="width:112px;display:inline-block;">&#160;</span><span id="arr_0_0_0_0_0_0_0_0_" class="arrow" onclick="toggleFolder('0_0_0_0_0_0_0_0_')">&#9660;</span><span id="img_0_0_0_0_0_0_0_0_" class="iconfopen" onclick="toggleFolder('0_0_0_0_0_0_0_0_')">&#160;</span><a class="el" href="dir_cb45715c574027a99d90f7019cb98fb3.html" target="_self">include</a></td><td class="desc"></td></tr>
-<tr id="row_0_0_0_0_0_0_0_0_0_" class="even"><td class="entry"><span style="width:144px;display:inline-block;">&#160;</span><a href="g3__api_8h_source.html"><span class="icondoc"></span></a><a class="el" href="g3__api_8h.html" target="_self">g3_api.h</a></td><td class="desc"></td></tr>
-<tr id="row_0_0_0_0_0_0_0_0_1_"><td class="entry"><span style="width:144px;display:inline-block;">&#160;</span><a href="g3__api__library_8h_source.html"><span class="icondoc"></span></a><a class="el" href="g3__api__library_8h.html" target="_self">g3_api_library.h</a></td><td class="desc"></td></tr>
-<tr id="row_0_0_0_0_0_0_0_0_2_" class="even"><td class="entry"><span style="width:144px;display:inline-block;">&#160;</span><a href="g3__define_8h_source.html"><span class="icondoc"></span></a><a class="el" href="g3__define_8h.html" target="_self">g3_define.h</a></td><td class="desc"></td></tr>
-<tr id="row_0_0_0_0_0_0_0_0_3_"><td class="entry"><span style="width:144px;display:inline-block;">&#160;</span><a href="inter__def_8h_source.html"><span class="icondoc"></span></a><a class="el" href="inter__def_8h.html" target="_self">inter_def.h</a></td><td class="desc"></td></tr>
+<div class="levels">[detail level <span onclick="javascript:toggleLevel(1);">1</span><span onclick="javascript:toggleLevel(2);">2</span><span onclick="javascript:toggleLevel(3);">3</span>]</div><table class="directory">
+<tr id="row_0_" class="even"><td class="entry"><span style="width:0px;display:inline-block;">&#160;</span><span id="arr_0_" class="arrow" onclick="toggleFolder('0_')">&#9660;</span><span id="img_0_" class="iconfopen" onclick="toggleFolder('0_')">&#160;</span><a class="el" href="dir_f02f444d4130370866f0e0a9cd9d3f01.html" target="_self">console_g3_api</a></td><td class="desc"></td></tr>
+<tr id="row_0_0_"><td class="entry"><span style="width:32px;display:inline-block;">&#160;</span><span class="icondoc"></span><a class="el" href="console__g3__api_8cpp.html" target="_self">console_g3_api.cpp</a></td><td class="desc"></td></tr>
+<tr id="row_0_1_" class="even"><td class="entry"><span style="width:32px;display:inline-block;">&#160;</span><a href="console__g3__api_2ftd2xx_8h_source.html"><span class="icondoc"></span></a><a class="el" href="console__g3__api_2ftd2xx_8h.html" target="_self">ftd2xx.h</a></td><td class="desc"></td></tr>
+<tr id="row_0_2_"><td class="entry"><span style="width:32px;display:inline-block;">&#160;</span><a href="console__g3__api_2_lib_f_t4222_8h_source.html"><span class="icondoc"></span></a><a class="el" href="console__g3__api_2_lib_f_t4222_8h.html" target="_self">LibFT4222.h</a></td><td class="desc"></td></tr>
+<tr id="row_0_3_" class="even"><td class="entry"><span style="width:32px;display:inline-block;">&#160;</span><a href="sample__def_8h_source.html"><span class="icondoc"></span></a><a class="el" href="sample__def_8h.html" target="_self">sample_def.h</a></td><td class="desc"></td></tr>
+<tr id="row_0_4_"><td class="entry"><span style="width:32px;display:inline-block;">&#160;</span><span class="icondoc"></span><a class="el" href="scenario__sample_8cpp.html" target="_self">scenario_sample.cpp</a></td><td class="desc"></td></tr>
+<tr id="row_0_5_" class="even"><td class="entry"><span style="width:32px;display:inline-block;">&#160;</span><span class="icondoc"></span><a class="el" href="console__g3__api_2stdafx_8cpp.html" target="_self">stdafx.cpp</a></td><td class="desc"></td></tr>
+<tr id="row_0_6_"><td class="entry"><span style="width:32px;display:inline-block;">&#160;</span><a href="console__g3__api_2stdafx_8h_source.html"><span class="icondoc"></span></a><a class="el" href="console__g3__api_2stdafx_8h.html" target="_self">stdafx.h</a></td><td class="desc"></td></tr>
+<tr id="row_0_7_" class="even"><td class="entry"><span style="width:32px;display:inline-block;">&#160;</span><a href="console__g3__api_2targetver_8h_source.html"><span class="icondoc"></span></a><a class="el" href="console__g3__api_2targetver_8h.html" target="_self">targetver.h</a></td><td class="desc"></td></tr>
+<tr id="row_0_8_"><td class="entry"><span style="width:32px;display:inline-block;">&#160;</span><span class="icondoc"></span><a class="el" href="test_8cpp.html" target="_self">test.cpp</a></td><td class="desc"></td></tr>
+<tr id="row_0_9_" class="even"><td class="entry"><span style="width:32px;display:inline-block;">&#160;</span><span class="icondoc"></span><a class="el" href="tls__setup_8cpp.html" target="_self">tls_setup.cpp</a></td><td class="desc"></td></tr>
+<tr id="row_0_10_"><td class="entry"><span style="width:32px;display:inline-block;">&#160;</span><span class="icondoc"></span><a class="el" href="console__g3__api_2util_8cpp.html" target="_self">util.cpp</a></td><td class="desc"></td></tr>
+<tr id="row_0_11_" class="even"><td class="entry"><span style="width:32px;display:inline-block;">&#160;</span><a href="console__g3__api_2util_8h_source.html"><span class="icondoc"></span></a><a class="el" href="console__g3__api_2util_8h.html" target="_self">util.h</a></td><td class="desc"></td></tr>
+<tr id="row_0_12_"><td class="entry"><span style="width:32px;display:inline-block;">&#160;</span><a href="value__define_8h_source.html"><span class="icondoc"></span></a><a class="el" href="value__define_8h.html" target="_self">value_define.h</a></td><td class="desc"></td></tr>
+<tr id="row_1_" class="even"><td class="entry"><span style="width:0px;display:inline-block;">&#160;</span><span id="arr_1_" class="arrow" onclick="toggleFolder('1_')">&#9660;</span><span id="img_1_" class="iconfopen" onclick="toggleFolder('1_')">&#160;</span><a class="el" href="dir_32e657602c231eec7ad6d664c748cae9.html" target="_self">g3_api_library</a></td><td class="desc"></td></tr>
+<tr id="row_1_0_"><td class="entry"><span style="width:16px;display:inline-block;">&#160;</span><span id="arr_1_0_" class="arrow" onclick="toggleFolder('1_0_')">&#9660;</span><span id="img_1_0_" class="iconfopen" onclick="toggleFolder('1_0_')">&#160;</span><a class="el" href="dir_d888d3590964b1b92ae0334ce1ee1acf.html" target="_self">include</a></td><td class="desc"></td></tr>
+<tr id="row_1_0_0_" class="even"><td class="entry"><span style="width:48px;display:inline-block;">&#160;</span><a href="g3__api_8h_source.html"><span class="icondoc"></span></a><a class="el" href="g3__api_8h.html" target="_self">g3_api.h</a></td><td class="desc"></td></tr>
+<tr id="row_1_0_1_"><td class="entry"><span style="width:48px;display:inline-block;">&#160;</span><a href="g3__api__library_8h_source.html"><span class="icondoc"></span></a><a class="el" href="g3__api__library_8h.html" target="_self">g3_api_library.h</a></td><td class="desc"></td></tr>
+<tr id="row_1_0_2_" class="even"><td class="entry"><span style="width:48px;display:inline-block;">&#160;</span><a href="g3__define_8h_source.html"><span class="icondoc"></span></a><a class="el" href="g3__define_8h.html" target="_self">g3_define.h</a></td><td class="desc"></td></tr>
+<tr id="row_1_0_3_"><td class="entry"><span style="width:48px;display:inline-block;">&#160;</span><a href="include_2inter__def_8h_source.html"><span class="icondoc"></span></a><a class="el" href="include_2inter__def_8h.html" target="_self">inter_def.h</a></td><td class="desc"></td></tr>
+<tr id="row_1_1_" class="even"><td class="entry"><span style="width:16px;display:inline-block;">&#160;</span><span id="arr_1_1_" class="arrow" onclick="toggleFolder('1_1_')">&#9660;</span><span id="img_1_1_" class="iconfopen" onclick="toggleFolder('1_1_')">&#160;</span><a class="el" href="dir_6b352a15ae42c184c1b650d45e5cefef.html" target="_self">src</a></td><td class="desc"></td></tr>
+<tr id="row_1_1_0_"><td class="entry"><span style="width:48px;display:inline-block;">&#160;</span><span class="icondoc"></span><a class="el" href="g3__api_8cpp.html" target="_self">g3_api.cpp</a></td><td class="desc"></td></tr>
+<tr id="row_1_1_1_" class="even"><td class="entry"><span style="width:48px;display:inline-block;">&#160;</span><span class="icondoc"></span><a class="el" href="g3__api__depend__function_8cpp.html" target="_self">g3_api_depend_function.cpp</a></td><td class="desc"></td></tr>
+<tr id="row_1_1_2_"><td class="entry"><span style="width:48px;display:inline-block;">&#160;</span><span class="icondoc"></span><a class="el" href="g3__etc__util_8cpp.html" target="_self">g3_etc_util.cpp</a></td><td class="desc"></td></tr>
+<tr id="row_1_1_3_" class="even"><td class="entry"><span style="width:48px;display:inline-block;">&#160;</span><span class="icondoc"></span><a class="el" href="test_8c.html" target="_self">test.c</a></td><td class="desc"></td></tr>
+<tr id="row_1_2_"><td class="entry"><span style="width:32px;display:inline-block;">&#160;</span><span class="icondoc"></span><a class="el" href="g3__api__library_2dllmain_8cpp.html" target="_self">dllmain.cpp</a></td><td class="desc"></td></tr>
+<tr id="row_1_3_" class="even"><td class="entry"><span style="width:32px;display:inline-block;">&#160;</span><span class="icondoc"></span><a class="el" href="g3__api__library_8cpp.html" target="_self">g3_api_library.cpp</a></td><td class="desc"></td></tr>
+<tr id="row_1_4_"><td class="entry"><span style="width:32px;display:inline-block;">&#160;</span><a href="inter__def_8h_source.html"><span class="icondoc"></span></a><a class="el" href="inter__def_8h.html" target="_self">inter_def.h</a></td><td class="desc"></td></tr>
+<tr id="row_1_5_" class="even"><td class="entry"><span style="width:32px;display:inline-block;">&#160;</span><span class="icondoc"></span><a class="el" href="g3__api__library_2stdafx_8cpp.html" target="_self">stdafx.cpp</a></td><td class="desc"></td></tr>
+<tr id="row_1_6_"><td class="entry"><span style="width:32px;display:inline-block;">&#160;</span><a href="g3__api__library_2stdafx_8h_source.html"><span class="icondoc"></span></a><a class="el" href="g3__api__library_2stdafx_8h.html" target="_self">stdafx.h</a></td><td class="desc"></td></tr>
+<tr id="row_1_7_" class="even"><td class="entry"><span style="width:32px;display:inline-block;">&#160;</span><a href="g3__api__library_2targetver_8h_source.html"><span class="icondoc"></span></a><a class="el" href="g3__api__library_2targetver_8h.html" target="_self">targetver.h</a></td><td class="desc"></td></tr>
+<tr id="row_2_"><td class="entry"><span style="width:0px;display:inline-block;">&#160;</span><span id="arr_2_" class="arrow" onclick="toggleFolder('2_')">&#9660;</span><span id="img_2_" class="iconfopen" onclick="toggleFolder('2_')">&#160;</span><a class="el" href="dir_d54b3450fed233d3fcb1b549d833b9b3.html" target="_self">g3_io_lib</a></td><td class="desc"></td></tr>
+<tr id="row_2_0_" class="even"><td class="entry"><span style="width:16px;display:inline-block;">&#160;</span><span id="arr_2_0_" class="arrow" onclick="toggleFolder('2_0_')">&#9660;</span><span id="img_2_0_" class="iconfopen" onclick="toggleFolder('2_0_')">&#160;</span><a class="el" href="dir_0a49af80ebc14cc4851cd1215f864c07.html" target="_self">include</a></td><td class="desc"></td></tr>
+<tr id="row_2_0_0_"><td class="entry"><span style="width:48px;display:inline-block;">&#160;</span><a href="g3__io__lib_8h_source.html"><span class="icondoc"></span></a><a class="el" href="g3__io__lib_8h.html" target="_self">g3_io_lib.h</a></td><td class="desc"></td></tr>
+<tr id="row_2_1_" class="even"><td class="entry"><span style="width:32px;display:inline-block;">&#160;</span><span class="icondoc"></span><a class="el" href="g3__io__lib_2dllmain_8cpp.html" target="_self">dllmain.cpp</a></td><td class="desc"></td></tr>
+<tr id="row_2_2_"><td class="entry"><span style="width:32px;display:inline-block;">&#160;</span><a href="g3__io__lib_2ftd2xx_8h_source.html"><span class="icondoc"></span></a><a class="el" href="g3__io__lib_2ftd2xx_8h.html" target="_self">ftd2xx.h</a></td><td class="desc"></td></tr>
+<tr id="row_2_3_" class="even"><td class="entry"><span style="width:32px;display:inline-block;">&#160;</span><span class="icondoc"></span><a class="el" href="g3__io__lib_8cpp.html" target="_self">g3_io_lib.cpp</a></td><td class="desc"></td></tr>
+<tr id="row_2_4_"><td class="entry"><span style="width:32px;display:inline-block;">&#160;</span><span class="icondoc"></span><a class="el" href="io__cdc_8cpp.html" target="_self">io_cdc.cpp</a></td><td class="desc"></td></tr>
+<tr id="row_2_5_" class="even"><td class="entry"><span style="width:32px;display:inline-block;">&#160;</span><span class="icondoc"></span><a class="el" href="io__ft4222_8cpp.html" target="_self">io_ft4222.cpp</a></td><td class="desc"></td></tr>
+<tr id="row_2_6_"><td class="entry"><span style="width:32px;display:inline-block;">&#160;</span><span class="icondoc"></span><a class="el" href="io__i2c_8cpp.html" target="_self">io_i2c.cpp</a></td><td class="desc"></td></tr>
+<tr id="row_2_7_" class="even"><td class="entry"><span style="width:32px;display:inline-block;">&#160;</span><a href="g3__io__lib_2_lib_f_t4222_8h_source.html"><span class="icondoc"></span></a><a class="el" href="g3__io__lib_2_lib_f_t4222_8h.html" target="_self">LibFT4222.h</a></td><td class="desc"></td></tr>
+<tr id="row_2_8_"><td class="entry"><span style="width:32px;display:inline-block;">&#160;</span><span class="icondoc"></span><a class="el" href="g3__io__lib_2stdafx_8cpp.html" target="_self">stdafx.cpp</a></td><td class="desc"></td></tr>
+<tr id="row_2_9_" class="even"><td class="entry"><span style="width:32px;display:inline-block;">&#160;</span><a href="g3__io__lib_2stdafx_8h_source.html"><span class="icondoc"></span></a><a class="el" href="g3__io__lib_2stdafx_8h.html" target="_self">stdafx.h</a></td><td class="desc"></td></tr>
+<tr id="row_2_10_"><td class="entry"><span style="width:32px;display:inline-block;">&#160;</span><a href="g3__io__lib_2targetver_8h_source.html"><span class="icondoc"></span></a><a class="el" href="g3__io__lib_2targetver_8h.html" target="_self">targetver.h</a></td><td class="desc"></td></tr>
+<tr id="row_2_11_" class="even"><td class="entry"><span style="width:32px;display:inline-block;">&#160;</span><span class="icondoc"></span><a class="el" href="g3__io__lib_2util_8cpp.html" target="_self">util.cpp</a></td><td class="desc"></td></tr>
+<tr id="row_2_12_"><td class="entry"><span style="width:32px;display:inline-block;">&#160;</span><a href="g3__io__lib_2util_8h_source.html"><span class="icondoc"></span></a><a class="el" href="g3__io__lib_2util_8h.html" target="_self">util.h</a></td><td class="desc"></td></tr>
+<tr id="row_3_" class="even"><td class="entry"><span style="width:0px;display:inline-block;">&#160;</span><span id="arr_3_" class="arrow" onclick="toggleFolder('3_')">&#9660;</span><span id="img_3_" class="iconfopen" onclick="toggleFolder('3_')">&#160;</span><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html" target="_self">include</a></td><td class="desc"></td></tr>
+<tr id="row_3_0_"><td class="entry"><span style="width:32px;display:inline-block;">&#160;</span><a href="comdef_8h_source.html"><span class="icondoc"></span></a><a class="el" href="comdef_8h.html" target="_self">comdef.h</a></td><td class="desc"></td></tr>
+<tr id="row_3_1_" class="even"><td class="entry"><span style="width:32px;display:inline-block;">&#160;</span><a href="_c_serial_b_a_s_e_8h_source.html"><span class="icondoc"></span></a><a class="el" href="_c_serial_b_a_s_e_8h.html" target="_self">CSerialBASE.h</a></td><td class="desc"></td></tr>
+<tr id="row_3_2_"><td class="entry"><span style="width:32px;display:inline-block;">&#160;</span><a href="_c_serial_r_s232_8h_source.html"><span class="icondoc"></span></a><a class="el" href="_c_serial_r_s232_8h.html" target="_self">CSerialRS232.h</a></td><td class="desc"></td></tr>
+<tr id="row_3_3_" class="even"><td class="entry"><span style="width:32px;display:inline-block;">&#160;</span><a href="neo_co_lib_8h_source.html"><span class="icondoc"></span></a><a class="el" href="neo_co_lib_8h.html" target="_self">neoCoLib.h</a></td><td class="desc"></td></tr>
+<tr id="row_3_4_"><td class="entry"><span style="width:32px;display:inline-block;">&#160;</span><a href="neo_debug_8h_source.html"><span class="icondoc"></span></a><a class="el" href="neo_debug_8h.html" target="_self">neoDebug.h</a></td><td class="desc"></td></tr>
+<tr id="row_3_5_" class="even"><td class="entry"><span style="width:32px;display:inline-block;">&#160;</span><a href="_neo_system_lib_8h_source.html"><span class="icondoc"></span></a><a class="el" href="_neo_system_lib_8h.html" target="_self">NeoSystemLib.h</a></td><td class="desc"></td></tr>
 </table>
 </div><!-- directory -->
 </div><!-- contents -->
+</div><!-- doc-content -->
 <!-- start footer part -->
-<hr class="footer"/><address class="footer"><small>
-Generated by &#160;<a href="http://www.doxygen.org/index.html">
-<img class="footer" src="doxygen.png" alt="doxygen"/>
-</a> 1.8.14
-</small></address>
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="footer">Generated by
+    <a href="http://www.doxygen.org/index.html">
+    <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.14 </li>
+  </ul>
+</div>
 </body>
 </html>

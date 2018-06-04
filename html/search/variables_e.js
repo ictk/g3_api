@@ -1,5 +1,8 @@
 var searchData=
 [
-  ['tls_5fbe_5fver',['tls_be_ver',['../struct__tag_s_t___t_l_s___i_n_t_e_r___h_e_a_d_e_r___w_i_t_h_o_u_t___s_i_z_e.html#a79ab9faa4acdbefe8b6ddf61c096853a',1,'_tagST_TLS_INTER_HEADER_WITHOUT_SIZE::tls_be_ver()'],['../struct__tag_t_l_s___i_n_t_e_r___h_e_a_d_e_r.html#a1b66b81b0b0d7a209ca7b5e106c893a9',1,'_tagTLS_INTER_HEADER::tls_be_ver()']]],
-  ['tls_5finter_5fheader_5fwithout_5fsize',['tls_inter_header_without_size',['../struct__tag_s_t___t_l_s___i_n_t_e_r___h_e_a_d_e_r.html#a0f1f93c96649461f69636e1dd5c10b55',1,'_tagST_TLS_INTER_HEADER']]]
+  ['org_5fmsg',['org_msg',['../value__define_8h.html#afe40c411dfe19f1e5343b11c419d576d',1,'value_define.h']]],
+  ['org_5fmsg_5fhash',['org_msg_hash',['../value__define_8h.html#afc014d80b068e0ee023cccace32d38c3',1,'value_define.h']]],
+  ['orgalloc',['orgalloc',['../struct__tag_d_e_v_i_n_o.html#a9243d173a6ad8d0efaebf362bcc9cb8c',1,'_tagDEVINO']]],
+  ['outer_5fpriv_5fkey',['outer_priv_key',['../value__define_8h.html#a0f05d03d0b3a6531550475181978bd0c',1,'value_define.h']]],
+  ['outer_5fpub_5fkey',['outer_pub_key',['../value__define_8h.html#aa7afbef9bd2c17964db4dddafa517db1',1,'value_define.h']]]
 ];
