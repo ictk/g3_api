@@ -164,6 +164,13 @@ int main(int argc, char* argv[])
 	int recvbuff_size = 1024;
 	ret = g3api_get_challenge(32, recvbuff, &recvbuff_size);
 	
+	ST_IV iv;
+	//iv.iv = NCL::HexStr2Byte("871B1023000000000000000000000000");
+	vecbyte = NCL::HexStr2Byte("F36E183703DA7DF61F1DA1445B037A60");
+	byte* c = new byte[999];
+	int cl = 999;
+	ret = g3api_encryption(27, EN_KEY_TYPE::SECTOR_KEY, EN_BLOCK_MODE::BL_CBC, &iv, V2A(vecbyte), 16, c, &cl);
+
 	exit(0);
 
 	const unsigned char puredata[] = { 0x84, 0x20, 0x00, 0x00, };
