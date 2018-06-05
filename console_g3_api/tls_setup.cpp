@@ -8,6 +8,71 @@ void print_result_value(const char * title, int ret, const void *buff, int size)
 void set_buff_from_hexstr(void *pbuff, const char *hexstr);
 
 
+void clear()
+{
+	ST_KEY_VALUE recv_key;
+	ST_KEY_VALUE write_key;
+	byte rcv_buffer[1024];
+	int rcv_buffer_size = 1024;
+
+	int ret = 0;
+
+	const unsigned char passwd[] = { 0x30, 0x31, 0x32, 0x33, 0x34, 0x35, 0x36, 0x37, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 };
+
+
+	// get Root_AC
+	ret = g3api_verify_passwd(3, passwd, sizeof(passwd));
+	print_result("g3api_verify_passwd", ret);
+
+	// write setup area sector 2
+	set_buff_from_hexstr(&write_key, "0054000000000000005400000000000000540000000000000054000000000000");
+	ret = g3api_write_key_value(2, SETUP_AREA, PLAIN_TEXT, &write_key, sizeof(ST_KEY_VALUE));
+	print_result("write setup area sector 2 root free", ret);
+	
+	// write setup area sector 4 ~ 33
+	set_buff_from_hexstr(&write_key, "9054000000000000905400000000000090540000000000009054000000000000");
+	for (int i = 4; i < 34; i++)
+	{
+		ret = g3api_write_key_value(i, SETUP_AREA, PLAIN_TEXT, &write_key, sizeof(ST_KEY_VALUE));
+		printf("write setup area sector %d data, data, data, data    ret : %d\n", i,ret);
+	}
+
+	// write zeros in key area sector 0 ~ 119
+	set_buff_from_hexstr(&write_key, "0000000000000000000000000000000000000000000000000000000000000000");
+	for (int i = 0; i < 120; i++)
+	{
+		ret = g3api_write_key_value(i, KEY_AREA, PLAIN_TEXT, &write_key, sizeof(ST_KEY_VALUE));
+		printf("write key area sector %d  ret : %d\n", i, ret);
+	}
+
+#if 0
+	// write zeros in data0 area sector 0 ~ 164
+	set_buff_from_hexstr(&write_key, "0000000000000000000000000000000000000000000000000000000000000000");
+	for (int i = 0; i < 165; i++)
+	{
+		ret = g3api_write_key_value(i, DATA_AREA_0, PLAIN_TEXT, &write_key, sizeof(ST_KEY_VALUE));
+		printf("write data0 area sector %d  ret : %d\n", i, ret);
+	}
+
+	// write zeros in key data1 sector 0 ~ 164
+	set_buff_from_hexstr(&write_key, "0000000000000000000000000000000000000000000000000000000000000000");
+	for (int i = 0; i < 165; i++)
+	{
+		ret = g3api_write_key_value(i, DATA_AREA_1, PLAIN_TEXT, &write_key, sizeof(ST_KEY_VALUE));
+		printf("write data1 area sector %d  ret : %d\n", i, ret);
+	}
+#endif
+
+	// write setup area sector 4 ~ 33
+	set_buff_from_hexstr(&write_key, "0054000000000000005400000000000000540000000000000054000000000000");
+	for (int i = 4; i < 34; i++)
+	{
+		ret = g3api_write_key_value(i, SETUP_AREA, PLAIN_TEXT, &write_key, sizeof(ST_KEY_VALUE));
+		printf("write setup area sector %d void, void, void, void    ret : %d\n", i, ret);
+	}
+
+}
+
 void tls_setup()
 {
 	ST_KEY_VALUE recv_key;

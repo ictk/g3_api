@@ -6,6 +6,7 @@
 #include "g3_io_lib.h"
 #include "util.h"
 
+#pragma warning(disable:4996)
 
 extern FILE * _fp;
 
@@ -46,6 +47,7 @@ void swap_bytes(void* value, int size)
 	free(pnewvalue);
 
 }
+
 //
 //VAR_BYTES* alloc_var_bytes_i2c(int size)
 //{

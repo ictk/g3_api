@@ -341,21 +341,21 @@ int check_vefify_struct(EN_VERIFY_OPTION verify_option, int structure_size)
 {
 	switch (verify_option)
 	{
-	case VERYFY_ECDSA_EXT_SHA256:
-	case VERYFY_ECDSA_WITH_SHA256:
-	case VERYFY_EXT_PUB_ECDSA_EXT_SHA256:
-	case VERYFY_EXT_PUB_ECDSA_WITH_SHA256:
+	case VERIFY_ECDSA_EXT_SHA256:
+	case VERIFY_ECDSA_WITH_SHA256:
+	case VERIFY_EXT_PUB_ECDSA_EXT_SHA256:
+	case VERIFY_EXT_PUB_ECDSA_WITH_SHA256:
 		if (structure_size != sizeof(ST_SIGN_ECDSA)){
 			return RET_ERR_SIGN_MODE_PARSE_ERR;
 		}
 
 		break;
-	case VERYFY_HMAC:
+	case VERIFY_HMAC:
 		if (structure_size != sizeof(ST_SIGN_HMAC)){
 			return RET_ERR_SIGN_MODE_PARSE_ERR;
 		}
 		break;
-	case VERYFY_SYMM:
+	case VERIFY_SYMM:
 	case VERIFY_SESSION_SYMM:
 		if (structure_size != sizeof(ST_SIGN_SYMM)){
 			return RET_ERR_SIGN_MODE_PARSE_ERR;

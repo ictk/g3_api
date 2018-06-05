@@ -46,6 +46,7 @@ void general_session();
 void general_tls();
 void general_etc();
 void tls_setup();
+void clear();
 
 FILE * _fp = stdout;
 //
@@ -94,6 +95,7 @@ void general_sign_verify();
 void test_scenario_sample();
 void test_scenario_sample2();
 void test_scenario_sample3();
+
 
 void init_fp(){
 
@@ -145,11 +147,10 @@ int main(int argc, char* argv[])
 
 	}
 	;
-	tls_setup();
-
+	//tls_setup();
+	//clear();
 	
 	//return 0;
-
 
 //	g3api_set_etc_param(serreial);
 	ST_SIGN_ECDSA sign;
@@ -167,7 +168,7 @@ int main(int argc, char* argv[])
 
 	const unsigned char puredata[] = { 0x84, 0x20, 0x00, 0x00, };
 	recvbuff_size = 1024;
-	//g3api_snd_recv_with_puredata(puredata, sizeof(puredata), recvbuff, &recvbuff_size);
+	g3api_snd_recv_with_puredata(puredata, sizeof(puredata), recvbuff, &recvbuff_size);
 
 	//general_read_write();
 	//general_sign_verify();
