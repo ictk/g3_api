@@ -48,6 +48,52 @@ void swap_bytes(void* value, int size)
 
 }
 
+#define test
+
+#ifdef test
+
+
+void set_buffer_from_hexstr2(void *dest, char *src, int size)
+{
+	unsigned char * pvalue; *pvalue = *src;
+	unsigned char * byte   = (unsigned char*)malloc(size);
+
+	int pos = 0;
+	int length = 0;
+
+	while (*src != NULL)
+	{
+		pvalue++;
+		length++;
+	}
+	printf("len : %d\n", length);
+
+#if 1
+	printf("set : \r\n");
+	for (int i = 0; i < length / 2; i++)
+	{
+		sscanf(src + pos, "%2hhX", (byte + i));
+		pos += 2;
+
+		printf("%02X", *(byte + i));
+	}
+	printf("\n");
+
+	memcpy((unsigned char*)dest, byte, size);
+
+#endif
+}
+
+void int2hexbyte(unsigned char *dest, int int_value, int position)
+{
+	char hexstr[20], byte[20];
+
+	sprintf(hexstr, "%X", int_value);
+	sscanf(hexstr, "%2hhX", &byte);
+	memcpy(dest + position, &byte, 1);
+}
+
+#endif
 //
 //VAR_BYTES* alloc_var_bytes_i2c(int size)
 //{

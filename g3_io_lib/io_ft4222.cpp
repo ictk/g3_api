@@ -170,9 +170,43 @@ end:
 //###################################################
 void Wakeup(FT_DEVICE_LIST_INFO_NODE * b_devInfo,int wakeupTime)
 {
+	FT_STATUS            ftStatus;
+	FT4222_STATUS        ft4222Status;
+	const uint16         slaveAddr = 0x64;
+	uint16               bytesToRead = 4;
+	uint16               bytesRead = 0;
+
+	LPDEVINO lpdevinfo = (LPDEVINO)&_devinfo;
+
+	unsigned char buffer[256] = { 0x00, };
+	unsigned char cmp_res[4]  = { 0x04, 0x11, 0x33, 0x43 };
+	
 	FT4222_GPIO_Write(b_devInfo->ftHandle, GPIO_PORT2, 1);
 	cur_sleep(wakeupTime);
 	FT4222_GPIO_Write(b_devInfo->ftHandle, GPIO_PORT2, 0);
+	
+
+	for (int i = 0; i < 10; i++) 
+	{
+
+		ft4222Status = FT4222_I2CMaster_Read(lpdevinfo->a_devInfo->ftHandle,
+			slaveAddr,
+			buffer,
+			bytesToRead,
+			&bytesRead);
+
+		//if (FT4222_OK == ft4222Status && memcmp(buffer,cmp_res,4) == 0)
+		if (FT4222_OK == ft4222Status && buffer[0] != 0xFF)
+		{
+			//print_value("Wake-up response", buffer, 4);
+			//printf("wakeup ret cnt : %d\n", i);
+			return;
+		}
+		
+		cur_sleep(10);
+	}
+	print_value("Wake-up failed", buffer, bytesRead);
+
 }
 
 //###################################################	
@@ -607,9 +641,9 @@ extern "C" int send_n_recv_4_ft4222(const unsigned char*snd, int snd_size, unsig
 			&bytesRead);
 		
 		if (FT4222_OK == ft4222Status && recv[0] != 0xff){
+
 			break;
 		}
-
 		cur_sleep(10);
 			
 		//if (recv[0] == 0xff &&   
@@ -617,6 +651,7 @@ extern "C" int send_n_recv_4_ft4222(const unsigned char*snd, int snd_size, unsig
 
 
 	}
+
 	if (FT4222_OK != ft4222Status)
 	{
 		printf("FT4222_I2CMaster_Read failed (error %d)\n",
