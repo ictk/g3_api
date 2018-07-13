@@ -10,7 +10,7 @@
 #include "neoDebug.h"
 #include <g3_api.h>
 #include "g3_io_lib.h"
-//#include "util.h"
+#include "util.h"
 //#include<windows.h>
 
 
@@ -132,6 +132,7 @@ int main(int argc, char* argv[])
 	//GET_FUCNTION(&samplefunction);
 
 
+
 	PF_INIT_G3_IO_LIB init_sample = samplefunction.init_sample;
 	PF_WAKE_UP_AND_CONVERT_MODE wake_up_and_convert_mode = samplefunction.wake_up_and_convert_mode;
 	PF_END_G3_IO_LIB end_sample = samplefunction.end_sample;
@@ -147,6 +148,8 @@ int main(int argc, char* argv[])
 
 	}
 	;
+
+	//test_scenario_sample2();
 	//tls_setup();
 	//clear();
 	
@@ -181,7 +184,6 @@ int main(int argc, char* argv[])
 	//general_sign_verify();
 
 	//test_scenario_sample();
-	//test_scenario_sample2();
 
 
 

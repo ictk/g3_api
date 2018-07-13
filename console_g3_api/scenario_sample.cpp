@@ -9,38 +9,6 @@
 void print_result_value(const char * title, int ret, const void *buff, int size);
 void set_buff_from_hexstr(void *pbuff,const char *hexstr);
 
-void test()
-{
-	ST_KEY_VALUE recv_key;
-	ST_KEY_VALUE write_key;
-	byte rcv_buffer[1024];
-	int rcv_buffer_size = 32;
-
-	const unsigned char passwd2[] = { 0x11, 0x22, 0x33, 0x44 };
-	int ret = 0;
-
-	ST_IV iv;
-	byte plain_text[16], cipher_text[16];
-	int cipher_text_size = 16;
-
-	ST_ECIES ecies;
-	byte msg[32];
-	int msg_size = 32;
-
-	byte session_b[16];
-	byte session_out[32];
-	int session_out_size = 32;
-
-	// encrypt_cbc
-	set_buff_from_hexstr(&iv, "00000000000000000000000000000000");
-	set_buff_from_hexstr(plain_text, "A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0");
-	ret = g3api_encryption(36, SECTOR_KEY, BL_CBC, &iv, plain_text, sizeof(plain_text), cipher_text, &cipher_text_size);
-	print_result("encrypt cbc", ret);
-	print_value("cipher text", cipher_text, sizeof(cipher_text));
-	printf("cipher_size : %d\n", cipher_text_size);
-	memset(plain_text, 0, sizeof(plain_text));
-}
-
 
 void initialize()
 {
@@ -52,7 +20,7 @@ void initialize()
 	int ret = 0;
 
 	const unsigned char passwd2[] = { 0x11, 0x22, 0x33, 0x44 };
-
+ 
 	// get Root_AC
 	ret = g3api_verify_passwd(0, passwd2, sizeof(passwd2));
 	print_result("g3api_verify_passwd", ret);
@@ -1041,8 +1009,6 @@ void test_scenario_sample2()
 {
 
 	initialize();
-
-	test();
 
 	//g3api_reset();
 	//general_read_write();
