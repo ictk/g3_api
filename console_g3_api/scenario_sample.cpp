@@ -1011,7 +1011,7 @@ void test_scenario_sample2()
 	initialize();
 
 	//g3api_reset();
-	//general_read_write();
+	general_read_write();
 	//general_diversify();
 	//general_enc_dec();
 	//general_password();

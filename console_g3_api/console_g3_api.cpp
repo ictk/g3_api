@@ -141,7 +141,6 @@ int main(int argc, char* argv[])
 
 	if (init_sample(argv[1])){
 		return -1;
-
 	}
 	if (wake_up_and_convert_mode()){
 		return -1;
@@ -149,7 +148,7 @@ int main(int argc, char* argv[])
 	}
 	;
 
-	//test_scenario_sample2();
+	test_scenario_sample2();
 	//tls_setup();
 	//clear();
 	

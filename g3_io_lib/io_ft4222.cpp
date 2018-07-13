@@ -612,6 +612,7 @@ extern "C" int send_n_recv_4_ft4222(const unsigned char*snd, int snd_size, unsig
 	int                  page;
 	
 	NEO_TITLE(send_n_recv_4_ft4222);
+	
 	success = 0;
 	LPDEVINO lpdevinfo = (LPDEVINO)etcparam;
 
@@ -705,23 +706,23 @@ void get_functions_ft4222(LPST_G3_IO_LIB_FUNCTIONS lpsamplefunction)
 int init_sample_ft4222(void *param)
 {
 	NEO_TITLE(init_sample_ft4222);
-	int nRet;
 	
 	DWORD                     numDevs = 0;
-	nRet = GetDeviceFT4222(&_devinfo);
+	if (GetDeviceFT4222(&_devinfo))
+		return -1;
 	//exercise4222(&devInfo[0]);
-	if (nRet == 0)
-	{
-		Connect(&_devinfo);
-		g3api_set_user_send_recv_pf(send_n_recv_4_ft4222, &_devinfo);
-	}
+
+	if (Connect(&_devinfo))
+		return -1;
+
+	g3api_set_user_send_recv_pf(send_n_recv_4_ft4222, &_devinfo);
 
 	/*Wakeup(_devinfo.b_devInfo, 100);
 
 	exercise4222(&_devinfo);*/
 
 
-	return nRet;
+	return 0;
 
 }
 
