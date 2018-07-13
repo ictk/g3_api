@@ -182,11 +182,11 @@ void Wakeup(FT_DEVICE_LIST_INFO_NODE * b_devInfo,int wakeupTime)
 	unsigned char cmp_res[4]  = { 0x04, 0x11, 0x33, 0x43 };
 	
 	FT4222_GPIO_Write(b_devInfo->ftHandle, GPIO_PORT2, 1);
-	cur_sleep(wakeupTime);
+	cur_sleep(wakeupTime); // 1ms
 	FT4222_GPIO_Write(b_devInfo->ftHandle, GPIO_PORT2, 0);
 	
 
-	for (int i = 0; i < 10; i++) 
+	for (int i = 0; i < 30; i++) 
 	{
 
 		ft4222Status = FT4222_I2CMaster_Read(lpdevinfo->a_devInfo->ftHandle,
@@ -203,8 +203,9 @@ void Wakeup(FT_DEVICE_LIST_INFO_NODE * b_devInfo,int wakeupTime)
 			return;
 		}
 		
-		cur_sleep(10);
+		cur_sleep(1);
 	}
+	cur_sleep(15);
 	print_value("Wake-up failed", buffer, bytesRead);
 
 }
@@ -651,6 +652,9 @@ extern "C" int send_n_recv_4_ft4222(const unsigned char*snd, int snd_size, unsig
 
 
 	}
+	//memset(recv, 0x00, 255);
+	//memset(recv + 1, 0xFF, 1);
+
 
 	if (FT4222_OK != ft4222Status)
 	{
@@ -668,7 +672,7 @@ exit:
 	
 
 	
-	return success;
+	return ft4222Status;
 
 
 }
@@ -701,20 +705,23 @@ void get_functions_ft4222(LPST_G3_IO_LIB_FUNCTIONS lpsamplefunction)
 int init_sample_ft4222(void *param)
 {
 	NEO_TITLE(init_sample_ft4222);
-
+	int nRet;
 	
 	DWORD                     numDevs = 0;
-	GetDeviceFT4222(&_devinfo);
+	nRet = GetDeviceFT4222(&_devinfo);
 	//exercise4222(&devInfo[0]);
-	Connect(&_devinfo);
-	g3api_set_user_send_recv_pf(send_n_recv_4_ft4222, &_devinfo);
+	if (nRet == 0)
+	{
+		Connect(&_devinfo);
+		g3api_set_user_send_recv_pf(send_n_recv_4_ft4222, &_devinfo);
+	}
 
 	/*Wakeup(_devinfo.b_devInfo, 100);
 
 	exercise4222(&_devinfo);*/
 
 
-	return 0;
+	return nRet;
 
 }
 

@@ -218,7 +218,14 @@ G3_API_RESULT do_normal_process(char inst, char p1, short p2, const void * data,
 	int recv_size = max_res_size;
 	fprintf(_fp,"_psend: 0x%x\n", _psend);
 
-	_psend((unsigned char *)lp_write_packet, packet_size, buff, &recv_size, _etcparam);
+	nRet = _psend((unsigned char *)lp_write_packet, packet_size, buff, &recv_size, _etcparam);
+
+	if (nRet != RET_SUCCESS)
+	{
+		nRet = RET_ERR_INTERCHIP_COMMUNICATIONS_ERROR;
+		goto END;
+	}
+
 	view_hexstr("recv data", buff, recv_size);
 
 	recv_size = buff[0];
