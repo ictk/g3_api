@@ -114,7 +114,7 @@ int Connect(LPDEVINO lpdevinfo)
 	//FT4222_GPIO_SetInputTrigger(ftHandle, GPIO_PORT2, (GPIO_Trigger)(GPIO_TRIGGER_LEVEL_HIGH | GPIO_TRIGGER_LEVEL_LOW | GPIO_TRIGGER_RISING | GPIO_TRIGGER_FALLING));
 	//FT4222_GPIO_SetInputTrigger(ftHandle, GPIO_PORT3, (GPIO_Trigger)(GPIO_TRIGGER_LEVEL_HIGH | GPIO_TRIGGER_LEVEL_LOW | GPIO_TRIGGER_RISING | GPIO_TRIGGER_FALLING));
 
-	if (FT4222_I2CMaster_Init(a_devInfo->ftHandle, 400) != FT_OK)
+	if (ret = FT4222_I2CMaster_Init(a_devInfo->ftHandle, 400) != FT_OK)
 	{
 	
 		ret = -1;
@@ -594,9 +594,9 @@ int init_sample_ft4222(void *param)
 	
 	
 	DWORD                     numDevs = 0;
-	GetDeviceFT4222(&_devinfo);
+	int ret = GetDeviceFT4222(&_devinfo);
 	//exercise4222(&devInfo[0]);
-	Connect(&_devinfo);
+	ret = Connect(&_devinfo);
 	g3api_set_user_send_recv_pf(send_n_recv_4_ft4222, &_devinfo);
 
 	/*Wakeup(_devinfo.b_devInfo, 100);

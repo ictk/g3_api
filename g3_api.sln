@@ -6,6 +6,7 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "console_g3_api", "console_g3_api\console_g3_api.vcxproj", "{E6EF3AAB-0EAD-436E-A6BE-BE491B592DDA}"
 	ProjectSection(ProjectDependencies) = postProject
 		{5F6D0404-B854-4717-ADA2-399201C49F3A} = {5F6D0404-B854-4717-ADA2-399201C49F3A}
+		{FF574A37-54A8-4532-96C7-1BB92E986B05} = {FF574A37-54A8-4532-96C7-1BB92E986B05}
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "g3_api_library", "g3_api_library\g3_api_library.vcxproj", "{5F6D0404-B854-4717-ADA2-399201C49F3A}"
