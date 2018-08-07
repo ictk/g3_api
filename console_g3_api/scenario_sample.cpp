@@ -9,6 +9,7 @@
 void print_result_value(const char * title, int ret, const void *buff, int size);
 void set_buff_from_hexstr(void *pbuff,const char *hexstr);
 
+
 void initialize()
 {
 	ST_KEY_VALUE recv_key;
@@ -19,7 +20,7 @@ void initialize()
 	int ret = 0;
 
 	const unsigned char passwd2[] = { 0x11, 0x22, 0x33, 0x44 };
-
+ 
 	// get Root_AC
 	ret = g3api_verify_passwd(0, passwd2, sizeof(passwd2));
 	print_result("g3api_verify_passwd", ret);
@@ -317,23 +318,23 @@ void general_sign_verify()
 	ret = g3api_sign(33, SIGN_ECDSA_EXT_SHA256, V2A(vecbyte), vecbyte.size(), &sign, sizeof(ST_SIGN_ECDSA));
 	print_result_value("sign key_ecdsa_ex_hash", ret, &sign, sizeof(ST_SIGN_ECDSA));
 
-	ret = g3api_verify(34, VERYFY_ECDSA_EXT_SHA256, V2A(vecbyte), vecbyte.size(), &sign, sizeof(ST_SIGN_ECDSA));
+	ret = g3api_verify(34, VERIFY_ECDSA_EXT_SHA256, V2A(vecbyte), vecbyte.size(), &sign, sizeof(ST_SIGN_ECDSA));
 	print_result("g3api_verify key_ecdsa_ex_hash", ret);
 
 	// sign&verify - ECDSA_SHA256
 	ret = g3api_sign(33, SIGN_ECDSA_WITH_SHA256, V2A(vecbyte), vecbyte.size(), &sign, sizeof(ST_SIGN_ECDSA));
 	print_result_value("sign key_ecdsa_sha256", ret, &sign, sizeof(ST_SIGN_ECDSA));
 
-	ret = g3api_verify(34, VERYFY_ECDSA_WITH_SHA256, V2A(vecbyte), vecbyte.size(), &sign, sizeof(ST_SIGN_ECDSA));
+	ret = g3api_verify(34, VERIFY_ECDSA_WITH_SHA256, V2A(vecbyte), vecbyte.size(), &sign, sizeof(ST_SIGN_ECDSA));
 	print_result("g3api_verify key_ecdsa_sha256", ret);
 
 	// sign&verify - symmetric
 	ret = g3api_sign(32, SIGN_SYMM, V2A(vecbyte), vecbyte.size(), &sign3, sizeof(ST_SIGN_SYMM));
 	print_result_value("sign key_symm", ret, &sign3, sizeof(ST_SIGN_SYMM));
-
+	 
 	set_buff_from_hexstr(symm_input, "8620000300000000000000000000000072CF56F5BF877DCF5823691682E9824C0B9742D1E0B41D288B478ECEF5218BAA");
 
-	ret = g3api_verify(32, VERYFY_SYMM, symm_input, sizeof(symm_input), &sign3, sizeof(ST_SIGN_SYMM));
+	ret = g3api_verify(32, VERIFY_SYMM, symm_input, sizeof(symm_input), &sign3, sizeof(ST_SIGN_SYMM));
 	print_result("g3api_verify key_symm", ret);
 	memset(&sign3, 0, sizeof(ST_SIGN_SYMM));
 
@@ -393,19 +394,18 @@ void general_sign_verify()
 	ret = g3api_sign(33, SIGN_HMAC, V2A(vecbyte), vecbyte.size(), &sign2, sizeof(ST_SIGN_HMAC));
 	print_result_value("sign key hmac", ret, &sign2, sizeof(ST_SIGN_HMAC));
 
-	ret = g3api_verify(33, VERYFY_HMAC, V2A(vecbyte), vecbyte.size(), &sign2, sizeof(ST_SIGN_HMAC));
+	ret = g3api_verify(33, VERIFY_HMAC, V2A(vecbyte), vecbyte.size(), &sign2, sizeof(ST_SIGN_HMAC));
 	print_result("g3api_verify key hmac", ret);
 
 	ret = g3api_set_extern_public_key(ext_pubkey, sizeof(ext_pubkey), &st_data_32);
 	print_result("g3api_set_extern_public_key key", ret);
 	print_value("chal", &st_data_32, sizeof(ST_DATA_32));
 
-	ret = g3api_verify(1, VERYFY_EXT_PUB_ECDSA_WITH_SHA256, org_msg, sizeof(org_msg), sign_rs, sizeof(sign_rs));
+	ret = g3api_verify(1, VERIFY_EXT_PUB_ECDSA_WITH_SHA256, org_msg, sizeof(org_msg), sign_rs, sizeof(sign_rs));
 	print_result("g3api_verify key_ext_sha256", ret);
 
-	ret = g3api_verify(1, VERYFY_EXT_PUB_ECDSA_EXT_SHA256, org_msg_hash, sizeof(org_msg_hash), sign_rs, sizeof(sign_rs));
+	ret = g3api_verify(1, VERIFY_EXT_PUB_ECDSA_EXT_SHA256, org_msg_hash, sizeof(org_msg_hash), sign_rs, sizeof(sign_rs));
 	print_result("g3api_verify key_ext_ex_hash", ret);
-
 
 
 
@@ -465,13 +465,14 @@ void general_enc_dec()
 	print_result("encrypt cbc", ret);
 	print_value("cipher text", cipher_text, sizeof(cipher_text));
 
-	memset(cipher_text, 0, cipher_text_size);
 	memset(plain_text, 0, sizeof(plain_text));
 
 	// decrpyt_cbc
 	ret = g3api_decryption(36, SECTOR_KEY, BL_CBC, &iv, cipher_text, sizeof(cipher_text), plain_text, &cipher_text_size);
 	print_result("decrypt cbc", ret);
 	print_value("plain text", plain_text, sizeof(plain_text));
+
+	memset(cipher_text, 0, cipher_text_size);
 
 	// encrypt_ecies
 	ret = g3api_get_challenge(32, msg, &msg_size);
@@ -753,8 +754,8 @@ void general_etc()
 	
 	// session ins external pub key & get public key temporary public key
 	set_buff_from_hexstr(&PUB_KEY_64, "7CC2F04BFCB22ACD94A230EAA57D90FD65AD7CDC16695FB3A1C4A71D7A2E7481961F49DCD5F33971FBF0320BA3CEB6F6A1CB8EA2D98AEBC24B023197EB76C625");
-	ret = g3api_set_extern_public_key(&PUB_KEY_64, sizeof(ST_ECC_PUBLIC), (ST_DATA_32 *)output);
-	print_result_value("external public key", ret, output, sizeof(output));
+	ret = g3api_set_extern_public_key(&PUB_KEY_64, sizeof(ST_ECC_PUBLIC), output);
+	print_result_value("external public key", ret, output, sizeof(ST_DATA_32));
 
 	ret = g3api_get_public_key(0, TEMP_PUBLIC_KEY, &PUB_KEY_64, sizeof(PUB_KEY_64));
 	print_result_value("get temporary public key 64", ret, &PUB_KEY_64, sizeof(PUB_KEY_64));
@@ -771,7 +772,7 @@ void general_etc()
 	print_result("sha256 init", ret);
 
 	ret = g3api_sha256(Finalize, NULL, 0, output);
-	print_value("sha256 final", output, 32);
+	print_result_value("sha256 final", ret,output, sizeof(ST_DATA_32));
 }
 void general_tls()
 {
@@ -1007,10 +1008,10 @@ void test_scenario_sample()
 void test_scenario_sample2()
 {
 
-	//initialize();
+	initialize();
 
 	//g3api_reset();
-	//general_read_write();
+	general_read_write();
 	//general_diversify();
 	//general_enc_dec();
 	//general_password();

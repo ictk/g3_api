@@ -55,6 +55,15 @@ ST_G3_IO_LIB_FUNCTIONS  _samplefunction= {
 
 };
 
+//###################################################	
+/**
+*   @brief	Gets the structure for initializing the ieb-100
+*
+*	@param	lpsamplefunction	: Pointer to a ST_G3_IO_LIB_FUNCTIONS structure that contains functions to initialize the device
+*
+*   @return void
+*/
+//###################################################
 void get_functions_ieb100cdc(LPST_G3_IO_LIB_FUNCTIONS lpsamplefunction)
 {
 	*lpsamplefunction = _samplefunction;
@@ -65,6 +74,19 @@ void get_functions_ieb100cdc(LPST_G3_IO_LIB_FUNCTIONS lpsamplefunction)
 //INTER_PARAMS _inter_params = { 0, };
 
 
+//###################################################	
+/**
+*   @brief	Makes the packet for sending througth the ieb-100 board
+*
+*	@param	rom_inst		: Rom instruction flag
+*	@param	res_size		: Size of response from the g3
+*	@param	data			: Data packet that contains length instructions code p1 p2 optional data checksum
+*	@param	data_size		: Size of the data packet
+*	@param	packet_size		: Total size of packet 
+*
+*   @return LPWRITE_IEB100_PACKET
+*/
+//###################################################
 LPWRITE_IEB100_PACKET make_write_ieb100_packet(char rom_inst, char res_size, const void * data, int data_size, int *packet_size){
 
 	//sizeof(WRITE_PACKET) is included crc
@@ -89,6 +111,20 @@ LPWRITE_IEB100_PACKET make_write_ieb100_packet(char rom_inst, char res_size, con
 	return lp_write_packet;
 }
 
+
+//###################################################	
+/**
+*   @brief	Sends the command and read the response from the device
+*
+*	@param	snd			: Pointer to send data buffer
+*	@param	snd_size	: Size of snd data
+*	@param	recv		: Pointer to receive data buffer
+*	@param	recv_size	: Size of receive data
+*	@param	etcparam	: Com port number
+*
+*   @return result
+*/
+//###################################################
 extern "C"  int CALLTYPE send_n_recv(const unsigned char*snd, int snd_size, unsigned char*recv, int* recv_size, void*etcparam)
 {
 
@@ -170,6 +206,15 @@ extern "C"  int CALLTYPE send_n_recv(const unsigned char*snd, int snd_size, unsi
 }
 
 
+//###################################################	
+/**
+*   @brief	Initializes the ieb-100 board.
+*
+*	@param	param	: Com port number
+*
+*   @return result
+*/
+//###################################################
 int init_sample_ieb100cdc(void *param)
 {
 	char *str_param = (char *)param;
@@ -187,11 +232,27 @@ int init_sample_ieb100cdc(void *param)
 
 
 }
+
+//###################################################	
+/**
+*   @brief	Disconnects the ieb-100 board
+*
+*   @return void
+*/
+//###################################################
 void end_sample_ieb100cdc()
 {
 	_inter_params.pserreial->close();
 }
 
+
+//###################################################	
+/**
+*   @brief	Wakes the g3
+*
+*   @return result
+*/
+//###################################################
 int wake_up_and_convert_mode_ieb100cdc()
 {
 	unsigned char wake_buff[] = { 0xFF, 0x00, 0x00, 0x00, 0x00, 0x00, };

@@ -42,7 +42,15 @@ typedef struct _tagDEVINO{
 DEVINO _devinfo;
 
 
-
+//###################################################	
+/**
+*   @brief	Disconnects the ft4222 device.
+*
+*	@param	lpdevinfo	: Pointer to a DEVINO structure that contains the device information of the ft4222
+*
+*   @return void
+*/
+//###################################################
 void Disconnect(LPDEVINO lpdevinfo)
 {
 
@@ -67,6 +75,17 @@ void Disconnect(LPDEVINO lpdevinfo)
 
 }
 
+
+//###################################################	
+/**
+*   @brief	Connects the ft4222 device according to the lpdevinfo 
+*			and initialize i2c and gpio for the ft4222 device
+*
+*	@param	lpdevinfo	: Pointer to a DEVINO structure that contains the device information of the ft4222
+*
+*   @return result
+*/
+//###################################################
 int Connect(LPDEVINO lpdevinfo)
 {
 	FT_STATUS            ftStatus;
@@ -138,13 +157,68 @@ end:
 	return ret;
 }
 
+
+//###################################################	
+/**
+*   @brief	Wakes the g3 connected with ft4222
+*
+*	@param	b_devInfo	: Pointer to a FT_DEVICE_LIST_INFO_NODE structure that contains the device information of the ft4222
+*	@param	wakeupTime	: Wake-up time
+*
+*   @return void
+*/
+//###################################################
 void Wakeup(FT_DEVICE_LIST_INFO_NODE * b_devInfo,int wakeupTime)
 {
+	FT_STATUS            ftStatus;
+	FT4222_STATUS        ft4222Status;
+	const uint16         slaveAddr = 0x64;
+	uint16               bytesToRead = 4;
+	uint16               bytesRead = 0;
+
+	LPDEVINO lpdevinfo = (LPDEVINO)&_devinfo;
+
+	unsigned char buffer[256] = { 0x00, };
+	unsigned char cmp_res[4]  = { 0x04, 0x11, 0x33, 0x43 };
+	
 	FT4222_GPIO_Write(b_devInfo->ftHandle, GPIO_PORT2, 1);
-	cur_sleep(wakeupTime);
+	cur_sleep(wakeupTime); // 1ms
 	FT4222_GPIO_Write(b_devInfo->ftHandle, GPIO_PORT2, 0);
+	
+
+	for (int i = 0; i < 30; i++) 
+	{
+
+		ft4222Status = FT4222_I2CMaster_Read(lpdevinfo->a_devInfo->ftHandle,
+			slaveAddr,
+			buffer,
+			bytesToRead,
+			&bytesRead);
+
+		//if (FT4222_OK == ft4222Status && memcmp(buffer,cmp_res,4) == 0)
+		if (FT4222_OK == ft4222Status && buffer[0] != 0xFF)
+		{
+			//print_value("Wake-up response", buffer, 4);
+			//printf("wakeup ret cnt : %d\n", i);
+			return;
+		}
+		
+		cur_sleep(1);
+	}
+	cur_sleep(15);
+	print_value("Wake-up failed", buffer, bytesRead);
+
 }
 
+//###################################################	
+/**
+*   @brief	Resets the device
+*
+*	@param	b_devInfo	: Pointer to a FT_DEVICE_LIST_INFO_NODE structure that contains the device information of the ft4222
+*
+*   @return void
+*/
+//###################################################
 void Reset(FT_DEVICE_LIST_INFO_NODE * b_devInfo)
 {
 	FT4222_GPIO_Write(b_devInfo->ftHandle, GPIO_PORT3, 1);
@@ -369,6 +443,16 @@ exit:
 }
 #endif
 
+
+//###################################################	
+/**
+*   @brief	Gets the information from the connected ft4222 and create the associated handle
+*			
+*	@param	b_devInfo	: Pointer to a DENIVO structure that contains the device information of the ft4222
+*
+*   @return result
+*/
+//###################################################
 int GetDeviceFT4222(LPDEVINO lpdevinfo)
 {
 	FT_STATUS                 ftStatus;
@@ -496,7 +580,19 @@ exit:
 }
 
 
-
+//###################################################	
+/**
+*   @brief	Sends the command over ft4222 and read the response from the device 
+*
+*	@param	snd			: Pointer to send data buffer
+*	@param	snd_size	: Size of send data
+*	@param	recv		: Pointer to receive data buffer
+*	@param	recv_size	: Size of receive data
+*	@param	etcparam	: Device number
+*
+*   @return result
+*/
+//###################################################
 extern "C" int send_n_recv_4_ft4222(const unsigned char*snd, int snd_size, unsigned char*recv, int* recv_size, void*etcparam)
 {
 	int                  success = 0;
@@ -516,6 +612,7 @@ extern "C" int send_n_recv_4_ft4222(const unsigned char*snd, int snd_size, unsig
 	int                  page;
 	
 	NEO_TITLE(send_n_recv_4_ft4222);
+	
 	success = 0;
 	LPDEVINO lpdevinfo = (LPDEVINO)etcparam;
 
@@ -546,9 +643,9 @@ extern "C" int send_n_recv_4_ft4222(const unsigned char*snd, int snd_size, unsig
 			&bytesRead);
 		
 		if (FT4222_OK == ft4222Status && recv[0] != 0xff){
+
 			break;
 		}
-
 		cur_sleep(10);
 			
 		//if (recv[0] == 0xff &&   
@@ -556,6 +653,10 @@ extern "C" int send_n_recv_4_ft4222(const unsigned char*snd, int snd_size, unsig
 
 
 	}
+	//memset(recv, 0x00, 255);
+	//memset(recv + 1, 0xFF, 1);
+
+
 	if (FT4222_OK != ft4222Status)
 	{
 		printf("FT4222_I2CMaster_Read failed (error %d)\n",
@@ -572,31 +673,48 @@ exit:
 	
 
 	
-	return success;
+	return ft4222Status;
 
 
 }
 
-
+//###################################################	
+/**
+*   @brief	Gets the structure for initializing the ft4222
+*
+*	@param	lpsamplefunction	: Pointer to a ST_G3_IO_LIB_FUNCTIONS structure that contains functions to initialize the device
+*
+*   @return void
+*/
+//###################################################
 void get_functions_ft4222(LPST_G3_IO_LIB_FUNCTIONS lpsamplefunction)
 {
 	*lpsamplefunction = _samplefunction_ft4222;
 
 }
 
-
+//###################################################	
+/**
+*   @brief	Initializes the ft4222 device.
+*	@note	It involves the following steps 1) GetDeviceFT4222  2) Connect  3) Set the send and receive function
+*
+*	@param	param	: Not used for ft4222
+*
+*   @return result
+*/
+//###################################################
 int init_sample_ft4222(void *param)
 {
 	NEO_TITLE(init_sample_ft4222);
-
-	
-	
-	
 	
 	DWORD                     numDevs = 0;
-	int ret = GetDeviceFT4222(&_devinfo);
+	if (GetDeviceFT4222(&_devinfo))
+		return -1;
 	//exercise4222(&devInfo[0]);
-	ret = Connect(&_devinfo);
+
+	if (Connect(&_devinfo))
+		return -1;
+
 	g3api_set_user_send_recv_pf(send_n_recv_4_ft4222, &_devinfo);
 
 	/*Wakeup(_devinfo.b_devInfo, 100);
@@ -604,11 +722,17 @@ int init_sample_ft4222(void *param)
 	exercise4222(&_devinfo);*/
 
 
-
 	return 0;
 
-
 }
+
+//###################################################	
+/**
+*   @brief	Call the disconnect function.
+*
+*   @return void
+*/
+//###################################################
 void end_sample_ft4222()
 {
 	NEO_TITLE(end_sample_ft4222);
@@ -616,14 +740,20 @@ void end_sample_ft4222()
 
 }
 
+
+//###################################################	
+/**
+*   @brief	Call the wake-up function.
+*
+*   @return result
+*/
+//###################################################
 int wake_up_and_convert_mode_ft4222()
 {
 
 	Wakeup(_devinfo.b_devInfo, 1);
 	
 	return 0;
-
-
 
 
 }

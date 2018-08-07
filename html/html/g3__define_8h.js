@@ -1,0 +1,265 @@
+var g3__define_8h =
+[
+    [ "_tagVAR_BYTES", "struct__tag_v_a_r___b_y_t_e_s.html", "struct__tag_v_a_r___b_y_t_e_s" ],
+    [ "_tagST_SIGN_ECDSA", "struct__tag_s_t___s_i_g_n___e_c_d_s_a.html", "struct__tag_s_t___s_i_g_n___e_c_d_s_a" ],
+    [ "_tagST_SIGN_SYMM", "struct__tag_s_t___s_i_g_n___s_y_m_m.html", "struct__tag_s_t___s_i_g_n___s_y_m_m" ],
+    [ "_tagST_SIGN_HMAC", "struct__tag_s_t___s_i_g_n___h_m_a_c.html", "struct__tag_s_t___s_i_g_n___h_m_a_c" ],
+    [ "_tagST_ECC_PUBLIC", "struct__tag_s_t___e_c_c___p_u_b_l_i_c.html", "struct__tag_s_t___e_c_c___p_u_b_l_i_c" ],
+    [ "_tagST_ECC_PUBLIC_COMPRESS", "struct__tag_s_t___e_c_c___p_u_b_l_i_c___c_o_m_p_r_e_s_s.html", "struct__tag_s_t___e_c_c___p_u_b_l_i_c___c_o_m_p_r_e_s_s" ],
+    [ "_tagST_ECC_PRV", "struct__tag_s_t___e_c_c___p_r_v.html", "struct__tag_s_t___e_c_c___p_r_v" ],
+    [ "_tagST_DIVERSIFY_PARAM", "struct__tag_s_t___d_i_v_e_r_s_i_f_y___p_a_r_a_m.html", "struct__tag_s_t___d_i_v_e_r_s_i_f_y___p_a_r_a_m" ],
+    [ "_tagST_KEY_VALUE", "struct__tag_s_t___k_e_y___v_a_l_u_e.html", "struct__tag_s_t___k_e_y___v_a_l_u_e" ],
+    [ "_tagST_IV", "struct__tag_s_t___i_v.html", "struct__tag_s_t___i_v" ],
+    [ "_tagST_RW_DATA", "struct__tag_s_t___r_w___d_a_t_a.html", "struct__tag_s_t___r_w___d_a_t_a" ],
+    [ "_tagST_RW_DATA_WITH_IV", "struct__tag_s_t___r_w___d_a_t_a___w_i_t_h___i_v.html", "struct__tag_s_t___r_w___d_a_t_a___w_i_t_h___i_v" ],
+    [ "_tagST_RW_DATA_WITH_IV_MAC", "struct__tag_s_t___r_w___d_a_t_a___w_i_t_h___i_v___m_a_c.html", "struct__tag_s_t___r_w___d_a_t_a___w_i_t_h___i_v___m_a_c" ],
+    [ "_tagST_RW_DATA_WITH_MASK", "struct__tag_s_t___r_w___d_a_t_a___w_i_t_h___m_a_s_k.html", "struct__tag_s_t___r_w___d_a_t_a___w_i_t_h___m_a_s_k" ],
+    [ "_tagST_ECIES", "struct__tag_s_t___e_c_i_e_s.html", "struct__tag_s_t___e_c_i_e_s" ],
+    [ "_tagST_AC_CONDITION", "struct__tag_s_t___a_c___c_o_n_d_i_t_i_o_n.html", "struct__tag_s_t___a_c___c_o_n_d_i_t_i_o_n" ],
+    [ "_tagST_KEY_SECTOR", "struct__tag_s_t___k_e_y___s_e_c_t_o_r.html", "struct__tag_s_t___k_e_y___s_e_c_t_o_r" ],
+    [ "_tagST_SETUP_CORE", "struct__tag_s_t___s_e_t_u_p___c_o_r_e.html", "struct__tag_s_t___s_e_t_u_p___c_o_r_e" ],
+    [ "_tagST_SET_UP_VALUE", "struct__tag_s_t___s_e_t___u_p___v_a_l_u_e.html", "struct__tag_s_t___s_e_t___u_p___v_a_l_u_e" ],
+    [ "_tagST_ECDH_PRE_MASTER_SECRET", "struct__tag_s_t___e_c_d_h___p_r_e___m_a_s_t_e_r___s_e_c_r_e_t.html", "struct__tag_s_t___e_c_d_h___p_r_e___m_a_s_t_e_r___s_e_c_r_e_t" ],
+    [ "_tagST_ECDH_KEY_BLOCK", "struct__tag_s_t___e_c_d_h___k_e_y___b_l_o_c_k.html", "struct__tag_s_t___e_c_d_h___k_e_y___b_l_o_c_k" ],
+    [ "_tagST_ECDH_IV", "struct__tag_s_t___e_c_d_h___i_v.html", "struct__tag_s_t___e_c_d_h___i_v" ],
+    [ "_tagST_ECDH_RANDOM", "struct__tag_s_t___e_c_d_h___r_a_n_d_o_m.html", "struct__tag_s_t___e_c_d_h___r_a_n_d_o_m" ],
+    [ "_tagST_DATA_16", "struct__tag_s_t___d_a_t_a__16.html", "struct__tag_s_t___d_a_t_a__16" ],
+    [ "_tagST_DATA_32", "struct__tag_s_t___d_a_t_a__32.html", "struct__tag_s_t___d_a_t_a__32" ],
+    [ "_tagST_DATA_64", "struct__tag_s_t___d_a_t_a__64.html", "struct__tag_s_t___d_a_t_a__64" ],
+    [ "_tagST_DATA_128", "struct__tag_s_t___d_a_t_a__128.html", "struct__tag_s_t___d_a_t_a__128" ],
+    [ "_tagST_TLS_INTER_HEADER_WITHOUT_SIZE", "struct__tag_s_t___t_l_s___i_n_t_e_r___h_e_a_d_e_r___w_i_t_h_o_u_t___s_i_z_e.html", "struct__tag_s_t___t_l_s___i_n_t_e_r___h_e_a_d_e_r___w_i_t_h_o_u_t___s_i_z_e" ],
+    [ "_tagST_TLS_INTER_HEADER", "struct__tag_s_t___t_l_s___i_n_t_e_r___h_e_a_d_e_r.html", "struct__tag_s_t___t_l_s___i_n_t_e_r___h_e_a_d_e_r" ],
+    [ "_tagST_TLS_HAND_HANDSHAKE_DIGEST", "struct__tag_s_t___t_l_s___h_a_n_d___h_a_n_d_s_h_a_k_e___d_i_g_e_s_t.html", "struct__tag_s_t___t_l_s___h_a_n_d___h_a_n_d_s_h_a_k_e___d_i_g_e_s_t" ],
+    [ "ERR_GENERAL", "g3__define_8h.html#a26fe5872acf12016f4524ada4cc8a83d", null ],
+    [ "ERR_INTERCHIP", "g3__define_8h.html#a7c9fc2851d2140e4b448db42610762bd", null ],
+    [ "IN", "g3__define_8h.html#ac2bbd6d630a06a980d9a92ddb9a49928", null ],
+    [ "INOUT", "g3__define_8h.html#a62766f3ea8784d1db62df989f8f33d2d", null ],
+    [ "LIB_VERSION", "g3__define_8h.html#a1418b909446cf0c11d3f26ef91d8e850", null ],
+    [ "NULL", "g3__define_8h.html#a070d2ce7b6bb7e5c05602aa8c308d0c4", null ],
+    [ "OUT", "g3__define_8h.html#aec78e7a9e90a406a56f859ee456e8eae", null ],
+    [ "RET_ERR_DIFF_STRUCT_SIZE", "g3__define_8h.html#a8b1d61ae56d72dd957828c9590c27dc3", null ],
+    [ "RET_ERR_INTERCHIP_ABNORMAL_INPUT_DETECTION", "g3__define_8h.html#abe3ace2fc92e081bfad1ec066221d46e", null ],
+    [ "RET_ERR_INTERCHIP_AFTER_WAKE_UP", "g3__define_8h.html#a2eed9863b65d5f9539c47b22a0924dbd", null ],
+    [ "RET_ERR_INTERCHIP_COMMUNICATIONS_ERROR", "g3__define_8h.html#a0e4683809bbfd428ab2b92df3eb77670", null ],
+    [ "RET_ERR_INTERCHIP_EXECUTION_ERROR", "g3__define_8h.html#a8c4b32a2e21fa56618d7b958e27fa87b", null ],
+    [ "RET_ERR_INTERCHIP_PARSE_ERROR", "g3__define_8h.html#a8557ef146a44260971cc7fad06017184", null ],
+    [ "RET_ERR_INTERCHIP_VERIFY_ERROR", "g3__define_8h.html#a9841ef71f4126fa0077458a5f7b162d0", null ],
+    [ "RET_ERR_KEY_BUFF_SIZE", "g3__define_8h.html#a1429605548d37f054329c68c28bc1177", null ],
+    [ "RET_ERR_RECV_ALLOC_ERROR", "g3__define_8h.html#afb1ead39d427883c874aab5231913ceb", null ],
+    [ "RET_ERR_RECV_BUFF_SIZE", "g3__define_8h.html#af524e4e5e2ebf5bb81a4835423dba9d3", null ],
+    [ "RET_ERR_RECV_CRC_ERROR", "g3__define_8h.html#ad46922913710d3e8d2a61916f54b2eb8", null ],
+    [ "RET_ERR_RET_SIZE", "g3__define_8h.html#ad4fe9a8e92512cb5009c85302d5f0f84", null ],
+    [ "RET_ERR_SIGN_MODE_PARSE_ERR", "g3__define_8h.html#ac91f39f268b62e526e740b3155a6d952", null ],
+    [ "RET_SUCCESS", "g3__define_8h.html#aa0dec624244ce7f5492ec5de65797fa6", null ],
+    [ "byte", "g3__define_8h.html#a0c8186d9b9b7880309c27230bbb5e69d", null ],
+    [ "dword", "g3__define_8h.html#a855ebb1284efb85f8be57d819efa519a", null ],
+    [ "G3_API_RESULT", "g3__define_8h.html#affa899d8703e03ae5d2bdfc22ccb81f8", null ],
+    [ "LPST_AC_CONDITION", "g3__define_8h.html#adf3d681201cf53f2cbb235a66d5d1c03", null ],
+    [ "LPST_DATA_128", "g3__define_8h.html#ae86047f620e895a4ebda8609d568ee45", null ],
+    [ "LPST_DATA_16", "g3__define_8h.html#a1bf8e1276e5f92a71dd311bcfce6cc70", null ],
+    [ "LPST_DATA_32", "g3__define_8h.html#a46d01ee3fe39764a38550f4697fd66da", null ],
+    [ "LPST_DATA_64", "g3__define_8h.html#ad51fecd6144e8cdf0b40394fde9bbd0a", null ],
+    [ "LPST_DIVERSIFY_PARAM", "g3__define_8h.html#a95d2565f7d639973def422d6b575a92f", null ],
+    [ "LPST_ECC_PRV", "g3__define_8h.html#a214de32bb2fa0a04f2988ae3a1142bfc", null ],
+    [ "LPST_ECC_PUBLIC", "g3__define_8h.html#a5142888587354ff77b8b6c3a4fa3fa24", null ],
+    [ "LPST_ECC_PUBLIC_COMPRESS", "g3__define_8h.html#a012fcbb666ac1fc4c163c6fde0a4d0ff", null ],
+    [ "LPST_ECDH_IV", "g3__define_8h.html#a9f4737db172e1db1dc0370516d14a487", null ],
+    [ "LPST_ECDH_KEY_BLOCK", "g3__define_8h.html#af357db2d72f3cba98e74b38b9ff1baf6", null ],
+    [ "LPST_ECDH_PRE_MASTER_SECRET", "g3__define_8h.html#adb4e68d6c34c39a7ccd008e1f45254f0", null ],
+    [ "LPST_ECDH_RANDOM", "g3__define_8h.html#a658a20d5fa3a8bd82d5887b8a0bd4360", null ],
+    [ "LPST_ECIES", "g3__define_8h.html#a7a4d039c71e316556cd0b1a18581a043", null ],
+    [ "LPST_IV", "g3__define_8h.html#a8dbaa4c664a48502ad87108df1dfa7da", null ],
+    [ "LPST_KEY_SECTOR", "g3__define_8h.html#a999d0be48306e3f3f101150f1188d2eb", null ],
+    [ "LPST_KEY_VALUE", "g3__define_8h.html#abebd93a950e4aefec66f2d6ffac12f9b", null ],
+    [ "LPST_RW_DATA", "g3__define_8h.html#addc047ebfc125a0ebf675317f3b36a45", null ],
+    [ "LPST_RW_DATA_WITH_IV", "g3__define_8h.html#a67f57949cdbc92b32db6d170a39e6e37", null ],
+    [ "LPST_RW_DATA_WITH_IV_MAC", "g3__define_8h.html#adc7874ccda4d5795ac26acd7eeb64661", null ],
+    [ "LPST_RW_DATA_WITH_MASK", "g3__define_8h.html#afb0988c1c14aed1983f6ea63cf1431a9", null ],
+    [ "LPST_SET_UP_VALUE", "g3__define_8h.html#abe09e808c7ab6ece20608b22b02b56bf", null ],
+    [ "LPST_SETUP_CORE", "g3__define_8h.html#a586a924eb8a5cc65c073608993c484d7", null ],
+    [ "LPST_SIGN_ECDSA", "g3__define_8h.html#a1b6c3635afbd6b62915374fe8ec61c89", null ],
+    [ "LPST_SIGN_HMAC", "g3__define_8h.html#a94e4360a23511498defb65c2e53e8eaf", null ],
+    [ "LPST_SIGN_SYMM", "g3__define_8h.html#a1144b4dc32a5a7ba81b2b740a3750207", null ],
+    [ "LPST_TLS_HAND_HANDSHAKE_DIGEST", "g3__define_8h.html#ab7b61ccd7ec31fc009ffbbbab7d23276", null ],
+    [ "LPST_TLS_INTER_HEADER", "g3__define_8h.html#a2595a94768766e7b2733576772046cb8", null ],
+    [ "LPST_TLS_INTER_HEADER_WITHOUT_SIZE", "g3__define_8h.html#aece2ac97fe3334090ba74f8d94d8faa2", null ],
+    [ "LPVAR_BYTES", "g3__define_8h.html#a41f9d7d88fb5a6bcf1bd035645c88215", null ],
+    [ "PFSENDRECV", "g3__define_8h.html#a938c9288202b4f306120a7de385f30ff", null ],
+    [ "PFTEST", "g3__define_8h.html#af229ccddf9e223c033a8702507f35cb9", null ],
+    [ "ST_AC_CONDITION", "g3__define_8h.html#aa94f001eb90a1b96ebb113a4e1190218", null ],
+    [ "ST_DATA_128", "g3__define_8h.html#ab8c7c7c52c110cb2b4fdb1b66b898dde", null ],
+    [ "ST_DATA_16", "g3__define_8h.html#a1d539355e7350f3bbb632d9a33bf04ca", null ],
+    [ "ST_DATA_32", "g3__define_8h.html#ab68ca305b2661a2196fea4b2f52526db", null ],
+    [ "ST_DATA_64", "g3__define_8h.html#afa2693ddc2f2853872710ae577259224", null ],
+    [ "ST_DIVERSIFY_PARAM", "g3__define_8h.html#a3ed082b9c1bed1532736624257ca58fb", null ],
+    [ "ST_ECC_PRV", "g3__define_8h.html#a6fca70846a34fc7b0d8f0df40c3a6256", null ],
+    [ "ST_ECC_PUBLIC", "g3__define_8h.html#a085c80a9b574a3ec596505bdd8215e3a", null ],
+    [ "ST_ECC_PUBLIC_COMPRESS", "g3__define_8h.html#aa19928b015eab5caabb0dac517223e74", null ],
+    [ "ST_ECDH_IV", "g3__define_8h.html#a8d92bfec091edc785e0dfb8247e5b968", null ],
+    [ "ST_ECDH_KEY_BLOCK", "g3__define_8h.html#abcc915ec4210eb173a0d0ddcb7066c14", null ],
+    [ "ST_ECDH_PRE_MASTER_SECRET", "g3__define_8h.html#a5ab0dc318c9adcbd4ca105bc48c1c734", null ],
+    [ "ST_ECDH_RANDOM", "g3__define_8h.html#a4968f7fd82d8876d3bffcccb6bf91fbc", null ],
+    [ "ST_ECIES", "g3__define_8h.html#a8915460b2cd3ff5af65aec7d4ca10862", null ],
+    [ "ST_IV", "g3__define_8h.html#a9718d5a05f04f32547eed80ce8f81b1f", null ],
+    [ "ST_KEY_SECTOR", "g3__define_8h.html#a2b41176535c6c09a21f36c2049ff4084", null ],
+    [ "ST_KEY_VALUE", "g3__define_8h.html#a362f8d6fc2857c1462add7d7b7aa0657", null ],
+    [ "ST_RW_DATA", "g3__define_8h.html#a1674e8b508bcc4de1d56942b9699225c", null ],
+    [ "ST_RW_DATA_WITH_IV", "g3__define_8h.html#aa4891c5a132a10bc6a3ce1c8360ba733", null ],
+    [ "ST_RW_DATA_WITH_IV_MAC", "g3__define_8h.html#a9f36136cf2769169eff69dc1c8c976ee", null ],
+    [ "ST_RW_DATA_WITH_MASK", "g3__define_8h.html#a66b8547ac30a57982735a2af667b0dd3", null ],
+    [ "ST_SET_UP_VALUE", "g3__define_8h.html#ac171872a76a9a482891dc084a8dc6ece", null ],
+    [ "ST_SETUP_CORE", "g3__define_8h.html#aac2befd1612d4afb9cb465836cc943e0", null ],
+    [ "ST_SIGN_ECDSA", "g3__define_8h.html#a2a1bd48a157af813a6417780aad814ca", null ],
+    [ "ST_SIGN_HMAC", "g3__define_8h.html#a3127b7e9f89a1d628ff67655f652bf8d", null ],
+    [ "ST_SIGN_SYMM", "g3__define_8h.html#ac117930b413d9ce32ffb60dcd14f579d", null ],
+    [ "ST_TLS_HAND_HANDSHAKE_DIGEST", "g3__define_8h.html#aab99bff7fd91155301f297a9c4e77597", null ],
+    [ "ST_TLS_INTER_HEADER", "g3__define_8h.html#af0a6749ebc05e1bef7192b152f43cd04", null ],
+    [ "ST_TLS_INTER_HEADER_WITHOUT_SIZE", "g3__define_8h.html#ae8b21ab3c644154cd008b133980c471c", null ],
+    [ "VAR_BYTES", "g3__define_8h.html#a6d86b9c42e020411fc7bcd7db0b80235", null ],
+    [ "word", "g3__define_8h.html#a285e72252c100e2508e4e933a0738f2b", null ],
+    [ "EN_AND_OR", "g3__define_8h.html#a6973df7033021e98f9ecdff845a8e71e", [
+      [ "AND", "g3__define_8h.html#a6973df7033021e98f9ecdff845a8e71ea865555c9f2e0458a7078486aa1b3254f", null ],
+      [ "OR", "g3__define_8h.html#a6973df7033021e98f9ecdff845a8e71ea96727447c0ad447987df1c6415aef074", null ]
+    ] ],
+    [ "EN_AREA_TYPE", "g3__define_8h.html#a23e8eddadc980e0ae6d9b129b2795ac7", [
+      [ "SETUP_AREA", "g3__define_8h.html#a23e8eddadc980e0ae6d9b129b2795ac7a3a257272962c468d6c29dcf1114d3b48", null ],
+      [ "KEY_AREA", "g3__define_8h.html#a23e8eddadc980e0ae6d9b129b2795ac7aa4da3dcd6e140a364451be1496e71010", null ],
+      [ "DATA_AREA_0", "g3__define_8h.html#a23e8eddadc980e0ae6d9b129b2795ac7a73c070bcd2492e6470ae7bf52ed2086c", null ],
+      [ "DATA_AREA_1", "g3__define_8h.html#a23e8eddadc980e0ae6d9b129b2795ac7a022c390f621f59479f36ab86fe8a0518", null ]
+    ] ],
+    [ "EN_BLOCK_MODE", "g3__define_8h.html#a0888f07bd807fc2701f9a3113d7f2caa", [
+      [ "BL_CBC", "g3__define_8h.html#a0888f07bd807fc2701f9a3113d7f2caaa810ab68fa741ba0e583ca8fd9d9dc5a8", null ],
+      [ "BL_CTR", "g3__define_8h.html#a0888f07bd807fc2701f9a3113d7f2caaafd10cb6015f8e8bd6814b43ade0c4f08", null ],
+      [ "BL_GCM", "g3__define_8h.html#a0888f07bd807fc2701f9a3113d7f2caaaef57fec5f63e8789d00e1d0ce8f8b24d", null ]
+    ] ],
+    [ "EN_CERTIFICATION_WRITE_MODE", "g3__define_8h.html#a53354dbd1537f54c1399430e9d6101c0", [
+      [ "TO_TEMP", "g3__define_8h.html#a53354dbd1537f54c1399430e9d6101c0a271529bb04f21a47c91b2d3493bf8c8c", null ],
+      [ "TO_KEY_SECTOR", "g3__define_8h.html#a53354dbd1537f54c1399430e9d6101c0a98da5e78c6125da2eb39733730197c7d", null ]
+    ] ],
+    [ "EN_CONTENT_TYPE", "g3__define_8h.html#a2a4ee0dd27e1e99245a5f604cf73c12e", [
+      [ "CHANGE_CIPHER_SPEC", "g3__define_8h.html#a2a4ee0dd27e1e99245a5f604cf73c12ea4ba5b5ec083856acccc568fff147a664", null ],
+      [ "ALERT", "g3__define_8h.html#a2a4ee0dd27e1e99245a5f604cf73c12ea45e0bb0f520fb3851c7d6cc5c5ddd6f9", null ],
+      [ "HANDSHAKE", "g3__define_8h.html#a2a4ee0dd27e1e99245a5f604cf73c12eacc6ddcaa36bd57e5aec12749cb5ce29c", null ],
+      [ "APPLICATION_DATA", "g3__define_8h.html#a2a4ee0dd27e1e99245a5f604cf73c12eae5600c9ebf3ad742718c2ba003539a45", null ]
+    ] ],
+    [ "EN_DATA_SECTOR_TYPE", "g3__define_8h.html#a686eb2843ff4ae16a9386609da98459a", [
+      [ "SECT_VOID", "g3__define_8h.html#a686eb2843ff4ae16a9386609da98459aa0a8962287300385993a3b0982fa7a778", null ],
+      [ "SECT_ST_ECC_PUF", "g3__define_8h.html#a686eb2843ff4ae16a9386609da98459aaad560fab4ef318687e4ac684659751aa", null ],
+      [ "SECT_ECC_PRV", "g3__define_8h.html#a686eb2843ff4ae16a9386609da98459aa2f008331b1232f633bed4ef52f9a7972", null ],
+      [ "SECT_ECC_PUB", "g3__define_8h.html#a686eb2843ff4ae16a9386609da98459aa248f7dd9b5d75ea03c8aca33e338a3b6", null ],
+      [ "SECT_AES128", "g3__define_8h.html#a686eb2843ff4ae16a9386609da98459aa0a26a6e2ec983c93b70e6f0a2980e17e", null ],
+      [ "SECT_AES256", "g3__define_8h.html#a686eb2843ff4ae16a9386609da98459aa96fcafc0cb27b5e37fc1f2fa0cd13e67", null ],
+      [ "SECT_SM4", "g3__define_8h.html#a686eb2843ff4ae16a9386609da98459aad6c33144b49daaf00342428dfda92a5d", null ],
+      [ "SECT_SHA256", "g3__define_8h.html#a686eb2843ff4ae16a9386609da98459aa70478b96b52f3b0f7fafb2b1d5e4a5d6", null ],
+      [ "SECT_PASSWORD", "g3__define_8h.html#a686eb2843ff4ae16a9386609da98459aa2ac90f44a08320be06e2e68c90fe9213", null ],
+      [ "SECT_DATA", "g3__define_8h.html#a686eb2843ff4ae16a9386609da98459aadb481d6899fa7664dc0c7d295231953b", null ],
+      [ "SECT_COUNTER", "g3__define_8h.html#a686eb2843ff4ae16a9386609da98459aae1aef3f9ed7547908000fc887ca6ee83", null ]
+    ] ],
+    [ "EN_DIVERSIFY_MODE", "g3__define_8h.html#a30537b5c57ce34a9bfe739059d9013b9", [
+      [ "INHERIT", "g3__define_8h.html#a30537b5c57ce34a9bfe739059d9013b9aa9daac6f2407de4e6f22ee8dbd4913c0", null ],
+      [ "SELF", "g3__define_8h.html#a30537b5c57ce34a9bfe739059d9013b9aa586e946958a784951dea3c08f14f81b", null ]
+    ] ],
+    [ "EN_DYNAMIC_AUTH", "g3__define_8h.html#abb4bcd14e36bf0074eb3c7bebce147c9", [
+      [ "DYN_AUTH_ECDSA_SHA256", "g3__define_8h.html#abb4bcd14e36bf0074eb3c7bebce147c9a65b4aa3515ab88184d6b13112a82b65e", null ],
+      [ "DYN_AUTH_HMAC", "g3__define_8h.html#abb4bcd14e36bf0074eb3c7bebce147c9a973d7331698950c8108d1da5e23a0d88", null ],
+      [ "DYN_AUTH_SYMM", "g3__define_8h.html#abb4bcd14e36bf0074eb3c7bebce147c9a7a2d0c6e50e0188b8e5622e6845d2860", null ],
+      [ "DYN_AUTH_CERT_PUB_ECDSA_SHA256", "g3__define_8h.html#abb4bcd14e36bf0074eb3c7bebce147c9a46aecbfe93f79a80a09c5ac3feedc17a", null ]
+    ] ],
+    [ "EN_ECDH_MODE", "g3__define_8h.html#a67aab4fe5a28f94bb81deb82e934f032", [
+      [ "NORMAL_ECDH", "g3__define_8h.html#a67aab4fe5a28f94bb81deb82e934f032ad0969df04510f18627b3347001e16b41", null ],
+      [ "GEN_TLS_BLOCK", "g3__define_8h.html#a67aab4fe5a28f94bb81deb82e934f032a2cf5c35447d295c06af58889b45c4a60", null ],
+      [ "SET_TLS_SESSION_KEY", "g3__define_8h.html#a67aab4fe5a28f94bb81deb82e934f032a9ddf6e2c83aafa5e2d5b1b282e380c7b", null ]
+    ] ],
+    [ "EN_FORBIDDEN_TYPE", "g3__define_8h.html#a150409f11dc4972d1ea9a64b55f3c45e", [
+      [ "CONDITION", "g3__define_8h.html#a150409f11dc4972d1ea9a64b55f3c45ea441b7fedf77d6e6bb9c33b609fb7bbf0", null ],
+      [ "FREE", "g3__define_8h.html#a150409f11dc4972d1ea9a64b55f3c45eacc62d1576546f3245237e1b232d838b6", null ],
+      [ "FORBIDDEN", "g3__define_8h.html#a150409f11dc4972d1ea9a64b55f3c45ea4b4068e636cd02a6e87e8d3920383d67", null ]
+    ] ],
+    [ "EN_HANDSHAKE_MODE", "g3__define_8h.html#acf802260634704e1f4173a08ea8f7484", [
+      [ "HSM_CLIENT", "g3__define_8h.html#acf802260634704e1f4173a08ea8f7484a1743dff5208c28a524b322205a0d2041", null ],
+      [ "HSM_SERVER", "g3__define_8h.html#acf802260634704e1f4173a08ea8f7484af7c3a00c3d7933d9d1c7a53350220607", null ]
+    ] ],
+    [ "EN_ISSUE_CERT_AREA_TYPE", "g3__define_8h.html#a5f6fea1e0bbf1e1647f47f65548682f8", [
+      [ "ISCRT_KEY_AREA", "g3__define_8h.html#a5f6fea1e0bbf1e1647f47f65548682f8aa9acbbf438bd2a0b9505d8d1c7e79851", null ],
+      [ "ISCRT_DATA_AREA_0", "g3__define_8h.html#a5f6fea1e0bbf1e1647f47f65548682f8a4772b69692ee0d4a1423eb5422979a61", null ],
+      [ "ISCRT_DATA_AREA_1", "g3__define_8h.html#a5f6fea1e0bbf1e1647f47f65548682f8a52220fb26d6512c3bf90ffd0412e8f7a", null ]
+    ] ],
+    [ "EN_KEY_TYPE", "g3__define_8h.html#a794f3f0cc7d5eb3abfa859003a1ffaa6", [
+      [ "SECTOR_KEY", "g3__define_8h.html#a794f3f0cc7d5eb3abfa859003a1ffaa6a616350fbe3c99382b243ce149950f866", null ],
+      [ "SESSION_KEY", "g3__define_8h.html#a794f3f0cc7d5eb3abfa859003a1ffaa6abb5d91b9bc8d5ddf5dd3afdb873ef49f", null ]
+    ] ],
+    [ "EN_PUB_TYPE", "g3__define_8h.html#a05b4891955e9644ab0bce948e928a998", [
+      [ "KEY_SECTOR", "g3__define_8h.html#a05b4891955e9644ab0bce948e928a998a80a76edb2f8b9a26bf452d385cf5649b", null ],
+      [ "TEMP_PUBLIC_KEY", "g3__define_8h.html#a05b4891955e9644ab0bce948e928a998ae4550cf2ae28569cff3114aed2493d12", null ]
+    ] ],
+    [ "EN_RESULT", "g3__define_8h.html#acf01ea9a7dd77b24a29c775aed1edf4b", [
+      [ "SUCCESS", "g3__define_8h.html#acf01ea9a7dd77b24a29c775aed1edf4bac7f69f7c9e5aea9b8f54cf02870e2bf8", null ],
+      [ "FAIL", "g3__define_8h.html#acf01ea9a7dd77b24a29c775aed1edf4ba936c4a5547a9360243178f726f6b2715", null ]
+    ] ],
+    [ "EN_RW", "g3__define_8h.html#a82eee89921c4c1ce04323ea7d4c313f9", [
+      [ "ALL", "g3__define_8h.html#a82eee89921c4c1ce04323ea7d4c313f9ab1d5eac4b1dca480c8056eaea7663b7a", null ],
+      [ "MASK_N_ENC", "g3__define_8h.html#a82eee89921c4c1ce04323ea7d4c313f9aaf5177bdbceed9c47edb414c5896c87d", null ],
+      [ "ENC", "g3__define_8h.html#a82eee89921c4c1ce04323ea7d4c313f9aa0eca8b9609fff23f6021d2c7a6de368", null ],
+      [ "ENC_MAC", "g3__define_8h.html#a82eee89921c4c1ce04323ea7d4c313f9a80ec6a6a09acf403414330ba9d062044", null ]
+    ] ],
+    [ "EN_RW_INST_OPTION", "g3__define_8h.html#a6b1f3805950b3b6840c920f1256e60f2", [
+      [ "PLAIN_TEXT", "g3__define_8h.html#a6b1f3805950b3b6840c920f1256e60f2a9b337de7cd42f5ad452d6275074c5f37", null ],
+      [ "CBC", "g3__define_8h.html#a6b1f3805950b3b6840c920f1256e60f2a4ace9ef28707cb98c2ccaaff518b3a49", null ],
+      [ "CTR", "g3__define_8h.html#a6b1f3805950b3b6840c920f1256e60f2a7ab14ded2636fb92a2e0ca9238249f01", null ],
+      [ "CCM", "g3__define_8h.html#a6b1f3805950b3b6840c920f1256e60f2a4742ab5add31bcbe14b900f9db45a012", null ],
+      [ "GCM", "g3__define_8h.html#a6b1f3805950b3b6840c920f1256e60f2a313f9e8f1ff4fdfe84c642fdb62b8aab", null ],
+      [ "CBC_with_MAC", "g3__define_8h.html#a6b1f3805950b3b6840c920f1256e60f2a787b8fa5ceda31a9fe4d2df312f54d4b", null ],
+      [ "CTR_with_MAC", "g3__define_8h.html#a6b1f3805950b3b6840c920f1256e60f2a054f340bc0b3152c1ff99ef9033ad4db", null ],
+      [ "SESSION_KEY_CBC", "g3__define_8h.html#a6b1f3805950b3b6840c920f1256e60f2acb3f983d826e0e4d2aa16c013ab5e5ce", null ],
+      [ "SESSION_KEY_CTR", "g3__define_8h.html#a6b1f3805950b3b6840c920f1256e60f2a1adb15b5e04a894567e3548d379b4530", null ],
+      [ "SESSION_KEY_CCM", "g3__define_8h.html#a6b1f3805950b3b6840c920f1256e60f2a9824a205e10cf390aee75006129b04af", null ],
+      [ "SESSION_KEY_GCM", "g3__define_8h.html#a6b1f3805950b3b6840c920f1256e60f2aa6b18be25382d465a5ee30a38cbb1758", null ],
+      [ "SESSION_KEY_CBC_with_MAC", "g3__define_8h.html#a6b1f3805950b3b6840c920f1256e60f2acb30e33d9a655e0c62e60159cd4e1a4e", null ],
+      [ "SESSION_KEY_CTR_with_MAC", "g3__define_8h.html#a6b1f3805950b3b6840c920f1256e60f2a1e5de453c5504a137309768266f06a75", null ],
+      [ "MASKED", "g3__define_8h.html#a6b1f3805950b3b6840c920f1256e60f2a6ddbe57e526adc33ae02b4378c441c43", null ]
+    ] ],
+    [ "EN_SESSION_MODE", "g3__define_8h.html#a1a369f8f7ed78a5b8a80cddd878469d8", [
+      [ "SYMM_KEY", "g3__define_8h.html#a1a369f8f7ed78a5b8a80cddd878469d8a6d7f3337c44deb1741151c0fc081cbe4", null ],
+      [ "FACTORY_AES", "g3__define_8h.html#a1a369f8f7ed78a5b8a80cddd878469d8a0bbe9aa4eacae87b547ae11ff59cbc51", null ],
+      [ "FACTORY_SM4", "g3__define_8h.html#a1a369f8f7ed78a5b8a80cddd878469d8ae6a4e26bb36afb8f85b0e3a021f036da", null ],
+      [ "EXT_SESSION_KEY_AES", "g3__define_8h.html#a1a369f8f7ed78a5b8a80cddd878469d8a7fa5dbeea8ea3c9a5c6c81be5047c984", null ],
+      [ "EXT_SESSION_KEY_SM4", "g3__define_8h.html#a1a369f8f7ed78a5b8a80cddd878469d8a50b06b967264098a1fd5f0f01f1bd442", null ],
+      [ "EXT_PUB_KEY", "g3__define_8h.html#a1a369f8f7ed78a5b8a80cddd878469d8a6de9548b279f0eacd78cbcb04d15e0d6", null ]
+    ] ],
+    [ "EN_SHA256_MODE", "g3__define_8h.html#a96c36b1c1aa57ebe095ed2f6ffc72fb5", [
+      [ "Initialize", "g3__define_8h.html#a96c36b1c1aa57ebe095ed2f6ffc72fb5aec5ffdce78f3f4afd0eb1a361bd1f4fe", null ],
+      [ "Update", "g3__define_8h.html#a96c36b1c1aa57ebe095ed2f6ffc72fb5aa2e17ac958eecaffea2602509aa84592", null ],
+      [ "Finalize", "g3__define_8h.html#a96c36b1c1aa57ebe095ed2f6ffc72fb5a28f4bf1cd501c9e2ad186505079df6d2", null ]
+    ] ],
+    [ "EN_SIGN_OPTION", "g3__define_8h.html#a1893baafba5444137b3a3162911bfa17", [
+      [ "SIGN_ECDSA_EXT_SHA256", "g3__define_8h.html#a1893baafba5444137b3a3162911bfa17a1f388e1b33f4d24ff0fd0b60704250b3", null ],
+      [ "SIGN_ECDSA_WITH_SHA256", "g3__define_8h.html#a1893baafba5444137b3a3162911bfa17afd110c1eb861c502e46a4eb0b075ec10", null ],
+      [ "SIGN_HMAC", "g3__define_8h.html#a1893baafba5444137b3a3162911bfa17ac19e8e5de9b759f03cf3f6febf7042dc", null ],
+      [ "SIGN_SYMM", "g3__define_8h.html#a1893baafba5444137b3a3162911bfa17a112b5e266184dd158c4ae1f94962ff2f", null ],
+      [ "SIGN_SESSION_SYMM", "g3__define_8h.html#a1893baafba5444137b3a3162911bfa17a541f9e2feaca82945ced57db3e640e89", null ]
+    ] ],
+    [ "EN_SND_RECV_MODE", "g3__define_8h.html#ac996baf033ba291835d48bdfe0e70786", [
+      [ "SND_N_RECV", "g3__define_8h.html#ac996baf033ba291835d48bdfe0e70786a14ed67c20d95319e2a5b047300fbb3b5", null ],
+      [ "SND", "g3__define_8h.html#ac996baf033ba291835d48bdfe0e70786a5424a763d3e90a5f3c2a81338a7379fa", null ],
+      [ "RECV", "g3__define_8h.html#ac996baf033ba291835d48bdfe0e70786a586011d90be069a5203e7bdbcb760302", null ]
+    ] ],
+    [ "EN_TLS_VERSION", "g3__define_8h.html#a27738a3438cd5d96b63fd84fe1eab132", [
+      [ "SSL_3_0", "g3__define_8h.html#a27738a3438cd5d96b63fd84fe1eab132a8ce8a4e8fec6e1a7475e9cdc216fb90d", null ],
+      [ "TLS_1_0", "g3__define_8h.html#a27738a3438cd5d96b63fd84fe1eab132a12987111553a75b5dc8d8ce749ee9ff9", null ],
+      [ "TLS_1_1", "g3__define_8h.html#a27738a3438cd5d96b63fd84fe1eab132a0ef64184cf06bb1352a698b98d6545f8", null ],
+      [ "TLS_1_2", "g3__define_8h.html#a27738a3438cd5d96b63fd84fe1eab132a8d79d526c34d1313f9d251fe022ea90c", null ]
+    ] ],
+    [ "EN_VERIFY_OPTION", "g3__define_8h.html#a80e22f117082ac28f4be2511e2a85e4c", [
+      [ "VERIFY_ECDSA_EXT_SHA256", "g3__define_8h.html#a80e22f117082ac28f4be2511e2a85e4ca114e9c099b9b419a8a3d888c0f2ca151", null ],
+      [ "VERIFY_ECDSA_WITH_SHA256", "g3__define_8h.html#a80e22f117082ac28f4be2511e2a85e4ca2277c3fb5f9f6694f476efd5022a4fa8", null ],
+      [ "VERIFY_HMAC", "g3__define_8h.html#a80e22f117082ac28f4be2511e2a85e4caea8cdb6139c0c0a3147980ee34440b2a", null ],
+      [ "VERIFY_SYMM", "g3__define_8h.html#a80e22f117082ac28f4be2511e2a85e4ca2ebeeec037d8f0e501d584d5d5db1d28", null ],
+      [ "VERIFY_SESSION_SYMM", "g3__define_8h.html#a80e22f117082ac28f4be2511e2a85e4ca93c96bba392cc8b9e27ce80b2595cda5", null ],
+      [ "VERIFY_EXT_PUB_ECDSA_EXT_SHA256", "g3__define_8h.html#a80e22f117082ac28f4be2511e2a85e4ca1c657c45bfe079093612e4e6d93c7864", null ],
+      [ "VERIFY_EXT_PUB_ECDSA_WITH_SHA256", "g3__define_8h.html#a80e22f117082ac28f4be2511e2a85e4cac603c87730b3469a0632ff38f5d32f93", null ]
+    ] ],
+    [ "EN_VERIFY_TYPE", "g3__define_8h.html#a588304827424a871e23b760ba12777c8", [
+      [ "USE_CERT_PUB_ECDSA_EXT_SHA256", "g3__define_8h.html#a588304827424a871e23b760ba12777c8a6d7d0095541a6ab23815bfab74ae59e0", null ],
+      [ "USE_CERT_PUB_ECDSA_WITH_SHA256", "g3__define_8h.html#a588304827424a871e23b760ba12777c8ad3ebc00db9bcaf5eeb2b5bcc9ed342ee", null ]
+    ] ]
+];

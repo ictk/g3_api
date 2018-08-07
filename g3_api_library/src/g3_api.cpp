@@ -391,6 +391,20 @@ G3_API_RESULT CALLTYPE g3api_encryption(IN int key_index, IN EN_KEY_TYPE key_typ
 	if (nret < 0) goto END;
 //if(iv) memcpy(iv, precvbuff->buffer, sizeof(ST_IV));
 	//if (cipher) memcpy(cipher, precvbuff->buffer + sizeof(ST_IV), precvbuff->size - sizeof(ST_IV));
+
+
+	if (cipher_size && (precvbuff->size > *cipher_size)){
+		nret = RET_ERR_RECV_BUFF_SIZE;
+		goto END;
+	}
+	if (cipher){
+		memcpy(cipher, precvbuff->buffer, precvbuff->size);
+		*cipher_size = precvbuff->size;
+	}
+
+
+
+
 	if (cipher) memcpy(cipher, precvbuff->buffer, precvbuff->size);
 	//if (cipher_size) *cipher_size = precvbuff->size - sizeof(ST_IV);
 
@@ -549,7 +563,8 @@ G3_API_RESULT CALLTYPE g3api_session(IN int key_index, IN EN_SESSION_MODE en_ses
 		}
 		else
 		{
-			memcpy(outdata, precvbuff->buffer, precvbuff->size);
+			*outdata_size = precvbuff->size;
+ 			memcpy(outdata, precvbuff->buffer, precvbuff->size);
 		}
 	}
 

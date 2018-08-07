@@ -36,6 +36,18 @@ ST_G3_IO_LIB_FUNCTIONS  _samplefunction_i2c = {
 
 };
 
+
+//###################################################	
+/**
+*   @brief	Wakes the g3 using the defined GPIO_WAKE_UP_PIN
+*			
+*	@param	pin_num			:	Pin number wired SDA
+*	@param	f_sleep_time	:	Wake-up Low Duration
+*	@param	s_sleep_time	:	Wake-up High delay
+*
+*   @return void
+*/
+//###################################################
 void wake_up(int pin_num,int f_sleep_time,int s_sleep_time){
 	NEO_TITLE(wake_up);
 	
@@ -55,6 +67,21 @@ void wake_up(int pin_num,int f_sleep_time,int s_sleep_time){
 	pinMode(pin_num, INPUT);
 }
 
+
+//###################################################	
+/**
+*   @brief  Transmits the buffer data
+*	@note	The wrtie function returns the number of bytes written 
+*			if it doesn't match with the input length then print an error message
+*
+*	@param	file_i2c		: File descriptor
+*	@param	title			: Title  
+*	@param	snd_buff		: Pointer to data buffer
+*	@param	length			: Size of data to be sent
+*	
+*   @return result
+*/
+//###################################################
 int send(int file_i2c, const char * title,unsigned char *snd_buff,int length){
 	//print_bytes(title,snd_buff,length);
 	int ret = write(file_i2c, snd_buff, length);
@@ -66,6 +93,7 @@ int send(int file_i2c, const char * title,unsigned char *snd_buff,int length){
 	}
 	return ret;
 }
+
 int ictk_convert_to_inst_mode(int file_i2c){
 	NEO_TITLE(ictk_convert_to_inst_mode);
 	int i = 0;
@@ -91,6 +119,20 @@ int ictk_convert_to_inst_mode(int file_i2c){
 	return 0;
 }
 
+
+//###################################################	
+/**
+*   @brief	Sends the command and read the response from the device	
+*
+*	@param	snd			: Pointer to send data buffer
+*	@param	snd_size	: Size of data to be sent
+*	@param	recv		: Pointer to receive data buffer
+*	@param	recv_size	: Size of data to receive
+*	@param	etcparam	: Pointer to file descriptor
+*
+*   @return result
+*/
+//###################################################
 extern "C" int send_n_recv_4_i2c(const unsigned char*snd, int snd_size, unsigned char*recv, int* recv_size, void*etcparam)
 {
 	NEO_TITLE(send_n_recv_4_i2c);
@@ -142,14 +184,30 @@ extern "C" int send_n_recv_4_i2c(const unsigned char*snd, int snd_size, unsigned
 }
 
 
-
+//###################################################	
+/**
+*   @brief	Gets the structure for initializing the i2c device
+*
+*	@param	lpsamplefunction	: Pointer to a ST_G3_IO_LIB_FUNCTIONS structure that contains functions to initialize the device
+*
+*   @return void
+*/
+//###################################################
 void get_functions_i2c(LPST_G3_IO_LIB_FUNCTIONS lpsamplefunction)
 {
 	*lpsamplefunction = _samplefunction_i2c;
 
 }
 
-
+//###################################################	
+/**
+*   @brief	Initializes the i2c device using wiringPi
+*
+*	@param	param	: Not used for i2c communication
+*
+*   @return result
+*/
+//###################################################
 int init_sample_i2c(void *param)
 {
 	NEO_TITLE(init_sample_i2c);
@@ -162,18 +220,34 @@ int init_sample_i2c(void *param)
 	NEO_DWORD(_file_i2c);
 	g3api_set_user_send_recv_pf(send_n_recv_4_i2c, &_file_i2c);
 	
-	
-
 
 	return 0;
 
-
 }
+
+
+
+//###################################################	
+/**
+*   @brief
+*			
+*   @return void
+*/
+//###################################################
 void end_sample_i2c()
 {
 	NEO_TITLE(end_sample_i2c);
 }
 
+
+
+//###################################################	
+/**
+*   @brief	Wakes the g3 by sending one byte to address 0
+*			
+*   @return result
+*/
+//###################################################
 int wake_up_and_convert_mode_i2c()
 {
 	unsigned char snd_buff[] = {0x00};

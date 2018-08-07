@@ -10,7 +10,7 @@
 #include "neoDebug.h"
 #include <g3_api.h>
 #include "g3_io_lib.h"
-//#include "util.h"
+#include "util.h"
 //#include<windows.h>
 
 
@@ -46,6 +46,7 @@ void general_session();
 void general_tls();
 void general_etc();
 void tls_setup();
+void clear();
 
 FILE * _fp = stdout;
 //
@@ -95,6 +96,7 @@ void test_scenario_sample();
 void test_scenario_sample2();
 void test_scenario_sample3();
 
+
 void init_fp(){
 
 	_fp = fopen("out.txt", "wb");
@@ -130,6 +132,7 @@ int main(int argc, char* argv[])
 	//GET_FUCNTION(&samplefunction);
 
 
+
 	PF_INIT_G3_IO_LIB init_sample = samplefunction.init_sample;
 	PF_WAKE_UP_AND_CONVERT_MODE wake_up_and_convert_mode = samplefunction.wake_up_and_convert_mode;
 	PF_END_G3_IO_LIB end_sample = samplefunction.end_sample;
@@ -138,18 +141,18 @@ int main(int argc, char* argv[])
 
 	if (init_sample(argv[1])){
 		return -1;
-
 	}
 	if (wake_up_and_convert_mode()){
 		return -1;
 
 	}
 	;
-	//tls_setup();
 
+	test_scenario_sample2();
+	//tls_setup();
+	//clear();
 	
 	//return 0;
-
 
 //	g3api_set_etc_param(serreial);
 	ST_SIGN_ECDSA sign;
@@ -163,6 +166,13 @@ int main(int argc, char* argv[])
 	int recvbuff_size = 1024;
 	ret = g3api_get_challenge(32, recvbuff, &recvbuff_size);
 	
+	ST_IV iv;
+	//iv.iv = NCL::HexStr2Byte("871B1023000000000000000000000000");
+	vecbyte = NCL::HexStr2Byte("F36E183703DA7DF61F1DA1445B037A60");
+	byte* c = new byte[999];
+	int cl = 999;
+	ret = g3api_encryption(27, EN_KEY_TYPE::SECTOR_KEY, EN_BLOCK_MODE::BL_CBC, &iv, V2A(vecbyte), 16, c, &cl);
+
 	exit(0);
 
 	const unsigned char puredata[] = { 0x84, 0x20, 0x00, 0x00, };
@@ -173,7 +183,6 @@ int main(int argc, char* argv[])
 	//general_sign_verify();
 
 	//test_scenario_sample();
-	//test_scenario_sample2();
 
 
 

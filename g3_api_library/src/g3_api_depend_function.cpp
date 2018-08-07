@@ -218,7 +218,14 @@ G3_API_RESULT do_normal_process(char inst, char p1, short p2, const void * data,
 	int recv_size = max_res_size;
 	fprintf(_fp,"_psend: 0x%x\n", _psend);
 
-	_psend((unsigned char *)lp_write_packet, packet_size, buff, &recv_size, _etcparam);
+	nRet = _psend((unsigned char *)lp_write_packet, packet_size, buff, &recv_size, _etcparam);
+
+	if (nRet != RET_SUCCESS)
+	{
+		nRet = RET_ERR_INTERCHIP_COMMUNICATIONS_ERROR;
+		goto END;
+	}
+
 	view_hexstr("recv data", buff, recv_size);
 
 	recv_size = buff[0];
@@ -245,7 +252,7 @@ G3_API_RESULT do_normal_process(char inst, char p1, short p2, const void * data,
 	}
 
 
-	if (recv_size-3 == 1){
+	if (recv_size-3 == 1 || recv_size-3 == 2){
 		nRet =  buff[1];
 		nRet |= (nRet == 0 || nRet == 1) ? 0 : ERR_INTERCHIP;
 		goto END;
@@ -341,21 +348,21 @@ int check_vefify_struct(EN_VERIFY_OPTION verify_option, int structure_size)
 {
 	switch (verify_option)
 	{
-	case VERYFY_ECDSA_EXT_SHA256:
-	case VERYFY_ECDSA_WITH_SHA256:
-	case VERYFY_EXT_PUB_ECDSA_EXT_SHA256:
-	case VERYFY_EXT_PUB_ECDSA_WITH_SHA256:
+	case VERIFY_ECDSA_EXT_SHA256:
+	case VERIFY_ECDSA_WITH_SHA256:
+	case VERIFY_EXT_PUB_ECDSA_EXT_SHA256:
+	case VERIFY_EXT_PUB_ECDSA_WITH_SHA256:
 		if (structure_size != sizeof(ST_SIGN_ECDSA)){
 			return RET_ERR_SIGN_MODE_PARSE_ERR;
 		}
 
 		break;
-	case VERYFY_HMAC:
+	case VERIFY_HMAC:
 		if (structure_size != sizeof(ST_SIGN_HMAC)){
 			return RET_ERR_SIGN_MODE_PARSE_ERR;
 		}
 		break;
-	case VERYFY_SYMM:
+	case VERIFY_SYMM:
 	case VERIFY_SESSION_SYMM:
 		if (structure_size != sizeof(ST_SIGN_SYMM)){
 			return RET_ERR_SIGN_MODE_PARSE_ERR;
