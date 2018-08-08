@@ -198,6 +198,8 @@ G3_API_RESULT do_normal_process(char inst, char p1, short p2, const void * data,
 	int packet_size = 0;
 	int packet_ieb100_size = 0;
 	G3_API_RESULT nRet = 0;
+	unsigned short crc = 0;
+	unsigned long calc_crc = 0;
 	//if (recv_buff) {
 	//	*recv_buff = NULL;
 
@@ -235,8 +237,8 @@ G3_API_RESULT do_normal_process(char inst, char p1, short p2, const void * data,
 	//	goto END;
 	//}
 
-	unsigned long calc_crc = calcCRC(buff, recv_size - 2);
-	unsigned short crc = 0;
+	calc_crc = calcCRC(buff, recv_size - 2);
+	
 	memcpy(&crc, buff + recv_size - 2, 2);
 	
 	//view_hexstr("precvbuff", buff, recv_size);

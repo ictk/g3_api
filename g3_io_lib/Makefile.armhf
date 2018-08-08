@@ -1,0 +1,5 @@
+CC_SRC = arm-linux-gnueabihf-gcc-4.9
+CXX_SRC = arm-linux-gnueabihf-g++-4.9
+AR_SRC = arm-linux-gnueabihf-gcc-ar-4.9
+PLATFORM = gnu-armhf
+include Makefile.def
