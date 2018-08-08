@@ -26,7 +26,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>v120</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
@@ -43,10 +43,12 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
     <IncludePath>../\g3_api_library\include;..\include;D:\PROJECT\toolrnd\BASE\include;./;../g3_io_lib/include;$(IncludePath)</IncludePath>
-    <LibraryPath>$(OutDir);../lib/win32;$(LibraryPath)</LibraryPath>
+    <LibraryPath>$(SolutionDir)/neo_c_lib/win32;$(OutDir);$(SolutionDir)/reflib/win32;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
+    <IncludePath>../\g3_api_library\include;..\include;D:\PROJECT\toolrnd\BASE\include;./;../g3_io_lib/include;$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>
+    <LibraryPath>$(SolutionDir)/neo_c_lib/win32;$(OutDir);$(SolutionDir)/reflib/win32;$(VC_LibraryPath_x86);$(WindowsSDK_LibraryPath_x86);</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -62,7 +64,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>neoCoreStaticLibd.lib;libeay32.lib;g3_api_library.lib;LibFT4222.lib;ftd2xx.lib;g3_io_lib.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>neo_c_libd.lib;g3_api_libraryd.lib;;g3_io_libd.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(SolutionDir)/lib</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
@@ -81,6 +83,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalDependencies>neo_c_lib.lib;g3_api_library.lib;;g3_io_lib.lib;</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
