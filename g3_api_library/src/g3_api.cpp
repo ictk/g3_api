@@ -91,6 +91,7 @@ void g3api_set_etc_param(void * etcparam){
 	_etcparam = etcparam;
 
 }
+
 void g3api_set_fp(void *fp)
 {
 	_fp = (FILE*)fp;

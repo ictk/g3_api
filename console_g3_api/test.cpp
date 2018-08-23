@@ -1,6 +1,7 @@
 #include<windows.h>
 #include<stdio.h>
 //#include <openssl/hmac.h>
+
 #include <g3_api.h>
 #include "util.h"
 
@@ -43,6 +44,49 @@ int test_byload(){
 
 	return 0;
 }
+int verifyClearRead(unsigned char  ucArea,
+	unsigned char  ucSect,
+	unsigned char* pucData)
+{
+	LONG			lRet;
+	unsigned char   aucVerify[32];
+	int				len = 32;
+
+	// for DEBUG write 검증
+	lRet = g3api_read_key_value(ucSect,
+		(EN_AREA_TYPE)ucArea,
+		(EN_RW_INST_OPTION)0x00,
+		NULL,
+		0,
+		aucVerify,
+		32);
+	if (lRet != 0)
+	{
+		printf("g3api_read_key_value() error\n");
+		goto post_action;
+	}
+
+	// SETUP AREA SECTOR 02의 경우 RFU영역은 비교하지 않는다.
+	if ((ucArea == 0x00) && (ucSect == 0x02))
+	{
+		len = 24;
+	}
+
+	if (memcmp(aucVerify, pucData, len) != 0)
+	{
+		printf("write error. AREA[%02X], SECT[%02X]\n", ucArea, ucSect);
+		//print_hex("EXPECT", len, pucData);
+		//print_hex("REAL", len, aucVerify);
+		lRet = -1;
+		goto post_action;
+	}
+
+post_action:
+
+	return lRet;
+
+}
+
 /*void test_hmac()
 {
 	unsigned char key[] = {0x09, 0xA8, 0xD1, 0xAB, 0xDE, 0x2C, 0xCA, 0xC2, 0x1C, 0x3D, 0x82, 0xB4, 0xD3, 0x84, 0xBA, 0x45, };
