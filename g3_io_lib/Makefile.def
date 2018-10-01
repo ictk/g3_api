@@ -19,15 +19,15 @@ AR = $(AR_SRC)
 LD = $(CXX)
 
 TITLE=g3_io_lib
-
-
+BIN_NAME=g3_io_lib
+PLATFORM=
 
 #------------------------------------------------------------------------#
 # directory definition
 #------------------------------------------------------------------------#
-OUT_DIR = ../lib/$(PLATFORM)
+OUT_DIR = ../lib
 #example : ../lib/gnu
-
+REF_DIR = 
 DST_DIR = $(HOME)/project
 #example : /usr/local
 
@@ -38,9 +38,9 @@ DST_DIR_INC = $(DST_DIR)/include
 #------------------------------------------------------------------------#
 # result definition
 #------------------------------------------------------------------------#
-OUT_STATIC_LIB = $(OUT_DIR)/lib$(TITLE).a
-OUT_SHARED_LIB = $(OUT_DIR)/lib$(TITLE).so
-OUT_EXE = $(OUT_DIR)/$(TITLE)
+OUT_STATIC_LIB = $(OUT_DIR)/lib$(BIN_NAME).a
+OUT_SHARED_LIB = $(OUT_DIR)/lib$(BIN_NAME).so
+OUT_EXE = $(OUT_DIR)/$(BIN_NAME)
 
 
 #------------------------------------------------------------------------#
@@ -66,6 +66,8 @@ CFLAG_ALL = $(INC) $(CDEFINE) $(CFLAGS)
 
 OBJDIR___CPP = obj/gnu___cpp
 
+OBJDIR____NEO_C_LIB_SRC_CPP = obj/gnu____neo_c_lib_src_cpp
+
 #example
 #OBJDIR_OBJ0 = obj/gnu_obj0
 #OBJDIR_OBJ1 = obj/gnu_obj1
@@ -79,6 +81,8 @@ DEF_RELEASE_INC= ../include
 
 OBJ_SET___CPP =  $(OBJDIR___CPP)/g3_io_lib.o  $(OBJDIR___CPP)/io_cdc.o  $(OBJDIR___CPP)/io_ft4222.o  $(OBJDIR___CPP)/io_i2c.o  $(OBJDIR___CPP)/util.o 
 
+OBJ_SET____NEO_C_LIB_SRC_CPP =  $(OBJDIR____NEO_C_LIB_SRC_CPP)/CSerialRS232.o  $(OBJDIR____NEO_C_LIB_SRC_CPP)/EtcModule.o  $(OBJDIR____NEO_C_LIB_SRC_CPP)/MemoryNode.o  $(OBJDIR____NEO_C_LIB_SRC_CPP)/NeoCoLib.o  $(OBJDIR____NEO_C_LIB_SRC_CPP)/neoDebug.o  $(OBJDIR____NEO_C_LIB_SRC_CPP)/rs232.o  $(OBJDIR____NEO_C_LIB_SRC_CPP)/SystemUtil.o  $(OBJDIR____NEO_C_LIB_SRC_CPP)/SystemUtil4Linux.o 
+
 #example OBJ_SET_OBJ0 =  $(OBJDIR)/CSerialRS232.o  $(OBJDIR)/EtcModule.o  $(OBJDIR)/MemoryNode.o  $(OBJDIR)/NeoCoLib.o 
 
 
@@ -87,7 +91,7 @@ OBJ_SET___CPP =  $(OBJDIR___CPP)/g3_io_lib.o  $(OBJDIR___CPP)/io_cdc.o  $(OBJDIR
 #------------------------------------------------------------------------#
 # all object definition
 #------------------------------------------------------------------------#		
-OBJ_SET_ALL =  $(OBJ_SET___CPP)   
+OBJ_SET_ALL =  $(OBJ_SET___CPP) $(OBJ_SET____NEO_C_LIB_SRC_CPP)   
 #example OBJ_SET_ALL =  $(OBJ_SET_OBJ0) $(OBJ_SET_OBJ1) $(OBJ_SET_OBJ2)
 
 
@@ -104,6 +108,7 @@ before_release:
 	test -d bin/Release || mkdir -p bin/Release
 	test -d $(OUT_DIR) || mkdir -p $(OUT_DIR)
 	test -d $(OBJDIR___CPP) || mkdir -p $(OBJDIR___CPP)
+	test -d $(OBJDIR____NEO_C_LIB_SRC_CPP) || mkdir -p $(OBJDIR____NEO_C_LIB_SRC_CPP)
 	
 
 	
@@ -155,6 +160,9 @@ out_exe_release: $(OBJ_SET_ALL)
 
 	
 $(OBJDIR___CPP)/%.o: ./%.cpp
+	$(CXX) $(CFLAG_ALL)  -c -o $@ $<	
+	
+$(OBJDIR____NEO_C_LIB_SRC_CPP)/%.o: ../neo_c_lib/src/%.cpp
 	$(CXX) $(CFLAG_ALL)  -c -o $@ $<	
 	
 	

@@ -7,7 +7,7 @@ LD = g++
 WINDRES = windres
 OUTDIR = ../bin/gnu
 OBJDIR = obj/gnu
-LIB = -L../lib/gnu -lg3_api_lib -lg3_io_lib ../lib/gnu/libneolib_c_base.a -lwiringPi -ldl -lft4222
+LIB = -L../lib -lg3_api_lib -lg3_io_lib -lwiringPi -ldl -lft4222
 #LIB = -lIPSF-100d -ldl -L/home/ictk/project/IPSF-100/IPSF-100-SOFTFORUM/lib/gnu/ 
 
 #------------------------------------------------------------------------------#
@@ -18,7 +18,7 @@ LIB = -L../lib/gnu -lg3_api_lib -lg3_io_lib ../lib/gnu/libneolib_c_base.a -lwiri
 WORKDIR = `pwd`
 
 
-INC = -I../include  -I../g3_api_library/include -I../g3_io_lib
+INC = -I../include  -I../g3_api_library/include -I../g3_io_lib/include -I../neo_c_lib/include
 CFLAGS = -Wall -fexceptions  -O2
 RESINC = 
 LIBDIR = 
@@ -27,7 +27,7 @@ LIBDIR =
 
 
 INC_RELEASE = $(INC)
-CFLAGS_RELEASE = $(CFLAGS) -D_DEFNEODEF_ -D__USE_CDC__0  -DNEODEBUG  -D__USE_FT4222__ $(TEMPDEF)
+CFLAGS_RELEASE = $(CFLAGS) -D_DEFNEODEF_ -D__USE_CDC__0  -DNEODEBUG_  -D__USE_FT4222__  $(TEMPDEF)
 RESINC_RELEASE = $(RESINC)
 RCFLAGS_RELEASE = $(RCFLAGS)
 LIBDIR_RELEASE = $(LIBDIR)

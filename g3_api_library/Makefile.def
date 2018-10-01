@@ -19,15 +19,15 @@ AR = $(AR_SRC)
 LD = $(CXX)
 
 TITLE=g3_api_lib
-
-
+BIN_NAME=g3_api_lib
+PLATFORM=
 
 #------------------------------------------------------------------------#
 # directory definition
 #------------------------------------------------------------------------#
-OUT_DIR = ../lib/$(PLATFORM)
+OUT_DIR = ../lib
 #example : ../lib/gnu
-
+REF_DIR = 
 DST_DIR = $(HOME)/project
 #example : /usr/local
 
@@ -38,9 +38,9 @@ DST_DIR_INC = $(DST_DIR)/include
 #------------------------------------------------------------------------#
 # result definition
 #------------------------------------------------------------------------#
-OUT_STATIC_LIB = $(OUT_DIR)/lib$(TITLE).a
-OUT_SHARED_LIB = $(OUT_DIR)/lib$(TITLE).so
-OUT_EXE = $(OUT_DIR)/$(TITLE)
+OUT_STATIC_LIB = $(OUT_DIR)/lib$(BIN_NAME).a
+OUT_SHARED_LIB = $(OUT_DIR)/lib$(BIN_NAME).so
+OUT_EXE = $(OUT_DIR)/$(BIN_NAME)
 
 
 #------------------------------------------------------------------------#

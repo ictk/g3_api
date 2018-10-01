@@ -1,7 +1,8 @@
 CC_SRC	= gcc
 CXX_SRC = g++
 AR_SRC = ar
-PLATFORM = gnu-x64
+
+
+#PLATFORM =
 
 include Makefile.def
-
