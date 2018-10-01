@@ -72,7 +72,9 @@ void clear()
 	}
 
 }
+void write_cert(){
 
+}
 void tls_setup()
 {
 	ST_KEY_VALUE recv_key;

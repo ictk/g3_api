@@ -42,7 +42,7 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>../\g3_api_library\include;..\include;D:\PROJECT\toolrnd\BASE\include;./;../g3_io_lib/include;$(IncludePath)</IncludePath>
+    <IncludePath>../neo_c_lib/include;../\g3_api_library\include;..\include;./;../g3_io_lib/include;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)/neo_c_lib/win32;$(OutDir);$(SolutionDir)/reflib/win32;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -56,7 +56,7 @@
       </PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;_LIB;NEODEBUG;_DEFNEODEF_;__USE_CDC__NO;__USE_FT4222__;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;_LIB;NEODEBUG;_NEODEF_WITHOUT_STATIC_;__USE_CDC__NO;__USE_FT4222__;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>
       </AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
@@ -64,7 +64,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>neo_c_libd.lib;g3_api_libraryd.lib;;g3_io_libd.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>g3_api_libraryd.lib;;g3_io_libd.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(SolutionDir)/lib</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>

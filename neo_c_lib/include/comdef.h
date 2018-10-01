@@ -20,6 +20,13 @@ using namespace std;
 #endif
 
 
+#ifdef _NEODEF_WITHOUT_STATIC_
+#define _USE_UTF8_
+#define NEOUSEMBCS
+#define LSA_EXPORTS_NOUSE
+#endif
+
+
 #ifdef NEO_STATIC
 #define EXTERN_API
 #else 

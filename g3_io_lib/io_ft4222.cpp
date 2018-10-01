@@ -14,7 +14,7 @@
 
 #include "util.h"
 #include "LibFT4222.h"
-#include "neoDebug.h"
+//#include "neoDebug.h"
 
 #include <errno.h>
 #define GPIO_WAKE_UP_PIN 4
@@ -611,7 +611,7 @@ extern "C" int send_n_recv_4_ft4222(const unsigned char*snd, int snd_size, unsig
 
 	int                  page;
 	
-	NEO_TITLE(send_n_recv_4_ft4222);
+//	NEO_TITLE(send_n_recv_4_ft4222);
 	
 	success = 0;
 	LPDEVINO lpdevinfo = (LPDEVINO)etcparam;
@@ -705,7 +705,7 @@ void get_functions_ft4222(LPST_G3_IO_LIB_FUNCTIONS lpsamplefunction)
 //###################################################
 int init_sample_ft4222(void *param)
 {
-	NEO_TITLE(init_sample_ft4222);
+//	NEO_TITLE(init_sample_ft4222);
 	
 	DWORD                     numDevs = 0;
 	if (GetDeviceFT4222(&_devinfo))
@@ -735,7 +735,7 @@ int init_sample_ft4222(void *param)
 //###################################################
 void end_sample_ft4222()
 {
-	NEO_TITLE(end_sample_ft4222);
+//	NEO_TITLE(end_sample_ft4222);
 	Disconnect(&_devinfo);
 
 }

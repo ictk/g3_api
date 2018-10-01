@@ -35,21 +35,22 @@
 #define _N(x)       __NTEXT(x)
 
 
-// #ifdef NEO_STATIC
-// #define EXTERN_API
-// #else
-// #ifdef NEO_EXPORTS
-// #define EXTERN_API __declspec(dllexport)
-// #else
-// #define EXTERN_API __declspec(dllimport)
-// #endif
-// #endif
+#ifdef NEO_STATIC
 
 #ifdef __cplusplus
 #define NEO_EXTERN_API extern "C"
 #else
 #define NEO_EXTERN_API
 #endif
+
+#else
+#ifdef NEO_EXPORTS
+#define NEO_EXTERN_API __declspec(dllexport)
+#else
+#define NEO_EXTERN_API __declspec(dllimport)
+#endif
+#endif
+
 
 
 #ifndef NEO_FX_ARG
@@ -71,17 +72,17 @@ NEO_EXTERN_API void neoSetLogName(const MCHAR * logname);
 
 /* CODE DEL sodazim
 #ifndef NEO_FX_ARG
-	EXTERN_API	void neoDebug(const MCHAR * fmt, ...);
-	EXTERN_API void neoDebugTitle(MCHAR *pTitle, const MCHAR * fmt, ...);
+	NEO_EXTERN_API	void neoDebug(const MCHAR * fmt, ...);
+	NEO_EXTERN_API void neoDebugTitle(MCHAR *pTitle, const MCHAR * fmt, ...);
 #else
-	EXTERN_API	void neoDebug(const MCHAR * fmt, int pr0 ,int pr1, int pr2);
+	NEO_EXTERN_API	void neoDebug(const MCHAR * fmt, int pr0 ,int pr1, int pr2);
 #endif
-	EXTERN_API void dioSetTD( MCHAR * strID);
+	NEO_EXTERN_API void dioSetTD( MCHAR * strID);
 
-EXTERN_API	void dioSetTraceFn( void(*fnDioTrace)(MCHAR*));
-EXTERN_API	void neoPrintout(MCHAR * str);
-EXTERN_API	void dioSTRFILEOUT(MCHAR * str);
-EXTERN_API	void dioOUTRETAIN(MCHAR * str);
+NEO_EXTERN_API	void dioSetTraceFn( void(*fnDioTrace)(MCHAR*));
+NEO_EXTERN_API	void neoPrintout(MCHAR * str);
+NEO_EXTERN_API	void dioSTRFILEOUT(MCHAR * str);
+NEO_EXTERN_API	void dioOUTRETAIN(MCHAR * str);
 */
 
 
@@ -201,9 +202,9 @@ EXTERN_API	void dioOUTRETAIN(MCHAR * str);
 
 #ifdef NEOTIMECHECK
 
-EXTERN_API void ViewTitle(unsigned short  * str);
-EXTERN_API unsigned long GetTakeTime(int isStart);
-EXTERN_API void ViewTakeTime();
+NEO_EXTERN_API void ViewTitle(unsigned short  * str);
+NEO_EXTERN_API unsigned long GetTakeTime(int isStart);
+NEO_EXTERN_API void ViewTakeTime();
 
 #define	NEOTIMECHECKTITLE(str) ViewTitle(L#str)
 #define NEOTIMECHECKSTART  GetTakeTime(TRUE)

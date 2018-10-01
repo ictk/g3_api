@@ -77,7 +77,7 @@ using namespace neocolib;
 #ifdef __VALIST
 #define va_list __VALIST
 #endif
-#if (_MSC_VER == 1800)
+#if (_MSC_VER >= 1800)
  #ifndef max
  #define max(a,b)    (((a) > (b)) ? (a) : (b))
  #endif
@@ -87,8 +87,8 @@ using namespace neocolib;
 #endif
 namespace neocolib {
 
-//class EXTERN_API NeoCoLib{
-class NeoCoLib {
+class EXTERN_API NeoCoLib{
+//class NeoCoLib {
 public:
 	static pvoid MakeNSFormDwordBase(neocolib::uint nLength,neocolib::uint nUnitStructure,pvoid reAloococ = NULL,neocolib::uint* lpmemSize = NULL);
 	static pvoid MakeNSFormMInfoBase(neocolib::uint nLength,neocolib::uint bfUnitMemSize,neocolib::uint nUnitStructure,pvoid reAloococ= NULL,neocolib::uint* lpmemSize = NULL);
@@ -291,6 +291,7 @@ public:
 	CMem & operator =(pvoid lpin) ;       // operator+()
 
 };
+
 
 template<class T>
 class  CMANMEM : public CMem
